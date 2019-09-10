@@ -47,11 +47,3 @@ class Population():
         fitness_probs = np.array(fitness_prob)
         max_fitness_element = np.argmax(fitness_probs)
         return {fitness_prob[max_fitness_element]: population[max_fitness_element]}
-
-
-
-pop = Population(10, 0.1, "Unicorn")
-population = pop.initialize_population(pop.pop_size, pop.gene_length,
-                                        pop.dna)
-fitness = pop.calculate_fitness(population, pop.target, pop.dna)
-print(pop.get_best_fitness_candidate(population, fitness))

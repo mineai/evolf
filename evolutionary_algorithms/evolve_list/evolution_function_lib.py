@@ -31,6 +31,10 @@ class EvolutionFunctionLib():
 		return child
 
 	def default_mutation_function(self, dna, mutation_rate, gene_generator):
+		
+		if isinstance(dna, str):
+			dna = list(dna)
+            
 		for gene_idx, gene in enumerate(dna):
 			if random.random() < mutation_rate:
 				dna[gene_idx] = gene_generator.generate_gene()

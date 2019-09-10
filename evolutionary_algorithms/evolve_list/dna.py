@@ -25,7 +25,6 @@ class DNA():
 		self.mutation_function = self.initializer.initialize_mutation_function(kwargs)
 
 
-
 	def generate_dna(self, length_of_dna, gene_generator):
 		dna = []
 		for index in range(length_of_dna):
@@ -37,9 +36,6 @@ class DNA():
 		if isinstance(target, str):
 			target = list(target)
 		return self.fitness_function(dna, target)
-
-
-
 
 # target = "I want to drink black coffee tonight."
 # mutation_rate = 0.1
