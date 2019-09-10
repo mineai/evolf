@@ -1,5 +1,6 @@
-from dna import DNA
-from evolution_utils import EvolutionUtils
+import random
+from evolutionary_algorithms.evolve_list.dna_list import DNAList
+from evolutionary_algorithms.evolve_list.evolution_list_utils import EvolutionListUtils
 
 import numpy as np
 
@@ -11,9 +12,10 @@ class Population():
         self.target = target
         self.gene_length = len(self.target)
         external_functions = self.build_kwargs_for_external_functions(kwargs)
-        self.dna = DNA(self.gene_length, self.mutation_rate,
+        self.dna = DNAList(self.gene_length, self.mutation_rate,
                     **external_functions)
-        self.utils = EvolutionUtils()
+
+        self.utils = EvolutionListUtils()
 
 
     def build_kwargs_for_external_functions(self, kwargs):
@@ -21,7 +23,7 @@ class Population():
                                 "mutation_function"]
 
         functions = {}
-        for key, items in kwargs.items():
+        for key, item in kwargs.items():
             if key in functions_possible:
                 functions[key] = item
 
@@ -40,18 +42,24 @@ class Population():
         fitness_prob = self.utils.softmax(fitness_array)
         return fitness_prob
 
-    def generate_mating_pool(self, population, fitness_prob):
-        return pop.utils.copy_elements(population, fitness_prob)
+    def generate_mating_pool(self, population, fitness_prob,
+                            mating_pool_mutiplier):
+        fitness_prob = [fitness_of_candidate*mating_pool_mutiplier \
+                        for fitness_of_candidate in fitness_prob]
+        mating_pool = self.utils.copy_elements(population, fitness_prob)
+        if not len(mating_pool):
+              mating_pool = population
+        return mating_pool
 
     def get_best_fitness_candidate(self, population, fitness_prob):
         fitness_probs = np.array(fitness_prob)
         max_fitness_element = np.argmax(fitness_probs)
         return {fitness_prob[max_fitness_element]: population[max_fitness_element]}
 
-
-
-pop = Population(10, 0.1, "Unicorn")
-population = pop.initialize_population(pop.pop_size, pop.gene_length,
-                                        pop.dna)
-fitness = pop.calculate_fitness(population, pop.target, pop.dna)
-print(pop.get_best_fitness_candidate(population, fitness))
+    def natural_selection(self, num_parents, mating_pool):
+        parents = []
+        size_of_mating_pool = len(mating_pool)
+        for parent_num in range(num_parents):
+            parent = random.randint(0, size_of_mating_pool-1)
+            parents.append(mating_pool[parent])
+        return parents
