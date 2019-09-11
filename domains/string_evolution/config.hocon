@@ -1,0 +1,21 @@
+# This file defines the configuration for evolution
+# of a string.
+
+"evolution_specs": {
+  # Number of Candidates in the population per generation
+  "population_size": 10000,
+  # Mutation Rate
+  "mutation_rate": 0.01,
+  # Number of Generations to run evolution for
+  "num_of_generations": 1000,
+  # Number of Parents to select that breed
+  "num_parents": 3,
+  # Scale the mating pool
+  "mating_pool_mutiplier": 100,
+  # Percentage of elites to copy to the next generation
+  "elitism": 0.01
+},
+"target_specs": {
+  "paralellize": True,
+  "max_string_length": 35
+}

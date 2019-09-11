@@ -12,7 +12,7 @@ class GeneList(Gene):
 	"""
 
 	def __init__(self):
-		print("GeneList")
+		pass
 
 	def generate_gene(self, **kwargs):
 		"""

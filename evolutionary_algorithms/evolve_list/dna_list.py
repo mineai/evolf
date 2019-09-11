@@ -35,7 +35,6 @@ class DNAList(DNA):
 		dna = []
 		for index in range(length_of_dna):
 			gene = gene_generator.generate_gene()
-			# print(gene)
 			dna.append(gene)
 		return dna
 
