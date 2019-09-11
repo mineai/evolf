@@ -3,7 +3,7 @@
 
 "evolution_specs": {
   # Number of Candidates in the population per generation
-  "population_size": 10000,
+  "population_size": 2500,
   # Mutation Rate
   "mutation_rate": 0.01,
   # Number of Generations to run evolution for
