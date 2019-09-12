@@ -1,5 +1,5 @@
 import math
-from tqdm import tqdm
+from tqdm import trange
 
 from evolutionary_algorithms.evolve_list.population_list import PopulationList
 
@@ -19,7 +19,7 @@ class EvolveListServer():
         self.mutation_rate = mutation_rate
         self.num_of_generations = num_of_generations
         self.num_parents = num_parents
-
+        self.initial_candidate_example = None
 
         self.population_obj = PopulationList(self.population_size,
                                         self.mutation_rate,
@@ -56,10 +56,13 @@ class EvolveListServer():
         # print("\n Initializing Population")
         population = self.build_initial_population(pop_size, gene_length,
                                                             population_object)
+
         population_fitness = population_object.calculate_fitness(
                                                         population,
                                                         population_object.target,
                                                         population_object.dna)
+
+        population_object.initial_candidate_example = population[0]
 
         best_candidate_info = population_object.get_best_fitness_candidate(population,
                                                                     population_fitness)
@@ -78,7 +81,7 @@ class EvolveListServer():
 
         elites = []
         elites_to_keep = math.floor(pop_size * elitism)
-        for generation in tqdm(range(1, num_of_generations + 1)):
+        for generation in range(1, num_of_generations + 1):
             # print("\n ########## Generation: ", generation)
 
             mating_pool = population_object.generate_mating_pool(population,
@@ -105,8 +108,7 @@ class EvolveListServer():
 
             best_candidate_fitness = list(best_candidate_info)[0]
             best_candidate = best_candidate_info[best_candidate_fitness]
-            # print("Best Candidate: ",
-            #     population_object.utils.get_dna_string_from_list(best_candidate))
+            # print("Best Candidate: ", "".join(best_candidate))
             # print("Best Candidate Fitness: ",
             #     best_candidate_fitness)
 

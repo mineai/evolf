@@ -16,13 +16,9 @@ class GeneList(Gene):
 
 	def generate_gene(self, **kwargs):
 		"""
-		This function generates
-		a random character between
-		the ASCII values 63 and 122.
-
-		:params none
-		:returns random_gene: A random character
-		generated between ASCII 63 and 122
+		This function generates a random
+		gene using the default gene function
+		or the one provided through kwargs
 		"""
 		evolution_functions = EvolutionFunctionLibList()
 		if "generate_gene_function" in list(kwargs):

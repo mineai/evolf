@@ -2,8 +2,6 @@ import math
 import numpy as np
 
 class EvolutionUtils():
-
-
 	"""
 	This class provides as an interface for
 	othe evolution utilities that can be derived

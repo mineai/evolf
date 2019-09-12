@@ -9,7 +9,7 @@
   # Number of Generations to run evolution for
   "num_of_generations": 1000,
   # Number of Parents to select that breed
-  "num_parents": 3,
+  "num_parents": 2,
   # Scale the mating pool
   "mating_pool_mutiplier": 100,
   # Percentage of elites to copy to the next generation
@@ -17,5 +17,5 @@
 },
 "target_specs": {
   "paralellize": True,
-  "max_string_length": 35
+  "max_string_length": 15
 }

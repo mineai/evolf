@@ -10,6 +10,11 @@ class EvolutionFunctionLib():
 	can be inherited and build upon the library of additional
 	functions required for evolution. This includes different
 	techniques for fitness, crossover and mutation.
+
+	Fitness functions, Crossover functions, Gene Generation
+	and Mutation functions can all be overriden or externally
+	supplied.
+
 	"""
 	def __init(self):
 		pass
@@ -28,14 +33,34 @@ class EvolutionFunctionLib():
 		:returns mating_pool: List contiaing all the candidates chosen for
 		mating.
 		"""
+		# Scale the fitness probabilites
 		fitness_prob = [fitness_of_candidate*mating_pool_mutiplier \
 				for fitness_of_candidate in fitness_prob]
+		# Generate mating pool by copying elements
 		mating_pool = self.utils.copy_elements(population, fitness_prob)
+		# if mating pool is empty, which might be
+		# in the earlier generations
 		if not len(mating_pool):
+			  # Assign the mating pool to the original population
 		      mating_pool = population
+		# Return the Mating Pool
 		return mating_pool
 
 	def default_crossover_function(self, target, parents):
+		"""
+		This function implements a default crossover algorithm for
+		lists. This function takes the target as an argument to evaluate
+		the fitness. Then uses the parents to equally sample from them
+		starting at indices that end last.
+
+		For Eg:
+		The child of UNICORN, POPCORN and SANDRAN would be: UNPCRAN
+
+		:param target: String containing the target to be achieved
+		:param parents: A list containing the Parent DNA's
+
+		:returns child: The DNA created after crossover
+		"""
 		max_length = len(parents[0])
 		num_parents = len(parents)
 
@@ -65,6 +90,18 @@ class EvolutionFunctionLib():
 		return child
 
 	def default_mutation_function(self, dna, mutation_rate, gene_generator):
+		"""
+		This function tweaks in the gene of the given DNA with some
+		probability.
+
+		:param dna: String or List containing the DNA.
+		:param mutation_rate: The probability with which to mutate gene's of
+		the DNA
+		:param gene_generator: Object of the class Gene so that it can
+		generate a new gene.
+
+		:returns dna: The mutated DNA
+		"""
 		if isinstance(dna, str):
 			dna = list(dna)
 
@@ -75,14 +112,20 @@ class EvolutionFunctionLib():
 		return dna
 
 	def default_fitness_function(self, dna, target):
+		"""
+		This is a simple fitness function that counts
+		the characters at the correct indices.
+
+		:param dna: String or List. The DNA who's
+		fitness is required.
+		:param target: String/List containing the target DNA.
+
+		:returns fitness: Fitness of the DNA (Not Squished into probability)
+		"""
 		fitness = 0
-		# assert len(dna) == len(target), "DNA Size mismatch"
 		for gene_dna, gene_target in zip(dna, target):
 			if gene_dna == gene_target:
 				fitness += 1
-
-		# fitness /= len(target)
-		# fitness = math.exp(fitness)
 
 		return fitness
 
@@ -129,6 +172,16 @@ class EvolutionFunctionLib():
 
 
 	def fitness_function_words(self, dna, target):
+		"""
+		Another Fitness Function that counts correct words
+		at different places, rather than characters.
+
+		:param dna: String or List. The DNA who's
+		fitness is required.
+		:param target: String/List containing the target DNA.
+
+		:returns fitness: Fitness of the DNA (Not Squished into probability)
+		"""
 		dna = "".join(dna)
 		target = "".join(dna)
 

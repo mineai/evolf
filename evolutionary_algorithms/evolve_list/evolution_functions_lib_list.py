@@ -16,20 +16,20 @@ class EvolutionFunctionLibList(EvolutionFunctionLib):
 		generated between ASCII 63 and 122
 		"""
 		# Specify the ASCII limits
-		lower_ascii = 63
-		upper_ascii = 122
+		lower_ascii = 32
+		upper_ascii = 127
 		# Generate the Random Ascii Value
 		random_ascii = random.randint(lower_ascii,
 						 upper_ascii)
 
-		# If Ascii is 63
-		if random_ascii == 63:
-			# Convert it into a Space
-			random_ascii = 32
-		# If Ascii is 64
-		elif random_ascii == 64:
-			# Convert it into a ".""
-			random_ascii = 46
+		# If Ascii is 127
+		if random_ascii == 127:
+			# Convert it into a new line
+			random_ascii = 10
+		# # If Ascii is 64
+		# elif random_ascii == 64:
+		# 	# Convert it into a ".""
+		# 	random_ascii = 46
 
 		# Convert Ascii to character
 		random_gene = chr(random_ascii)
