@@ -63,3 +63,15 @@ class ListUtils():
 			start_idx = end_idx
 
 		return bits_of_strings
+
+	@staticmethod
+	def read_file(target_path):
+		"""
+		This function takes in a file path and reads
+		it and returns as a list
+		"""
+		with open (target_path, "r") as target_string:
+			target = target_string.readlines()[0]
+			if isinstance(target, str):
+				target = list(target)
+		return target
