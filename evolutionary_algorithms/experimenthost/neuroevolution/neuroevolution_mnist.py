@@ -188,13 +188,13 @@ if __name__ == "__main__":
 	child = CrossoverFunctions().crossover_function_lists(genes_of_parents)
 	child_weights = nev.revert_weight_shape(child, shapes)
 
-	child_model = keras.models.clone_model(self.model,
+	child_model = keras.models.clone_model(nev.model,
 								input_tensors = None)
 	child_model.compile(loss=keras.losses.categorical_crossentropy,
 		optimizer=keras.optimizers.Adadelta(),
 		metrics=['accuracy'])
 	child_model.set_weights(child_weights)
-	child_performance = nev.evaluate_model(child_model, self.test_data)
+	child_performance = nev.evaluate_model(child_model, nev.test_data)
 	print(child_performance)
 
 
