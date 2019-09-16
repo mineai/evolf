@@ -40,5 +40,5 @@ class CrossoverFunctions():
 		if len(child) > max_length:
 			child = child[:max_length]
 
-		assert len(child) == max_length, "DNA Size Mismatch " + str(len(child))
+		assert len(child) == max_length, "Candidate Size Mismatch " + str(len(child))
 		return child
