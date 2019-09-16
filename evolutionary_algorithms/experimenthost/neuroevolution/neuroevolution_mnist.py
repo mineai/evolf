@@ -32,6 +32,10 @@ class NeuroevolutionMnist():
 		self.test_data = [self.x_test, self.y_test]
 
 		self.model = self.build_keras_model()
+		self.model.compile(loss=keras.losses.categorical_crossentropy,
+			optimizer=keras.optimizers.Adadelta(),
+			metrics=['accuracy'])
+		print(self.model.summary())
 
 		self.num_examples = len(self.y_train)
 		self.population_size = population_size
@@ -66,6 +70,9 @@ class NeuroevolutionMnist():
 		y_train = keras.utils.to_categorical(y_train, num_classes)
 		y_test = keras.utils.to_categorical(y_test, num_classes)
 
+		# x_train = x_train.reshape(x_train.shape[0], 784, )
+		# x_test = x_test.reshape(x_test.shape[0], 784, )
+
 		return x_train, y_train, x_test, y_test
 
 	@staticmethod
@@ -74,19 +81,25 @@ class NeuroevolutionMnist():
 		input_shape = (img_rows, img_cols, 1)
 		num_classes = 10
 		model = Sequential()
+		# model.add(Flatten())
+		# model.add(Dense(32, input_dim=784, activation='relu'))
 		model.add(Conv2D(32, kernel_size=(3, 3),
 			 activation='relu',
 			 input_shape=input_shape))
 		model.add(Conv2D(64, (3, 3), activation='relu'))
 		model.add(MaxPooling2D(pool_size=(2, 2)))
+		model.add(Conv2D(64, (3, 3), activation='relu'))
+		model.add(MaxPooling2D(pool_size=(2, 2)))
+		model.add(Conv2D(64, (3, 3), activation='relu'))
+		model.add(MaxPooling2D(pool_size=(2, 2)))
+
 		model.add(BatchNormalization(momentum=0.75, epsilon=0.001))
 		model.add(Dropout(0.25))
 		model.add(Flatten())
-		model.add(Dense(128, activation='relu'))
+		model.add(Dense(32, activation='relu'))
 		# model.add(BatchNormalization(momentum=0.75, epsilon=0.001))
-		model.add(Dropout(0.5))
+		# model.add(Dropout(0.5))
 		model.add(Dense(num_classes, activation='softmax'))
-
 		return model
 
 	def train_model(self, model, data):
@@ -95,8 +108,8 @@ class NeuroevolutionMnist():
 		  batch_size=self.batch_size,
 		  epochs=self.epochs,
 		  verbose=1,
-		  validation_data=(x, y))
-		return hist
+		  validation_data=self.test_data)
+		return model, hist
 
 	@staticmethod
 	def evaluate_model(model, data):
@@ -113,8 +126,9 @@ class NeuroevolutionMnist():
 			model_copy.compile(loss=keras.losses.categorical_crossentropy,
 				optimizer=keras.optimizers.Adadelta(),
 				metrics=['accuracy'])
-			hist = self.train_model(model_copy, [self.chunks_x[model_num], self.chunks_y[model_num]])
-			fitness_of_model = hist.history['acc'][0]
+			model_copy, hist = self.train_model(model_copy, [self.chunks_x[model_num], self.chunks_y[model_num]])
+			# hist = self.train_model(model_copy, self.train_data)
+			fitness_of_model = hist.history['val_acc'][0]
 			# fitness_of_model = self.evaluate_model(model_copy, self.test_data)
 
 			population.append(model_copy)
@@ -156,21 +170,57 @@ class NeuroevolutionMnist():
 		return weight_tensor_list
 
 
+	@staticmethod
+	def crossover(parents, crossover_percerntage):
+		total_weights = len(parents[0])
+		# print(total_weights)
+		num_weights_to_change = math.ceil(total_weights * crossover_percerntage)
+		# print(num_weights_to_change)
+		weights_to_perbute = np.random.choice(total_weights,
+									(num_weights_to_change,)).tolist()
+
+		print(weights_to_perbute)
+		child = copy.copy(parents[0])
+		for idx in weights_to_perbute:
+			child[idx] = parents[1][idx]
+
+		return child
+
+	@staticmethod
+	def crossover_mean(parents):
+		child = np.mean(parents, axis=0)
+		return child
+
+	@staticmethod
+	def crossover_model_layer_means(parents):
+		child_weights = []
+
+		# for parent in parents:
+
+		for layer_parent1, layer_parent2 in zip(parent1.get_weights(), parent2.get_weights()):
+			layer_weights = np.mean([layer_parent1, layer_parent2], axis=0)
+			child_weights.append(layer_weights)
+
+
+		return child_weights
+
+
+
+
 
 if __name__ == "__main__":
 
 	# TO RUN:  python3 -m  evolutionary_algorithms.experimenthost.neuroevolution.neuroevolution_mnist
 
-	nev = NeuroevolutionMnist(population_size=10,
+	nev = NeuroevolutionMnist(population_size=100,
 					epochs=1,
 					batch_size=32)
 
-
 	num_generations = 10
-	rate_mutation = 0.1
+	rate_mutation = 0.01
 	mating_pool = 1000
-	num_parents = 5
-
+	num_parents = 100
+	crossover_percerntage = 0.001
 	population, fitness = nev.generate_population(nev.population_size)
 	fitness = MathUtils().softmax(fitness)
 
@@ -181,11 +231,15 @@ if __name__ == "__main__":
 
 	genes_of_parents = []
 	for parent in parents:
-		weights_of_model = nev.model.get_weights()
+		weights_of_model = parent.get_weights()
 		flattened_weights, shapes = nev.get_flattened_weights(weights_of_model)
 		genes_of_parents.append(flattened_weights)
-
+	# parents = nev.model.get_weights()
+	# parents = [nev.get_flattened_weights(parents)]*2
 	child = CrossoverFunctions().crossover_function_lists(genes_of_parents)
+	# child = nev.crossover(genes_of_parents, crossover_percerntage)
+	# child = nev.crossover_mean(genes_of_parents)
+	# child_weights = nev.crossover_model_layer_means(parents)
 	child_weights = nev.revert_weight_shape(child, shapes)
 
 	child_model = keras.models.clone_model(nev.model,
@@ -193,14 +247,12 @@ if __name__ == "__main__":
 	child_model.compile(loss=keras.losses.categorical_crossentropy,
 		optimizer=keras.optimizers.Adadelta(),
 		metrics=['accuracy'])
+
 	child_model.set_weights(child_weights)
 	child_performance = nev.evaluate_model(child_model, nev.test_data)
-	print(child_performance)
+	print("Child Accuracy: ", child_performance)
 
-
-
-	# print(weights_of_model)
-	# print("\n\n")
-	# print(weight_tensor)
-
-	# print(flattened_weights)
+	parents_performace = []
+	for parent in parents:
+		parents_performace.append(nev.evaluate_model(parent, nev.test_data))
+	print(parents_performace)
