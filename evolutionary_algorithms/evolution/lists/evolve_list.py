@@ -18,9 +18,15 @@ from evolutionary_algorithms.evaluation.fitness.fitness_library \
 from evolutionary_algorithms.servicecommon.utils.list_utils \
             import ListUtils
 
+from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor \
+            import JsonPersistor
+
 import math
 from tqdm import trange
 from multiprocessing import Process, current_process, Manager, Pool
+import os
+import time
+import calendar
 
 class EvolveList():
     def __init__(self, target,
@@ -33,7 +39,8 @@ class EvolveList():
                         mating_pool_function_and_args=None,
                         selection_function_and_args=None,
                         crossover_function_and_args=None, mutation_function_and_args=None,
-                        fitness_recombination_method=None):
+                        fitness_recombination_method=None,
+                        domain="experiment"):
 
 
         self.initial_population = initial_population
@@ -41,7 +48,7 @@ class EvolveList():
         self.num_of_generations = num_of_generations
         self.target = target
         self.elitism = elitism
-
+        self.best_candidate = None
 
         self.candidate_length = len(self.target)
         self.neucleotide_generator_function = neucleotide_generator_function_and_args[0]
@@ -56,6 +63,15 @@ class EvolveList():
         self.mutation_function = mutation_function_and_args[0]
         self.mutation_function_and_args = mutation_function_and_args[1]
         self.fitness_recombination_method = fitness_recombination_method
+
+
+        self.experiment_id = calendar.timegm(time.gmtime())
+        self.file_directory = f"{os.getcwd()}/results/{domain}_{self.experiment_id}"
+        os.makedirs(self.file_directory)
+
+        print("Refer to this Experiment:", f"{domain}_{self.experiment_id}")
+
+
 
     def initialize_functions(self, neucleotide_generator_function_and_args=None,
                             fitness_functions_and_args=None,
@@ -85,13 +101,16 @@ class EvolveList():
         else:
             population = self.initial_population
 
-        best_fitness_canddidate_extractor = FitnessLibrary.get_best_fitness_candidate
+        best_fitness_candidate_extractor = FitnessLibrary.get_best_fitness_candidate
 
         elites = []
         elites_to_keep = math.floor(self.population_size * self.elitism)
 
+
+
         # For all the generations
         for generation in trange(self.num_of_generations):
+
             # Retain elites
             population[:elites_to_keep] = elites
 
@@ -104,12 +123,33 @@ class EvolveList():
 
             fitness = fitness_objectives_object.get_recombined_fitness(self.fitness_recombination_method)
 
-            best_candidate = best_fitness_canddidate_extractor(population, fitness)
+            best_candidate_info = best_fitness_candidate_extractor(population, fitness)
 
-            # print("Genration ", generation)
+            # Print Stats
+            print("Genration ", generation)
 
-            best_candidate = best_candidate[list(best_candidate)[0]]
-            # print("Best Candidate: ", "".join(best_candidate))
+            best_candidate = best_candidate_info[list(best_candidate_info)[0]]
+            best_candidate_fitness = list(best_candidate_info)[0]
+            print("Best Candidate: ", "".join(best_candidate))
+            self.best_candidate = best_candidate
+            # Persist Population
+            population_dict = {}
+            gen_folder = self.file_directory + f"/gen{generation}"
+            os.makedirs(gen_folder)
+            json_persistor_obj = JsonPersistor("popuation", gen_folder)
+            for candidate, candidate_fitness in zip(population, fitness):
+                candidate_info = self.generate_dict_obj(candidate,
+                                                    candidate_fitness)
+                population_dict.update(candidate_info)
+            json_persistor_obj.persist(population_dict)
+
+            # Persist Best Candidate
+            best_candidate_dict = self.generate_dict_obj(best_candidate,
+                                                best_candidate_fitness)
+            json_persistor_obj.base_file_name = "best_candidate"
+            json_persistor_obj.persist(best_candidate_dict)
+
+
 
             # Sort the values in descending order
             population_desc = ListUtils().sort_lists(population, fitness)
@@ -151,8 +191,13 @@ class EvolveList():
 
         return best_candidate
 
+    def generate_dict_obj(self, candidate, fitness):
+        dict = {
+            str(candidate): fitness
+        }
+        return dict
+
     def evolve_parallel(self, max_chunk_size):
-        import time
         start_time = time.time()
         target_chunks = ListUtils().block_list(self.target, max_chunk_size)
         print(target_chunks)
@@ -188,3 +233,5 @@ class EvolveList():
 
         print("Final Evolved Canidate:", evolved_candidate)
         print("Time Taken to evolve: ", elapsed_time/60, " mins" )
+
+        print("Refer to this Experiment:", f"{domain}_{self.experiment_id}")

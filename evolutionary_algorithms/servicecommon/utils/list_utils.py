@@ -59,7 +59,8 @@ class ListUtils():
 				end_idx = length_of_list
 
 			bit = target[start_idx:end_idx]
-			bits_of_strings.append(bit)
+			if len(bit):
+				bits_of_strings.append(bit)
 			start_idx = end_idx
 
 		return bits_of_strings

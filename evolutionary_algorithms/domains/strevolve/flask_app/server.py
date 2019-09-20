@@ -1,5 +1,10 @@
-## Import Libraries
+"""
+Evolve the string
+"""
+import sys
+sys.path.append('/Users/mohok/Desktop/mineai')
 
+## Import Libraries
 from evolutionary_algorithms.elements.neucleotide.neucleotide_generation_library \
             import NeucleotideGenerationLibrary
 from evolutionary_algorithms.evaluation.fitness.fitness_library \
@@ -38,20 +43,29 @@ def calc_fitness_probabilities(population, target):
     fitness_probabilities = softtmax(fitness)
     return fitness_probabilities
 
-if __name__ == "__main__":
-    # RUN: python3 -m evolutionary_algorithms.domains.strevolve.ascii_neucleotide.server --config=evolutionary_algorithms/domains/strevolve/config.hocon --target=evolutionary_algorithms/domains/strevolve/target_coffee.txt
 
-    parser = argparse.ArgumentParser(description="This server is used to evolve strings")
-    # The model name should not have .json
-    parser.add_argument("--config",
-            help="The Hocon Config file location")
-    parser.add_argument("--target",
-                        help="Location of the target file")
 
-    args = parser.parse_args()
+"""
+Flask App
+"""
 
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return render_template("index.html", evolved_candidate="", time="")
+
+@app.route('/', methods=['POST'])
+def process_target():
+    target = list(request.form['target'])
+    evolved_candidate, time = evolve(target)
+    return render_template("index.html", evolved_candidate=evolved_candidate, time=time)
+
+def evolve(target):
     # Read the Config File
-    conf = ParseHocon().parse(args.config)
+    conf = ParseHocon().parse("/Users/mohok/Desktop/mineai/evolutionary_algorithms/domains/strevolve/config.hocon")
     evolution_specs = conf.get("evolution_specs")
     target_specs = conf.get("target_specs")
 
@@ -66,9 +80,6 @@ if __name__ == "__main__":
 
     parallelize = target_specs.get("paralellize")
     max_chunk_size = target_specs.get("max_chunk_size")
-    # Get the target from the file path
-    target = ListUtils().read_file(args.target)
-
     # Set up Functions for evolution
 
 
@@ -133,11 +144,16 @@ if __name__ == "__main__":
     if not parallelize:
         import time
         start_time = time.time()
-        evolved_candidate = evl.evolve(target)
+        evolved_candidate = "".join(evl.evolve(target))
         # Tet the time taken for evolution
         elapsed_time = time.time() - start_time
         print("Final Evolved Canidate:", evolved_candidate)
         print("Time Taken to evolve: ", elapsed_time/60, " mins" )
+        return evolved_candidate, elapsed_time/60
     else:
         #Multi Core
         evl.evolve_parallel(max_chunk_size=max_chunk_size)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
