@@ -1,0 +1,7 @@
+pydot
+keras
+numpy
+matplotlib
+tqdm
+pyhocon
+flask
