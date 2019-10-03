@@ -13,12 +13,12 @@ import calendar
 class TestGLO:
     @staticmethod
     def run():
-        population = Population(7,15,100)
+        population = Population(3,10,100)
         tree_list = population.generate_tree_list()
-        population.print_tree_list(tree_list)
+        population.print_tree_list(tree_list,"id")
         TestGLO().persist(tree_list, population)
         function_sample = FunctionLibrary().sample("B")
-        print('function sample: ',function_sample)
+        print('function sample: ',function_sample["B"])
 
 
     @staticmethod

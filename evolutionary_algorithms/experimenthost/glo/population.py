@@ -44,7 +44,7 @@ class Population:
         
 
 
-    def print_tree_list(self, tree_list):
+    def print_tree_list(self, tree_list, output_type):
         """
 
         This function prints out all of the trees from the list of trees passed
@@ -63,6 +63,6 @@ class Population:
                 print('Bad Tree! Not enough Literals.')
                 bad_tree_count += 1
             visualize = Visualize(tree)
-            print(visualize.print_tree(tree.root))
+            print(visualize.print_tree(tree.root,output_type))
             index += 1
         print(str(bad_tree_count)+' out of '+str(len(tree_list))+' trees were bad.')
