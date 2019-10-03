@@ -1,6 +1,8 @@
 import random
 from evolutionary_algorithms.experimenthost.glo.node \
         import Node
+from evolutionary_algorithms.experimenthost.glo.function_library \
+        import FunctionLibrary
 
 class Tree:
     # Constructor
@@ -35,6 +37,9 @@ class Tree:
         returns a token based on the instantanious height of the tree
         taking into account the min and max heights set earlier
 
+        arguments: Nothing
+        returns: token (string) - either 'U', 'B', or 'L'
+
         """
         if self.height < self.min_height:
             return self.token_list[random.randint(0,1)]
@@ -48,7 +53,16 @@ class Tree:
     def helper_function(self, token):
         """
 
-        returns a Node that corresponds to the token that was passed in
+        This function calls one the node generating function that corresponds to 
+        the token that is passed in. This function is the 'middle-man' in simulating
+        random node generation.
+        
+        token: (string) contains the randomly selected token which is either
+               going to be a 'U', 'B', or, 'L' and determines which node 
+               generating funtion is called.
+
+        returns: a Node() object that is returned the node generating functions,
+                 unary(), binary(), or literal().
 
         """
         if token == 'U':
@@ -73,8 +87,9 @@ class Tree:
         None        None
 
         """
-
-        current_node = Node(token)
+        
+        sample_operator = FunctionLibrary().sample(token)
+        current_node = Node(token, sample_operator[token])
         self.literal_count += 1
         current_node.right = None
         current_node.left = None
@@ -99,7 +114,8 @@ class Tree:
 
         """
 
-        current_node = Node(token)
+        sample_operator = FunctionLibrary().sample(token)
+        current_node = Node(token, sample_operator[token])
         self.height += 1
         self.binary_count += 1
         current_node.left = self.helper_function(self.request_token()) 
@@ -125,7 +141,8 @@ class Tree:
 
         """
 
-        current_node = Node(token)
+        sample_operator = FunctionLibrary().sample(token)
+        current_node = Node(token, sample_operator[token])
         self.height += 1
         self.unary_count += 1
         current_node.left = self.helper_function(self.request_token())  
