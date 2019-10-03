@@ -13,11 +13,14 @@ class Population:
     def generate_tree_list(self):
         """
 
-        This function takes in an integer size that will specify the 
-        size of the list of trees that the function will generate.
-        It appends a specified number of Tree() objects to tree_list
-        then iterates through them again to create the populated trees.
-        The function then returns that list.
+        This function uses the class variable population_size that 
+        will specify the size of the list of trees that the function 
+        will generate. It appends a specified number of Tree() objects 
+        to tree_list then iterates through them again to create the 
+        populated trees. The function then returns that list.
+
+        arguments: Nothing
+        returns: tree_list (list of Tree() objects)
 
         """
         tree_list = []
@@ -48,8 +51,25 @@ class Population:
         """
 
         This function prints out all of the trees from the list of trees passed
-        in along with important information about each tree (# of each token, 
-        height, and validity) and the whole list (# of invalid trees)
+        in along with displaying a message if the tree doesn't meet certain criteria.
+
+        Trees must have:
+            - At least 1 Binary operator
+            - At least 2 Literals
+
+        tree_list: (list of Tree() objects) This is the list that the function
+                   iterates through printing out the contents of each individual
+                   Tree() object by calling the print_tree() function in the 
+                   Visualize class.
+        
+        output_type: (string) This variable will specify what kind of class variable
+                     from the Node() class will be printed when printing each tree.
+                     Examples of class variables that can be selected are "data", 
+                     "type", and "id"
+
+        returns: Nothing
+
+
 
         """
         index = 1
