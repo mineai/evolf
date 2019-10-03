@@ -94,3 +94,12 @@ class ConnectionGene:
                               self._weight,
                               self._expressed,
                               self._innovation_number)
+
+    def set_weight(self, value):
+        """
+        This function sets the value of the private variable
+        _weight
+        :param value:
+        :return:
+        """
+        self._weight = value

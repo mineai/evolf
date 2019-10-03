@@ -1,8 +1,8 @@
-from evolutionary_algorithms.experimenthost.simple_neat.reporduction.selection.selection import Selection
-from evolutionary_algorithms.experimenthost.simple_neat.utils.neat_utils import NeatUtils
-from evolutionary_algorithms.experimenthost.simple_neat.genotype.connection_gene \
+from evolutionary_algorithms.experimenthost.neat.reporduction.selection.selection import Selection
+from evolutionary_algorithms.experimenthost.neat.utils.neat_utils import NeatUtils
+from evolutionary_algorithms.experimenthost.neat.genotype.connection_gene \
     import ConnectionGene
-from evolutionary_algorithms.experimenthost.simple_neat.genotype.node_gene \
+from evolutionary_algorithms.experimenthost.neat.genotype.node_gene \
     import NodeGene
 import random
 
@@ -20,6 +20,22 @@ class Mutation():
         This function updates the innovation number.
         """
         self.latest_innovation_number += 1
+
+    def mutate_weight_value(self, nodes, connection_genes, uniform_perturbed_probability):
+        """
+        This function depending on the uniform_perturbed_probability either changes the
+        weight randomly or assigns a new random weight.
+        :param nodes:
+        :param connection_genes:
+        :param uniform_perturbed_probability:
+        :return:
+        """
+        for connection in connection_genes:
+            if random.random() < uniform_perturbed_probability:
+                new_weight = connection.get_weight() + random.uniform(-2, 2)
+            else:
+                new_weight = random.uniform(-2, 2)
+            connection.set_weight(new_weight)
 
     def mutate_connections(self, nodes, connection_genes, connection_specs={}):
         """

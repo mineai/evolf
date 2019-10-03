@@ -1,11 +1,11 @@
-from evolutionary_algorithms.experimenthost.simple_neat.genotype.connection_gene import ConnectionGene
-from evolutionary_algorithms.experimenthost.simple_neat.genotype.genome import Genome
-from evolutionary_algorithms.experimenthost.simple_neat.genotype.node_gene import NodeGene
-from evolutionary_algorithms.experimenthost.simple_neat.network_constructor.network_constructor import \
+from evolutionary_algorithms.experimenthost.neat.genotype.connection_gene import ConnectionGene
+from evolutionary_algorithms.experimenthost.neat.genotype.genome import Genome
+from evolutionary_algorithms.experimenthost.neat.genotype.node_gene import NodeGene
+from evolutionary_algorithms.experimenthost.neat.network_constructor.network_constructor import \
     NetworkConstructor
-from evolutionary_algorithms.experimenthost.simple_neat.reporduction.crossover.crossover import Crossover
-from evolutionary_algorithms.experimenthost.simple_neat.reporduction.mutation.mutation import Mutation
-from evolutionary_algorithms.experimenthost.simple_neat.visualize.visualize import Visualize
+from evolutionary_algorithms.experimenthost.neat.reporduction.crossover.crossover import Crossover
+from evolutionary_algorithms.experimenthost.neat.reporduction.mutation.mutation import Mutation
+from evolutionary_algorithms.experimenthost.neat.visualize.visualize import Visualize
 
 import os
 import time

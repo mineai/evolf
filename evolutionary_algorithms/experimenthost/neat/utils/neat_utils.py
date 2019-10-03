@@ -1,4 +1,4 @@
-from evolutionary_algorithms.experimenthost.simple_neat.genotype.node_gene \
+from evolutionary_algorithms.experimenthost.neat.genotype.node_gene \
     import TYPE
 
 

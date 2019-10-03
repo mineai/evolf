@@ -1,4 +1,4 @@
-from evolutionary_algorithms.experimenthost.simple_neat.genotype.genome import Genome
+from evolutionary_algorithms.experimenthost.neat.genotype.genome import Genome
 import random
 
 class Crossover:

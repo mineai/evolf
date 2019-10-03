@@ -1,6 +1,6 @@
-from evolutionary_algorithms.experimenthost.simple_neat.genotype.connection_gene \
+from evolutionary_algorithms.experimenthost.neat.genotype.connection_gene \
     import ConnectionGene
-from evolutionary_algorithms.experimenthost.simple_neat.genotype.node_gene \
+from evolutionary_algorithms.experimenthost.neat.genotype.node_gene \
     import NodeGene
 import random
 

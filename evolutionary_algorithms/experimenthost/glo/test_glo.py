@@ -11,7 +11,7 @@ import time
 import calendar
 
 class TestGLO:
-    @staticmethod
+    @staticmetho
     def run():
         population = Population(7,15,100)
         tree_list = population.generate_tree_list()
