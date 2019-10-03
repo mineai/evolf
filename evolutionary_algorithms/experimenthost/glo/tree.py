@@ -19,6 +19,7 @@ class Tree:
 
         self.height = 0
         self.root = None
+        self.current_id = 0
         self.max_height = max_height
         self.min_height = min_height
         self.unary_count = 0
@@ -77,6 +78,8 @@ class Tree:
         self.literal_count += 1
         current_node.right = None
         current_node.left = None
+        self.current_id += 1
+        current_node.id = self.current_id
         return current_node
 
     
@@ -101,6 +104,8 @@ class Tree:
         self.binary_count += 1
         current_node.left = self.helper_function(self.request_token()) 
         current_node.right = self.helper_function(self.request_token())
+        self.current_id += 1
+        current_node.id = self.current_id
         return current_node
 
     
@@ -124,5 +129,7 @@ class Tree:
         self.height += 1
         self.unary_count += 1
         current_node.left = self.helper_function(self.request_token())  
-        current_node.right = None     
+        current_node.right = None
+        self.current_id += 1
+        current_node.id = self.current_id
         return current_node

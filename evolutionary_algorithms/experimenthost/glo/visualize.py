@@ -12,6 +12,9 @@ class Visualize:
             Prints out the contents of a tree starting at the root node
             and working down to the leaves.
 
+            Possibly add an argument in the future that can select specific
+            values to be displayed from each node
+
             """
 
             if current_node:
