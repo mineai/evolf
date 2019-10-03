@@ -1,6 +1,8 @@
 import random
 from evolutionary_algorithms.experimenthost.glo.node \
         import Node
+from evolutionary_algorithms.experimenthost.glo.function_library \
+        import FunctionLibrary
 
 class Tree:
     # Constructor
@@ -73,8 +75,9 @@ class Tree:
         None        None
 
         """
-
-        current_node = Node(token)
+        
+        sample_operator = FunctionLibrary().sample(token)
+        current_node = Node(token,sample_operator[token])
         self.literal_count += 1
         current_node.right = None
         current_node.left = None
@@ -99,7 +102,8 @@ class Tree:
 
         """
 
-        current_node = Node(token)
+        sample_operator = FunctionLibrary().sample(token)
+        current_node = Node(token,sample_operator[token])
         self.height += 1
         self.binary_count += 1
         current_node.left = self.helper_function(self.request_token()) 
@@ -125,7 +129,8 @@ class Tree:
 
         """
 
-        current_node = Node(token)
+        sample_operator = FunctionLibrary().sample(token)
+        current_node = Node(token,sample_operator[token])
         self.height += 1
         self.unary_count += 1
         current_node.left = self.helper_function(self.request_token())  
