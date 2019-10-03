@@ -3,6 +3,8 @@ from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor \
             import JsonPersistor
 from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persistor \
 import PicklePersistor
+from evolutionary_algorithms.experimenthost.glo.function_library import FunctionLibrary
+
 
 import os
 import time
@@ -11,10 +13,13 @@ import calendar
 class TestGLO:
     @staticmethod
     def run():
-        population = Population(3,15,100)
+        population = Population(7,15,100)
         tree_list = population.generate_tree_list()
         population.print_tree_list(tree_list)
         TestGLO().persist(tree_list, population)
+        function_sample = FunctionLibrary().sample("B")
+        print('function sample: ',function_sample)
+
 
     @staticmethod
     def persist(trees, population_obj):
