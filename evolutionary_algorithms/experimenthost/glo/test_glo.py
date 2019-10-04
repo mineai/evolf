@@ -1,3 +1,7 @@
+import os
+import time
+import calendar
+
 from evolutionary_algorithms.experimenthost.glo.population import Population
 from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor \
             import JsonPersistor
@@ -5,20 +9,13 @@ from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persist
 import PicklePersistor
 from evolutionary_algorithms.experimenthost.glo.function_library import FunctionLibrary
 
-
-import os
-import time
-import calendar
-
 class TestGLO:
-    @staticmetho
+    @staticmethod
     def run():
         population = Population(3,10,100)
         tree_list = population.generate_tree_list()
         population.print_tree_list(tree_list,"id")
         TestGLO().persist(tree_list, population)
-        function_sample = FunctionLibrary().sample("B")
-        print('function sample: ',function_sample["B"])
 
 
     @staticmethod

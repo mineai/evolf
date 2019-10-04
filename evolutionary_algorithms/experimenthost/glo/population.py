@@ -2,7 +2,7 @@ from evolutionary_algorithms.experimenthost.glo.tree \
     import Tree
 from evolutionary_algorithms.experimenthost.glo.visualize \
     import Visualize
-import pickle
+
 
 class Population:
     def __init__(self, min_height=3, max_height=10, population_size=25):
@@ -83,6 +83,6 @@ class Population:
                 print('Bad Tree! Not enough Literals.')
                 bad_tree_count += 1
             visualize = Visualize(tree)
-            print(visualize.print_tree(tree.root,output_type))
+            print(visualize.print_tree(tree.root, output_type))
             index += 1
         print(str(bad_tree_count)+' out of '+str(len(tree_list))+' trees were bad.')

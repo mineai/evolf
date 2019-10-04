@@ -6,3 +6,12 @@ class Node:
         self.id = None
         self.left = None
         self.right = None
+
+    def set_data(self, data):
+        self.data = data
+
+    def set_type(self, type):
+        self.type = type
+    
+    def set_id(self, id):
+        self.id = id    

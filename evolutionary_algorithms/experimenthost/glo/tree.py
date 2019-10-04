@@ -5,6 +5,13 @@ from evolutionary_algorithms.experimenthost.glo.function_library \
         import FunctionLibrary
 
 class Tree:
+    """
+
+    The Tree() class constructs trees of heights specified by a range that is
+    passed in on the Constructor call. 
+
+    """
+
     # Constructor
     def __init__(self, min_height=3, max_height=10):
         """
