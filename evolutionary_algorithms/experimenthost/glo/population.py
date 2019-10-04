@@ -2,6 +2,8 @@ from evolutionary_algorithms.experimenthost.glo.tree \
     import Tree
 from evolutionary_algorithms.experimenthost.glo.visualize \
     import Visualize
+from evolutionary_algorithms.experimenthost.glo.tree_utils \
+    import TreeUtils
 
 
 class Population:
@@ -82,6 +84,11 @@ class Population:
             if tree.literal_count < 2:
                 print('Bad Tree! Not enough Literals.')
                 bad_tree_count += 1
+
+            func_str = TreeUtils().inorder_print(tree.root)
+            func = func_str.split(" ")[::-1]
+            func.remove('')
+            print(func)
             visualize = Visualize(tree)
             print(visualize.print_tree(tree.root, output_type))
             index += 1

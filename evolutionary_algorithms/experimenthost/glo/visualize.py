@@ -23,7 +23,6 @@ class Visualize:
             """
         ret = ""
         if current_node:
-
             num_tabs = '\t' * (self.tree.height - level)
             if head_type == "operator_type":
                 ret = num_tabs + repr(current_node.type) + '\n'

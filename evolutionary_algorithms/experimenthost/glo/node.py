@@ -4,6 +4,7 @@ class Node:
         self.data = data
         self.operator_type = operator_type
         self.node_id = None
+        self.children = []
         self.left = None
         self.right = None
 

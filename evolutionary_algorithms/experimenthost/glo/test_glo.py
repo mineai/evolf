@@ -14,7 +14,7 @@ class TestGLO:
     def run():
         population = Population(4, 4, 100)
         tree_list = population.generate_tree_list()
-        population.print_tree_list(tree_list,"data")
+        population.print_tree_list(tree_list, "data")
         TestGLO().persist(tree_list, population)
 
 
