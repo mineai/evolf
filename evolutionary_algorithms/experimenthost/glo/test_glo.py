@@ -12,9 +12,9 @@ from evolutionary_algorithms.experimenthost.glo.function_library import Function
 class TestGLO:
     @staticmethod
     def run():
-        population = Population(3,10,100)
+        population = Population(4, 4, 100)
         tree_list = population.generate_tree_list()
-        population.print_tree_list(tree_list,"id")
+        population.print_tree_list(tree_list,"data")
         TestGLO().persist(tree_list, population)
 
 

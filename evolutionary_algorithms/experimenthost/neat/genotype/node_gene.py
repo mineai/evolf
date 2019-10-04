@@ -5,7 +5,7 @@ from enum import Enum
 class TYPE(Enum):
     """
     Describe an ENUM to inform the
-    service what type of node it is.
+    service what operator_type of node it is.
     """
     INPUT = 0
     HIDDEN = 1
@@ -20,7 +20,7 @@ class NodeGene:
     def __init__(self, layer_type, id, activation="relu"):
         """
 
-        :param type:
+        :param operator_type:
         :param id:
         """
         self._type = TYPE[layer_type]
@@ -29,13 +29,13 @@ class NodeGene:
 
     def get_type(self):
         """
-        This function returns the private variable type
+        This function returns the private variable operator_type
         """
         return self._type
 
     def get_id(self):
         """
-        This function returns the private variable id
+        This function returns the private variable node_id
         """
         return self._id
 

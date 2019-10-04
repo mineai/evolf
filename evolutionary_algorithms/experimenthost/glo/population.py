@@ -65,7 +65,7 @@ class Population:
         output_type: (string) This variable will specify what kind of class variable
                      from the Node() class will be printed when printing each tree.
                      Examples of class variables that can be selected are "data", 
-                     "type", and "id"
+                     "operator_type", and "node_id"
 
         returns: Nothing
 
@@ -85,4 +85,5 @@ class Population:
             visualize = Visualize(tree)
             print(visualize.print_tree(tree.root, output_type))
             index += 1
+
         print(str(bad_tree_count)+' out of '+str(len(tree_list))+' trees were bad.')
