@@ -1,10 +1,10 @@
+from evolutionary_algorithms.experimenthost.glo.tree_utils \
+    import TreeUtils
 
 class Visualize:
 
-    def __init__(self, tree):
-        self.tree = tree
-
-    def print_tree(self, current_node, head_type="operator_type", level=0):
+    @staticmethod
+    def print_tree(tree, current_node, head_type="operator_type", level=0):
 
         """
             
@@ -23,47 +23,25 @@ class Visualize:
             """
         ret = ""
         if current_node:
-            num_tabs = '\t' * (self.tree.height - level)
+            num_tabs = '\t' * (tree.height - level)
             if head_type == "operator_type":
                 ret = num_tabs + repr(current_node.type) + '\n'
             elif head_type == "data":
                 ret = num_tabs + repr(current_node.data) + '\n'
             elif head_type == "node_id":
                 ret = num_tabs + repr(current_node.id) + '\n'
-            ret += self.print_tree(current_node.right, head_type, level)
+            ret += Visualize.print_tree(tree, current_node.right, head_type, level)
             level += 1
-            ret += self.print_tree(current_node.left, head_type, level)
+            ret += Visualize.print_tree(tree, current_node.left, head_type, level)
             level += 1
             return ret
         return ''
 
     @staticmethod
-    def print_tree_levels_list(root):
-        from collections import deque
-        buf = deque()
-        output = []
-        if not root:
-            print('$')
-        else:
-            buf.append(root)
-            count, nextCount = 1, 0
-            while count:
-                node = buf.popleft()
-                if node:
-                    output.append(node.data)
-                    count -= 1
-                    for n in (node.left, node.right):
-                        if n:
-                            buf.append(n)
-                            nextCount += 1
-                        else:
-                            buf.append(None)
-                else:
-                    output.append('$')
-                if not count:
-                    print(output)
-                    output = []
-                    count, nextCount = nextCount, 0
-            # print the remaining all empty leaf node part
-            output.extend(['$'] * len(buf))
-            print(output)
+    def visualize_function(tree):
+        func_str = TreeUtils().inorder_print(tree.root)
+        func = func_str.split(" ")[::-1]
+        func.remove('')
+        return func
+
+
