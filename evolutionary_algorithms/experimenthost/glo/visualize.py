@@ -41,9 +41,12 @@ class Visualize:
         return ''
 
     @staticmethod
-    def visualize_function(tree):
-        func_str = TreeUtils().inorder_print(tree.root)
-        func = func_str.split(" ")[::-1]
+    def visualize_function(tree, reverse=True):
+        func_str = TreeUtils().preorder_print(tree.root)
+        if reverse:
+            func = func_str.split(" ")[::-1]
+        else:
+            func = func_str.split(" ")
         func.remove('')
         return func
 

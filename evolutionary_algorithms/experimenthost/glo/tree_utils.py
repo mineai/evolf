@@ -2,7 +2,7 @@ class TreeUtils:
 
     # Returns the contents of a tree in the preorder sequence
     @classmethod
-    def preorder_print(cls, start, traversal=[]):
+    def preorder_print(cls, start, traversal=''):
         # Root -> Left -> Right
         if start:
             traversal += (str(start.data) + ' ')
