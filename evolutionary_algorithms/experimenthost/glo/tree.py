@@ -1,8 +1,9 @@
 import random
 from evolutionary_algorithms.experimenthost.glo.node \
-        import Node
+    import Node
 from evolutionary_algorithms.experimenthost.glo.function_library \
-        import FunctionLibrary
+    import FunctionLibrary
+
 
 class Tree:
     # Constructor
@@ -27,9 +28,7 @@ class Tree:
         self.unary_count = 0
         self.binary_count = 0
         self.literal_count = 0
-        self.token_list = ['U','B','L']
-
-    
+        self.token_list = ['U', 'B', 'L']
 
     def request_token(self):
         """
@@ -42,13 +41,11 @@ class Tree:
 
         """
         if self.height < self.min_height:
-            return self.token_list[random.randint(0,1)]
-        elif self.height >= self.max_height:            
+            return self.token_list[random.randint(0, 1)]
+        elif self.height >= self.max_height:
             return 'L'
         else:
-            return self.token_list[random.randint(0,2)]
-
-    
+            return self.token_list[random.randint(0, 2)]
 
     def helper_function(self, token):
         """
@@ -72,8 +69,6 @@ class Tree:
         elif token == 'L':
             return self.literal(token)
         return None
-    
-    
 
     def literal(self, token):
         """
@@ -87,17 +82,15 @@ class Tree:
         None        None
 
         """
-        
+
         sample_operator = FunctionLibrary().sample(token)
         current_node = Node(token, sample_operator[token])
         self.literal_count += 1
         current_node.right = None
         current_node.left = None
         self.current_id += 1
-        current_node.id = self.current_id
+        current_node.node_id = self.current_id
         return current_node
-
-    
 
     def binary(self, token):
         """
@@ -118,13 +111,12 @@ class Tree:
         current_node = Node(token, sample_operator[token])
         self.height += 1
         self.binary_count += 1
-        current_node.left = self.helper_function(self.request_token()) 
+        current_node.left = self.helper_function(self.request_token())
         current_node.right = self.helper_function(self.request_token())
         self.current_id += 1
-        current_node.id = self.current_id
+        current_node.node_id = self.current_id
         return current_node
 
-    
     def unary(self, token):
 
         """
@@ -145,8 +137,8 @@ class Tree:
         current_node = Node(token, sample_operator[token])
         self.height += 1
         self.unary_count += 1
-        current_node.left = self.helper_function(self.request_token())  
+        current_node.left = self.helper_function(self.request_token())
         current_node.right = None
         self.current_id += 1
-        current_node.id = self.current_id
+        current_node.node_id = self.current_id
         return current_node

@@ -1,8 +1,8 @@
 class Node:
     # Constructor
-    def __init__(self, type=None, data=None):
+    def __init__(self, operator_type=None, data=None):
         self.data = data
-        self.type = type
-        self.id = None
+        self.operator_type = operator_type
+        self.node_id = None
         self.left = None
         self.right = None
