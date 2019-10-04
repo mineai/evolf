@@ -8,8 +8,7 @@ from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor \
 from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persistor \
 import PicklePersistor
 from evolutionary_algorithms.experimenthost.glo.function_library import FunctionLibrary
-from evolutionary_algorithms.experimenthost.glo.tree_utils \
-    import TreeUtils
+from evolutionary_algorithms.experimenthost.glo.evaluate_tree import EvaluateTree
 from evolutionary_algorithms.experimenthost.glo.visualize \
     import Visualize
 
@@ -80,10 +79,9 @@ class TestGLO:
                 print('Bad Tree! Not enough Literals.')
                 bad_tree_count += 1
 
-            function = Visualize.visualize_function(tree)
-            print(function)
 
-            print(Visualize.build_function(function))
+            function = EvaluateTree().build_function(tree)
+            print(function)
 
             print(Visualize.print_tree(tree, tree.root, output_type))
             index += 1

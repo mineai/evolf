@@ -3,7 +3,6 @@ from sympy import *
 import random
 
 class FunctionLibrary:
-
     """
     
     This class contains the library of possible operators that we can
@@ -21,7 +20,9 @@ class FunctionLibrary:
             "sin": np.sin,
             "log": np.log,
             "exp": np.exp,
-            "mean": np.mean
+            "mean": np.mean,
+            "sum": np.sum,
+            "product": np.product
         },
         "B": {
             "+": np.add,
