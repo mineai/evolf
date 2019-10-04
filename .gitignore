@@ -1,2 +1,4 @@
-# Ignore All Python Compiled Files
 *.pyc
+*.ipynb_checkpoints
+__pycache__
+results
