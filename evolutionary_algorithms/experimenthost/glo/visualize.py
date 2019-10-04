@@ -1,6 +1,9 @@
 from evolutionary_algorithms.experimenthost.glo.tree_utils \
     import TreeUtils
 
+from evolutionary_algorithms.experimenthost.glo.function_library \
+    import FunctionLibrary
+
 class Visualize:
 
     @staticmethod
@@ -43,5 +46,15 @@ class Visualize:
         func = func_str.split(" ")[::-1]
         func.remove('')
         return func
+
+    @staticmethod
+    def build_function(func):
+        function_library_obj = FunctionLibrary()
+        function = []
+        for func_obj in func:
+            function.append(function_library_obj.fetch_function_handle(func_obj))
+
+        return function
+
 
 

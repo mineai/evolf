@@ -80,7 +80,10 @@ class TestGLO:
                 print('Bad Tree! Not enough Literals.')
                 bad_tree_count += 1
 
-            print(Visualize.visualize_function(tree))
+            function = Visualize.visualize_function(tree)
+            print(function)
+
+            print(Visualize.build_function(function))
 
             print(Visualize.print_tree(tree, tree.root, output_type))
             index += 1

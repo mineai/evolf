@@ -33,8 +33,8 @@ class FunctionLibrary:
         "L": {
             "x": Symbol("x"),
             "y": Symbol("y"),
-            1: 1,
-            -1: -1
+            "1": 1,
+            "-1": -1
         }
     }
 
@@ -56,3 +56,11 @@ class FunctionLibrary:
         return {
             "L": self.FUNCTIONS["L"][1:]
         }
+
+    def fetch_function_handle(self, operator):
+        function = None
+        for function_type in self.FUNCTIONS.keys():
+            if operator in self.FUNCTIONS[function_type].keys():
+                function = self.FUNCTIONS[function_type][operator]
+                break
+        return function
