@@ -4,15 +4,21 @@ from evolutionary_algorithms.experimenthost.glo.tree_utils \
 from evolutionary_algorithms.experimenthost.glo.function_library \
     import FunctionLibrary
 
+from sympy import *
+
 class EvaluateTree:
 
-    @staticmethod
-    def build_function(tree):
+    @classmethod
+    def build_function_list(cls, tree):
         function_library_obj = FunctionLibrary()
 
-        function_string = TreeUtils().traverse_tree(tree, "preorder")
-        function = []
-        for func_obj in function_string:
-            function.append(function_library_obj.fetch_function_handle(func_obj))
+        function_list = TreeUtils().traverse_tree(tree, "preorder")
+        function_handle_list = []
+        for func_obj in function_list:
+            function_handle_list.append(function_library_obj.fetch_function_handle(func_obj))
 
-        return function
+        return function_list, function_handle_list
+
+    def lambdadize(self, tree):
+        stack = []
+

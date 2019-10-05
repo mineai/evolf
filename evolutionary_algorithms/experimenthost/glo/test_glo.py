@@ -80,7 +80,7 @@ class TestGLO:
                 bad_tree_count += 1
 
 
-            function = EvaluateTree().build_function(tree)
+            function = EvaluateTree().build_function_list(tree)
             print(function)
 
             print(Visualize.print_tree(tree, tree.root, output_type))
