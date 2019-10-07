@@ -25,11 +25,11 @@ class Visualize:
         if current_node:
             num_tabs = '\t' * (self.tree.height - level)
             if head_type == "operator_type":
-                ret = num_tabs + repr(current_node.type) + '\n'
+                ret = num_tabs + repr(current_node.operator_type) + '\n'
             elif head_type == "data":
                 ret = num_tabs + repr(current_node.data) + '\n'
             elif head_type == "node_id":
-                ret = num_tabs + repr(current_node.id) + '\n'
+                ret = num_tabs + repr(current_node.node_id) + '\n'
             ret += self.print_tree(current_node.right, head_type, level)
             level += 1
             ret += self.print_tree(current_node.left, head_type, level)
