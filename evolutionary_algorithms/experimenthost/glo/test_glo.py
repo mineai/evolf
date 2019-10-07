@@ -2,26 +2,26 @@ import os
 import time
 import calendar
 
-from evolutionary_algorithms.experimenthost.glo.population import Population
+from evolutionary_algorithms.experimenthost.glo.populate.population import Population
 from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor \
-            import JsonPersistor
+    import JsonPersistor
 from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persistor \
-import PicklePersistor
-from evolutionary_algorithms.experimenthost.glo.function_library import FunctionLibrary
-from evolutionary_algorithms.experimenthost.glo.evaluate_tree import EvaluateTree
-from evolutionary_algorithms.experimenthost.glo.visualize \
+    import PicklePersistor
+from evolutionary_algorithms.experimenthost.glo.evaluation_validation.evaluate_tree import EvaluateTree
+from evolutionary_algorithms.experimenthost.glo.utils.visualize \
     import Visualize
 
-from evolutionary_algorithms.experimenthost.glo.statistics import Statistics
+from evolutionary_algorithms.experimenthost.glo.utils.statistics import Statistics
+
 
 class TestGLO:
     @staticmethod
     def run():
-        population = Population(4, 4, 100)
-        tree_list = population.generate_tree_list()
-        TestGLO.print_tree_list(tree_list, "data")
-        TestGLO().persist(tree_list, population)
-
+        population = Population(2, 10, 100)
+        population.generate_trees()
+        population.get_working_trees()
+        TestGLO.print_tree_list(population.working_trees, "data")
+        # TestGLO().persist(tree_list, population)
 
     @staticmethod
     def persist(trees, population_obj):
@@ -43,7 +43,6 @@ class TestGLO:
 
             pickle_persistor = PicklePersistor("tree", candidate_path)
             pickle_persistor.persist(tree)
-
 
     @staticmethod
     def print_tree_list(tree_list, output_type):
@@ -68,28 +67,23 @@ class TestGLO:
 
         returns: Nothing
         """
-        index = 1
         bad_tree_count = 0
-        for tree in tree_list:
+        for index, tree in enumerate(tree_list):
+            tree.construct_symbolic_expression()
+            tree.validate_working()
+
             print('Tree #' + str(index))
-            if tree.binary_count < 1:
-                print('Bad Tree! Not enough binary operators.')
-                bad_tree_count += 1
-            if tree.literal_count < 2:
+            if not tree.working:
                 print('Bad Tree! Not enough Literals.')
                 bad_tree_count += 1
 
+            tree.print_expression()
 
-            function = EvaluateTree().build_function_list(tree)
-            print(function)
 
-            print(Visualize.print_tree(tree, tree.root, output_type))
-            index += 1
+
+            # print(Visualize.print_tree(tree, tree.root, output_type))
 
         print(str(bad_tree_count) + ' out of ' + str(len(tree_list)) + ' trees were bad.')
-
-
-
 
 
 TestGLO().run()
