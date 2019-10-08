@@ -99,22 +99,21 @@ class GloMnist:
 
 class GLO:
 
-    def __init__(self, min_height=2, max_height=4, pop_size=100):
+    def __init__(self, min_height=2, max_height=4, pop_size=1000):
         self.population = Population(min_height, max_height, pop_size)
         self.population.generate_trees()
         self.population.get_working_trees()
 
         self.data = get_data()
+        self.experiment_id = calendar.timegm(time.gmtime())
 
-    @staticmethod
-    def persist(tree, tree_idx):
-        experiment_id = calendar.timegm(time.gmtime())
+    def persist(self, tree, tree_idx):
+        print(f"To refer to this test Experiment, the ID is: {self.experiment_id}")
 
-        print(f"To refer to this test Experiment, the ID is: {experiment_id}")
+        base_dir = f"{os.getcwd()}/results/mnist/glo_mnist_{self.experiment_id}/candidates"
 
-        base_dir = f"{os.getcwd()}/results/mnist/glo_mnist_{experiment_id}/candidates"
-
-        os.makedirs(base_dir)
+        if not os.path.exists(base_dir):
+        	os.makedirs(base_dir)
         candidate_path = f"{base_dir}/tree_{tree_idx}"
         os.makedirs(candidate_path)
         stats = Statistics.statistics(tree)
@@ -134,17 +133,28 @@ class GLO:
             tree.print_expression()
             print("##############\n")
 
-            glo_mnist_NN.compile_model()
-            glo_mnist_NN.train()
-            glo_mnist_NN.evaluate()
+            try:
+	            glo_mnist_NN.compile_model()
+	            glo_mnist_NN.train()
+	            glo_mnist_NN.evaluate()
 
-            tree.fitness = glo_mnist_NN.score[1]
+	            tree.fitness = glo_mnist_NN.score[1]
+
+	            
+            except:
+            	print("\n\n This tree failed while training \n\n")
 
             self.persist(tree, tree_idx)
 
 
 
-
-
 glo_obj = GLO()
 glo_obj.run()
+
+fitness = []
+[fitness.append(x.fitness) for x in glo_obj.population.working_trees]
+
+import numpy as np
+best_fitness_candidate = np.argmax(fitness)
+
+print("\n\n Best fitness was of Candidate: ", best_fitness_candidate) 
