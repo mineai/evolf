@@ -17,10 +17,12 @@ from evolutionary_algorithms.experimenthost.glo.utils.statistics import Statisti
 class TestGLO:
     @staticmethod
     def run():
-        population = Population(2, 10, 100)
+        population = Population(2, 4, 100)
         population.generate_trees()
         population.get_working_trees()
-        TestGLO.print_tree_list(population.working_trees, "data")
+        # TestGLO.print_tree_list(population.working_trees, "data")
+
+        return population
         # TestGLO().persist(tree_list, population)
 
     @staticmethod

@@ -3,6 +3,7 @@ import numpy as np
 import tensorflow as tf
 import random
 
+import keras.backend as K
 
 class FunctionLibrary:
     """
@@ -19,19 +20,21 @@ class FunctionLibrary:
     def __init__(self):
         self.tenorflow_functions = {
             "U": {
-                "cos": tf.cos,
-                "sin": tf.sin,
-                "log": tf.log,
-                "exp": tf.exp,
-                "tan": tf.tan,
-                "square": tf.square,
-                "sqrt": tf.sqrt
+                # "cos": K.cos,
+                # "sin": K.sin,
+                "log": K.log,
+                "exp": K.exp,
+                # "tan": tf.tan,
+                "square": K.square,
+                "sqrt": K.sqrt,
+                # "cosh": tf.math.cosh,
+                # "sinh": tf.math.sinh
             },
             "B": {
-                "+": lambda x, y: x + y,
-                "-": lambda x, y: x - y,
-                "*": lambda x, y: x * y,
-                "/": lambda x, y: x / y,
+                "+": lambda x, y: tf.add(x, y),
+                "-": lambda x, y: tf.subtract(x, y),
+                "*": lambda x, y: tf.multiply(x, y),
+                "/": lambda x, y: tf.divide(x, y)
                 # ".": tf.
             },
             "L": {
@@ -56,7 +59,9 @@ class FunctionLibrary:
                 "exp": sp.exp,
                 "tan": sp.tan,
                 "square": np.square,
-                "sqrt": lambda x: np.power(x, 0.5)
+                "sqrt": lambda x: np.power(x, 0.5),
+                "cosh": sp.cosh,
+                "sinh": sp.sinh
             },
             "B": {
                 "+": lambda x, y: x + y,

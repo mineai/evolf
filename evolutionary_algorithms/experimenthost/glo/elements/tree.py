@@ -42,7 +42,9 @@ class Tree:
         self.root_function_label = None
         self.symbolic_expression = None
         self.loss_function = None
+
         self.function_list = None
+        self.tensorflow_handle_list = None
 
         self.function_obj = FunctionLibrary()
         self.token_list = self.function_obj.get_token_types()
@@ -164,7 +166,7 @@ class Tree:
         return current_node
 
     def construct_symbolic_expression(self):
-        self.root_function_label, self.root_function, self.function_list, \
+        self.root_function_label, self.root_function, self.function_list, self.tensorflow_handle_list, \
         self.symbolic_expression = \
             EvaluateTree.build_symbolic_expression(self)
 

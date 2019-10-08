@@ -22,7 +22,8 @@ class EvaluateTree:
     @classmethod
     def build_symbolic_expression(cls, tree):
 
-        function_list, _, symbolic_handle_list = cls.build_function_list(tree)
+        function_list, tensorflow_handle_list, \
+        symbolic_handle_list = cls.build_function_list(tree)
 
         root_label, root_function, expression = None, None, None
         stack = []
@@ -46,10 +47,4 @@ class EvaluateTree:
                 expression = handle(last_two_literals[0], last_two_literals[1])
                 stack.append(expression)
 
-        return root_label, root_function, function_list, expression
-
-
-
-    def lambdadize(self, tree):
-        pass
-
+        return root_label, root_function, function_list, tensorflow_handle_list, expression
