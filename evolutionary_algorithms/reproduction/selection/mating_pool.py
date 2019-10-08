@@ -1,16 +1,17 @@
 from evolutionary_algorithms.servicecommon.parsers.function_parser \
-        import FunctionParser
+    import FunctionParser
+
 
 class MatingPool():
-	"""
+    """
 	This class is the entrypoint to generate a mating pool.
 	This class provides a default mating function, which can
 	be overridden during the initialization.
 	"""
 
-	def __init__(self, mating_pool_generator=None,
-		mating_pool_generator_args=None):
-		"""
+    def __init__(self, mating_pool_generator=None,
+                 mating_pool_generator_args=None):
+        """
 		The constructor initializes the mating pool generator function,
 		if any.
 
@@ -21,25 +22,25 @@ class MatingPool():
 		as a list
 		:returns nothing.
 		"""
-		self._mating_pool_generator = mating_pool_generator
-		self._mating_pool_generator_args = mating_pool_generator_args
+        self._mating_pool_generator = mating_pool_generator
+        self._mating_pool_generator_args = mating_pool_generator_args
 
-	def generate_mating_pool(self, population, fitness):
-		"""
+    def generate_mating_pool(self, population, fitness):
+        """
 		This function generates the mating pool from the population
 		based on their fitness values.
 		"""
-		if self._mating_pool_generator is None:
-			raise NoGenerationFunction
-		else:
-			args = [population, fitness]
-			if isinstance(self._mating_pool_generator_args, list):
-				for arg in self._mating_pool_generator_args:
-					args.append(arg)
-			else:
-				args.append(self._mating_pool_generator_args)
+        if self._mating_pool_generator is None:
+            raise NoGenerationFunction
+        else:
+            args = [population, fitness]
+            if isinstance(self._mating_pool_generator_args, list):
+                for arg in self._mating_pool_generator_args:
+                    args.append(arg)
+            else:
+                args.append(self._mating_pool_generator_args)
 
-				function_parser = FunctionParser(self._mating_pool_generator,
-							      args)
-				mating_pool = function_parser.call_function()
-				return mating_pool
+                function_parser = FunctionParser(self._mating_pool_generator,
+                                                 args)
+                mating_pool = function_parser.call_function()
+                return mating_pool
