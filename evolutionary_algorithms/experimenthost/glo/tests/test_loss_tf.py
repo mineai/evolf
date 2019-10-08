@@ -9,8 +9,7 @@ from keras import backend as K
 ## TestGlo Pop
 from evolutionary_algorithms.experimenthost.glo.evaluation_validation.loss_funciton_constructor import \
     LossFunctionConstructor
-from evolutionary_algorithms.experimenthost.glo.populate.function_library import FunctionLibrary
-from evolutionary_algorithms.experimenthost.glo.test_glo import TestGLO
+from evolutionary_algorithms.experimenthost.glo.tests.test_glo import TestGLO
 import random
 
 population = TestGLO().run()
@@ -62,6 +61,8 @@ model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(num_classes, activation='softmax'))
+
+
 
 model.compile(loss=LossFunctionConstructor.construct_loss(tree),
               optimizer=keras.optimizers.Adadelta(),

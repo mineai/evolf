@@ -1,5 +1,6 @@
 from evolutionary_algorithms.experimenthost.glo.populate.function_library import FunctionLibrary
 
+
 class LossFunctionConstructor:
 
     @staticmethod

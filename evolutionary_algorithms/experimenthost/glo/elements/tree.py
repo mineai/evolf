@@ -41,15 +41,14 @@ class Tree:
         self.root_function = None
         self.root_function_label = None
         self.symbolic_expression = None
-        self.loss_function = None
 
         self.function_list = None
         self.tensorflow_handle_list = None
 
-        self.function_obj = FunctionLibrary()
-        self.token_list = self.function_obj.get_token_types()
+        self.token_list = FunctionLibrary.get_token_types()
 
         self.working = None
+        self.fitness = None
 
     def request_token(self):
         """
@@ -106,7 +105,7 @@ class Tree:
 
         """
 
-        sample_operator = self.function_obj.sample(token)
+        sample_operator = FunctionLibrary.sample(token)
         current_node = Node(token, sample_operator[token])
         self.literal_count += 1
         current_node.right = None
@@ -129,7 +128,7 @@ class Tree:
             U       L
 
         """
-        sample_operator = self.function_obj.sample(token)
+        sample_operator = FunctionLibrary.sample(token)
         current_node = Node(token, sample_operator[token])
         self.height += 1
         self.binary_count += 1
@@ -155,7 +154,7 @@ class Tree:
 
         """
 
-        sample_operator = self.function_obj.sample(token)
+        sample_operator = FunctionLibrary.sample(token)
         current_node = Node(token, sample_operator[token])
         self.height += 1
         self.unary_count += 1

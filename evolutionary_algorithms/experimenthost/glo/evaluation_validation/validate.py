@@ -5,6 +5,7 @@ class Validate:
 
     @staticmethod
     def validate_literal_existance(symbolic_expression):
+
         y_pred_deriv = sp.diff(symbolic_expression,
                                sp.Symbol("y_pred"))
         y_true_deriv = sp.diff(symbolic_expression,

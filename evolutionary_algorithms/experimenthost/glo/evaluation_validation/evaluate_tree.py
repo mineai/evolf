@@ -9,13 +9,11 @@ class EvaluateTree:
 
     @classmethod
     def build_function_list(cls, tree):
-        function_library_obj = FunctionLibrary()
-
         function_list = TreeUtils().traverse_tree(tree, "preorder")
         tensorflow_handle_list, symbolic_handle_list = [], []
         for func_obj in function_list:
-            tensorflow_handle_list.append(function_library_obj.get_tensorflow_handle(func_obj))
-            symbolic_handle_list.append(function_library_obj.get_symbolic_handle(func_obj))
+            tensorflow_handle_list.append(FunctionLibrary.get_tensorflow_handle(func_obj))
+            symbolic_handle_list.append(FunctionLibrary.get_symbolic_handle(func_obj))
 
         return function_list, tensorflow_handle_list, symbolic_handle_list
 
@@ -28,10 +26,8 @@ class EvaluateTree:
         root_label, root_function, expression = None, None, None
         stack = []
 
-        function_library_obj = FunctionLibrary()
-
         for function, handle in zip(function_list, symbolic_handle_list):
-            function_type = function_library_obj.get_function_type(function)
+            function_type = FunctionLibrary.get_function_type(function)
 
             if function_type == "R":
                 root_function = handle
