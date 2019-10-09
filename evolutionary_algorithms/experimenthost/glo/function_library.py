@@ -1,10 +1,8 @@
-#import numpy as np
+import numpy as np
+from sympy import *
 import random
 
-
-
 class FunctionLibrary:
-
     """
     
     This class contains the library of possible operators that we can
@@ -17,38 +15,33 @@ class FunctionLibrary:
     """
 
     FUNCTIONS = {
-        # "U": [
-        #     np.cos,
-        #     np.sin,
-        #     np.log,
-        #     np.exp,
-        #     np.mean
-        # ],
-
-        "U": [
-            "cos",
-            "sin",
-            "log",
-            "exp",
-            "mean"
-        ],
-        "B": [
-            "+",
-            "-",
-            "*",
-            "/"
-        ],
-        "L": [
-            "x",
-            "y",
-            1,
-            -1
-        ]
+        "U": {
+            "cos": np.cos,
+            "sin": np.sin,
+            "log": np.log,
+            "exp": np.exp,
+            "mean": np.mean,
+            "sum": np.sum,
+            "product": np.product
+        },
+        "B": {
+            "+": np.add,
+            "-": np.subtract,
+            "*": np.multiply,
+            "/": np.divide,
+            ".": np.dot
+        },
+        "L": {
+            "x": Symbol("x"),
+            "y": Symbol("y"),
+            "1": 1,
+            "-1": -1
+        }
     }
 
     def sample(self, operator_type):
         assert operator_type.upper() in self.FUNCTIONS.keys(), "Function not available"
-        functions_available = self.FUNCTIONS.get(operator_type)
+        functions_available = list(self.FUNCTIONS.get(operator_type).keys())
         sampled_function = functions_available[random.randint(0,len(functions_available)-1)]
 
         return {
@@ -64,3 +57,11 @@ class FunctionLibrary:
         return {
             "L": self.FUNCTIONS["L"][1:]
         }
+
+    def fetch_function_handle(self, operator):
+        function = None
+        for function_type in self.FUNCTIONS.keys():
+            if operator in self.FUNCTIONS[function_type].keys():
+                function = self.FUNCTIONS[function_type][operator]
+                break
+        return function
