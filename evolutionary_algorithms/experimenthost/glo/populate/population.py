@@ -1,4 +1,4 @@
-from evolutionary_algorithms.experimenthost.glo.tree \
+from evolutionary_algorithms.experimenthost.glo.elements.tree \
     import Tree
 
 
@@ -9,7 +9,10 @@ class Population:
         self.max_height = max_height
         self.population_size = population_size
 
-    def generate_tree_list(self):
+        self.trees = []
+        self.working_trees = []
+
+    def generate_trees(self):
         """
 
         This function uses the class variable population_size that 
@@ -22,14 +25,23 @@ class Population:
         returns: tree_list (list of Tree() objects)
 
         """
-        tree_list = []
 
-        while(len(tree_list) < self.population_size):
-            tree_list.append(Tree(self.min_height,self.max_height))
+        while len(self.trees) < self.population_size:
+            self.trees.append(Tree(self.min_height, self.max_height))
 
-        for tree in tree_list:
+        for tree in self.trees:
             token = tree.request_token()
             tree.root = tree.helper_function(token)
 
-        return tree_list
+    def get_working_trees(self):
+
+        for tree in self.trees:
+            if tree.symbolic_expression is None:
+                tree.construct_symbolic_expression()
+            if tree.working is None:
+                tree.validate_working()
+
+            if tree.working:
+                self.working_trees.append(tree)
+
 

@@ -6,3 +6,4 @@ tqdm
 pyhocon
 flask
 sympy
+tensorflow

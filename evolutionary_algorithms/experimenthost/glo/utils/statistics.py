@@ -7,7 +7,9 @@ class Statistics:
             "height": tree.height,
             "U": tree.unary_count,
             "B": tree.binary_count,
-            "L": tree.literal_count
+            "L": tree.literal_count,
+            "expression": str(tree.symbolic_expression),
+            "fitness": tree.fitness
         }
 
         return stats
