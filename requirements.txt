@@ -7,3 +7,4 @@ pyhocon
 flask
 sympy
 tensorflow
+tensorflow-gpu

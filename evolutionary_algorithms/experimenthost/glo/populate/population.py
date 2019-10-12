@@ -1,5 +1,7 @@
 from evolutionary_algorithms.experimenthost.glo.elements.tree \
     import Tree
+from tqdm import trange
+
 from evolutionary_algorithms.reproduction.selection.selection_functions_library \
     import SelectionFunctionsLibrary
 from evolutionary_algorithms.servicecommon.utils.math_utils \
@@ -7,15 +9,18 @@ from evolutionary_algorithms.servicecommon.utils.math_utils \
 
 
 class Population:
-    def __init__(self, min_height=3, max_height=10, population_size=25, parents_size=2):
+    def __init__(self, min_height=3, max_height=10, population_size=25, num_parents=2, mating_pool_multiplier=100):
         self.min_height = min_height
         self.max_height = max_height
         self.population_size = population_size
-        self.parents_size = parents_size
+        self.num_parents = num_parents
 
         self.trees = []
         self.working_trees = []
         self.mating_pool = None
+        self.mating_pool_multiplier = mating_pool_multiplier
+
+        self.parents = None
 
     def generate_trees(self):
         """
@@ -30,17 +35,24 @@ class Population:
         returns: tree_list (list of Tree() objects)
 
         """
-
+        print("\n\n ######### Generating Tress ######### \n\n")
         while len(self.trees) < self.population_size:
             self.trees.append(Tree(self.min_height, self.max_height))
 
-        for tree in self.trees:
+        for tree_idx in trange(len(self.trees)):
+            tree = self.trees[tree_idx]
             token = tree.request_token()
             tree.root = tree.helper_function(token)
 
     def get_working_trees(self):
-
-        for tree in self.trees:
+        """
+        This function collects all the trees that are working and
+        stores them in self.working_trees.
+        :return nothing:
+        """
+        print("\n\n ######### Extracting Working Tress ######### \n\n")
+        for tree_idx in trange(len(self.trees)):
+            tree = self.trees[tree_idx]
             if tree.symbolic_expression is None:
                 tree.construct_symbolic_expression()
             if tree.working is None:
@@ -49,8 +61,7 @@ class Population:
             if tree.working:
                 self.working_trees.append(tree)
 
-    @staticmethod
-    def generate_mating_pool(trees, mating_pool_multiplier):
+    def generate_mating_pool(self):
         """
 
         A static method
@@ -69,15 +80,13 @@ class Population:
         """
 
         fitness = []
-        for tree in trees:
+        for tree in self.trees:
             fitness.append(tree.fitness)
         fitness_probs = MathUtils.softmax(fitness)
-        mating_pool = SelectionFunctionsLibrary.default_mating_pool(
-            trees, fitness_probs, mating_pool_multiplier)
+        self.mating_pool = SelectionFunctionsLibrary.default_mating_pool(
+            self.trees, fitness_probs, self.mating_pool_multiplier)
 
-        return mating_pool, fitness_probs
-
-    def natural_selection(self, func_mating_pool=None, num_parents=None):
+    def natural_selection(self):
         """
 
         This function is used to access a function with the same name in the file
@@ -93,13 +102,5 @@ class Population:
                  with the size of num_parents.
 
         """
-        if num_parents is None:
-            num_parents = parents_size
-
-        if func_mating_pool is None:
-            func_mating_pool = mating_pool
-
-        parents = SelectionFunctionsLibrary().natural_selection(
-            func_mating_pool, num_parents)
-
-        return parents
+        self.parents = SelectionFunctionsLibrary().natural_selection(
+            self.mating_pool, self.num_parents)

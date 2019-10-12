@@ -6,9 +6,25 @@ from evolutionary_algorithms.experimenthost.glo.populate.function_library \
 
 
 class EvaluateTree:
+    """
+    This class provides functions to evaluate and build the
+    expression in the Trees.
+    """
 
     @classmethod
     def build_function_list(cls, tree):
+        """
+        This function goes over the node types in the trees
+        and collects their symbolic and tensorflow equivalent function
+        from the Fitness Library. This function is never called on its own,
+        it is just a helper function to build_symbolic_expression() in this class.
+        :param tree: object of class Tree
+        :return function_list: List containing all the functions
+        :return tensorflow_handle_list: List containing the tensorflow equivalent
+        function handles of the function_list
+        :return symbolic_handle_list: List containing the symbolic equivalent function
+        handles of the function_list
+        """
         function_list = TreeUtils().traverse_tree(tree, "preorder")
         tensorflow_handle_list, symbolic_handle_list = [], []
         for func_obj in function_list:
@@ -19,9 +35,17 @@ class EvaluateTree:
 
     @classmethod
     def build_symbolic_expression(cls, tree):
-
-        function_list, tensorflow_handle_list, \
-        symbolic_handle_list = cls.build_function_list(tree)
+        """
+        This function builds the symbolic expression that can be
+        validated and evaluated with some numpy input.
+        :param tree: object of class Tree
+        :return function_list: List containing all the functions
+        :return tensorflow_handle_list: List containing the tensorflow equivalent
+        function handles of the function_list
+        :return expression: The Sympy expression constructed. This function contains an
+        expression that can be used with any numpy input.
+        """
+        function_list, tensorflow_handle_list,  symbolic_handle_list = cls.build_function_list(tree)
 
         root_label, root_function, expression = None, None, None
         stack = []
@@ -43,4 +67,4 @@ class EvaluateTree:
                 expression = handle(last_two_literals[0], last_two_literals[1])
                 stack.append(expression)
 
-        return root_label, root_function, function_list, tensorflow_handle_list, expression
+        return function_list, tensorflow_handle_list, expression
