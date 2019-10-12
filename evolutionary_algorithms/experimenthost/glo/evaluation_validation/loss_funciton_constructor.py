@@ -2,10 +2,19 @@ from evolutionary_algorithms.experimenthost.glo.populate.function_library import
 
 
 class LossFunctionConstructor:
-
+    """
+    This class provides a wrapper to construct the loss function
+    for Keras using a closure from the GLO Tress.
+    """
     @staticmethod
     def construct_loss(tree):
-
+        """
+        A closure function that takes in a tree and evaluates it in a
+        way that it can be used with a Keras Neural Network.
+        :param tree: object of tree class.
+        :return loss: The loss function generated in a way that Keras
+        expects it to be in.
+        """
         function_list = tree.function_list
         tensorflow_handle_list = tree.tensorflow_handle_list
         function_library_obj = FunctionLibrary()

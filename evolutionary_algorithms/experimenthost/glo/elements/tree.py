@@ -9,52 +9,53 @@ from evolutionary_algorithms.experimenthost.glo.populate.function_library \
 
 class Tree:
     """
-
     The Tree() class constructs trees of heights specified by a range that is
-    passed in on the Constructor call. 
-
+    passed in on the Constructor call.
     """
 
     # Constructor
     def __init__(self, min_height=3, max_height=10):
         """
-            The constructor Tree objects.
+        The constructor Tree objects.
 
-            -height tracks the height of the tree and is initialized to 0.
+        -height tracks the height of the tree and is initialized to 0.
 
-            -To create trees with fixed height, both min_height and max_height
-            are set to max_height.
+        -To create trees with fixed height, both min_height and max_height
+        are set to max_height.
 
-            -I also initialized counters for U, B, and L nodes to keep track of 
-            how often each is used in each tree.
         """
+        self.height = 0  # Current height of tree
+        self.token_list = FunctionLibrary.get_token_types()  # Types of operators the tree can have. Eg: ["B", "U"]
+        self.root = None  # Root Node Object
+        self.number_of_nodes = 0  # Number of nodes in the tree
+        self.max_height = max_height  # Maximum Height Allowed for the tree
+        self.min_height = min_height  # minimum height allowed for the tree
 
-        self.height = 0
-        # rethink the use of root, root_function, root_function_label
-        self.root = None
-        self.number_of_nodes = 0
-        self.max_height = max_height
-        self.min_height = min_height
+        # Keeps count of number of nodes of each type
         self.unary_count = 0
         self.binary_count = 0
         self.literal_count = 0
 
+        # The symbolic expression of the tree (the formula this tree represents)
         self.symbolic_expression = None
 
-        self.function_list = None
-        self.tensorflow_handle_list = None
+        # These contain a list of the function handles
+        # that build up the tree. These are pulled from the
+        # function library. We need both
+        self.function_list = None  # symbolic handles to represent, validate and visualize the tree.
+        self.tensorflow_handle_list = None  # Tensorflow handles to train the network.
 
-        self.token_list = FunctionLibrary.get_token_types()
-
+        # A flag set after validation to mark if this tree is working or not. None represents
+        # that it has not yet been validated.
         self.working = None
-        self.fitness = None
 
-        self.avg_epoch_time = None
+        self.fitness = None  # The fitness of the tree
+        self.avg_epoch_time = None  # If the NN is a fitness function, then the time for each Epoch.
 
     def request_token(self):
         """
 
-        returns a token based on the instantanious height of the tree
+        returns a token based on the instantaneous height of the tree
         taking into account the min and max heights set earlier
 
         arguments: Nothing
@@ -79,7 +80,7 @@ class Tree:
         
         token: (string) contains the randomly selected token which is either
                going to be a 'U', 'B', or, 'L' and determines which node 
-               generating funtion is called.
+               generating function is called.
 
         returns: a Node() object that is returned the node generating functions,
                  unary(), binary(), or literal().
@@ -172,18 +173,24 @@ class Tree:
         It is responsible for building a symbolic expression from the tree.
         :return nothing:
         """
-        _, _, self.function_list, self.tensorflow_handle_list, \
+        self.function_list, self.tensorflow_handle_list, \
         self.symbolic_expression = \
             EvaluateTree.build_symbolic_expression(self)
 
     def validate_working(self):
         """
-        This function validates
+        This function validates if the expression this tree contains
+        is valid.
         :return:
         """
-        self.working = Validate.validate_literal_existance(self.symbolic_expression)
+        literals = ["y_true", "y_pred"]
+        self.working = Validate.has_required_literals(self.symbolic_expression, literals)
 
     def print_expression(self):
+        """
+        This function prints the expression that is contained in this tree.
+        :return nothing:
+        """
         if self.symbolic_expression is None:
             raise ValueError("Expression Not Built Yet!")
         else:

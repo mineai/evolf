@@ -2,23 +2,26 @@ import sympy as sp
 
 
 class Validate:
-
+    """
+    This class contains all the methods required
+    to validate if the given Sympy expresion is valid
+    for GLO Tree or not.
+    """
     @staticmethod
-    def validate_literal_existance(symbolic_expression):
+    def has_required_literals(symbolic_expression, literals):
         """
-
-        Rethink the name of the function? has_t_and_or_y()?
-
-        :param symbolic_expression:
-        :return boolean value:
+        This functions uses differentials to validate
+        if the given symbolic expression have all the required
+        literals or not.
+        :param symbolic_expression: The sympy Expression to be checked
+        :param literals: A List containing literals of type str.
+        :return boolean value: That informs if the expression has all
+        the required literals or not
         """
+        for literal in literals:
+            deriv = sp.diff(symbolic_expression,
+                            sp.Symbol(literal))
+            if deriv == 0:
+                return False
 
-        y_pred_deriv = sp.diff(symbolic_expression,
-                               sp.Symbol("y_pred"))
-        y_true_deriv = sp.diff(symbolic_expression,
-                               sp.Symbol("y_true"))
-
-        if y_pred_deriv != 0 and y_true_deriv != 0:
-            return True
-        else:
-            return False
+        return True

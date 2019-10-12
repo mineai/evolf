@@ -21,9 +21,6 @@ from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor i
 
 import numpy as np
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
-
 def get_data():
     num_classes = 10
     # input image dimensions
@@ -116,7 +113,7 @@ class GloMnist:
 
 class GLO:
 
-    def __init__(self, min_height=2, max_height=5, pop_size=10):
+    def __init__(self, min_height=2, max_height=5, pop_size=100):
         self.population = Population(min_height, max_height, pop_size)
         self.population.generate_trees()
         self.population.get_working_trees()
@@ -167,7 +164,7 @@ class GLO:
 
             self.persist(tree, tree_idx)
 
-            if len(tree.fitness):
+            if len(glo_mnist_NN.score):
                 tree.fitness = glo_mnist_NN.score[1]
             tree.avg_epoch_time = np.mean(glo_mnist_NN.times)
             print(f"Fitness: {tree.fitness}")

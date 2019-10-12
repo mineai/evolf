@@ -45,6 +45,11 @@ class Population:
             tree.root = tree.helper_function(token)
 
     def get_working_trees(self):
+        """
+        This function collects all the trees that are working and
+        stores them in self.working_trees.
+        :return nothing:
+        """
         print("\n\n ######### Extracting Working Tress ######### \n\n")
         for tree_idx in trange(len(self.trees)):
             tree = self.trees[tree_idx]
