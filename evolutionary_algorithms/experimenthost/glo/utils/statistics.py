@@ -9,7 +9,8 @@ class Statistics:
             "B": tree.binary_count,
             "L": tree.literal_count,
             "expression": str(tree.symbolic_expression),
-            "fitness": tree.fitness
+            "fitness": tree.fitness,
+            "avg_epoch_time": tree.avg_epoch_time
         }
 
         return stats

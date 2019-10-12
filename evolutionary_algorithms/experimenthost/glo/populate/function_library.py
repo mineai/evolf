@@ -86,6 +86,13 @@ class FunctionLibrary:
 
     @classmethod
     def sample(cls, operator_type):
+        """
+        Put your fucking comments here god damn it!
+
+        :param operator_type:
+        :return operator_type.upper(): sampled_function:
+
+        """
         assert operator_type.upper() in cls.tenorflow_functions.keys(), "Function not available"
         functions_available = list(cls.tenorflow_functions.get(operator_type).keys())
         sampled_function = functions_available[random.randint(0, len(functions_available) - 1)]
@@ -96,6 +103,13 @@ class FunctionLibrary:
 
     @classmethod
     def get_tensorflow_handle(cls, operator):
+        """
+            Put your fucking comments here god damn it!
+
+            :param operator:
+            :return function:
+
+        """
         function = None
         for function_type in cls.tenorflow_functions.keys():
             if operator in cls.tenorflow_functions[function_type].keys():
@@ -105,6 +119,14 @@ class FunctionLibrary:
 
     @classmethod
     def get_symbolic_handle(cls, operator):
+        """
+            Put your fucking comments here god damn it!
+
+            :param operator:
+            :return function:
+
+        """
+        function = None
         function = None
         for function_type in cls.expression_functions.keys():
             if operator in cls.expression_functions[function_type].keys():
@@ -114,6 +136,14 @@ class FunctionLibrary:
 
     @classmethod
     def get_function_type(cls, function_str):
+        """
+            Put your fucking comments here god damn it!
+
+            :param function_str:
+            :return function_type:
+
+        """
+        function = None
         for function_type in cls.tenorflow_functions.keys():
             functions = cls.tenorflow_functions[function_type]
             if function_str in functions:

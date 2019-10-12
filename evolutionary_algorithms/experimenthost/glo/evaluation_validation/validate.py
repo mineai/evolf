@@ -5,6 +5,13 @@ class Validate:
 
     @staticmethod
     def validate_literal_existance(symbolic_expression):
+        """
+
+        Rethink the name of the function? has_t_and_or_y()?
+
+        :param symbolic_expression:
+        :return boolean value:
+        """
 
         y_pred_deriv = sp.diff(symbolic_expression,
                                sp.Symbol("y_pred"))

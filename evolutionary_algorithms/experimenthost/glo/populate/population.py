@@ -1,6 +1,6 @@
 from evolutionary_algorithms.experimenthost.glo.elements.tree \
     import Tree
-
+from tqdm import trange
 
 
 class Population:
@@ -25,17 +25,19 @@ class Population:
         returns: tree_list (list of Tree() objects)
 
         """
-
+        print("\n\n ######### Generating Tress ######### \n\n")
         while len(self.trees) < self.population_size:
             self.trees.append(Tree(self.min_height, self.max_height))
 
-        for tree in self.trees:
+        for tree_idx in trange(len(self.trees)):
+            tree = self.trees[tree_idx]
             token = tree.request_token()
             tree.root = tree.helper_function(token)
 
     def get_working_trees(self):
-
-        for tree in self.trees:
+        print("\n\n ######### Extracting Working Tress ######### \n\n")
+        for tree_idx in trange(len(self.trees)):
+            tree = self.trees[tree_idx]
             if tree.symbolic_expression is None:
                 tree.construct_symbolic_expression()
             if tree.working is None:
