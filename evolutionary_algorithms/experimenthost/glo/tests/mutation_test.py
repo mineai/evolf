@@ -7,7 +7,7 @@ from evolutionary_algorithms.experimenthost.glo.utils.visualize \
 class MutationTest:
     @staticmethod
     def run():
-        population = Population(2, 2, 1)
+        population = Population(3, 3, 1)
         population.generate_population()
         population.get_working_trees()
 

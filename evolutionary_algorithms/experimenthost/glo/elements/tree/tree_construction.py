@@ -85,7 +85,6 @@ class TreeConstruction:
         current_node.right = None
         current_node.left = None
         self.number_of_nodes += 1
-        current_node.node_id = self.number_of_nodes
         return current_node
 
     def binary(self, token):
@@ -109,7 +108,6 @@ class TreeConstruction:
         current_node.left = self.helper_function(self.request_token())
         current_node.right = self.helper_function(self.request_token())
         self.number_of_nodes += 1
-        current_node.node_id = self.number_of_nodes
         return current_node
 
     def unary(self, token):
@@ -134,7 +132,6 @@ class TreeConstruction:
         current_node.left = self.helper_function(self.request_token())
         current_node.right = None
         self.number_of_nodes += 1
-        current_node.node_id = self.number_of_nodes
         return current_node
 
     @staticmethod
@@ -165,24 +162,59 @@ class TreeConstruction:
     Functions to Reset Tree
     """
 
+    def assign_level_order_id(self):
+
+        def assign_level_order_id_helper(root):
+            stack, queue = [], []
+            queue.append(root)
+
+            # Do something like normal level order traversal order.
+            # Following are the differences with normal level order
+            # traversal:
+            # 1) Instead of printing a node, we push the node to stack
+            # 2) Right subtree is visited before left subtree
+            while len(queue) > 0:
+
+                # Dequeue node and make it root
+                root = queue.pop(0)
+                stack.append(root)
+
+                # Enqueue right child
+                if root.right:
+                    queue.append(root.right)
+
+                    # Enqueue left child
+                if root.left:
+                    queue.append(root.left)
+
+            # Now pop all items from stack one by one and print them
+            node_id = 1
+            stack = stack[::-1]
+            while len(stack) > 0:
+                root = stack.pop()
+                root.node_id = node_id
+                node_id += 1
+
+        assign_level_order_id_helper(self.root)
+
     def initialize_height(self):
 
-        def helper_function_get_height(node):
-            if node is None:
-                return 0
-            else:
-
-                # Compute the depth of each subtree
-                left_depth = helper_function_get_height(node.left)
-                right_depth = helper_function_get_height(node.right)
-
-                # Use the larger one
-                if left_depth > right_depth:
-                    return left_depth + 1
+            def helper_function_get_height(node):
+                if node is None:
+                    return 0
                 else:
-                    return right_depth + 1
 
-        self.height = helper_function_get_height(self.root)
+                    # Compute the depth of each subtree
+                    left_depth = helper_function_get_height(node.left)
+                    right_depth = helper_function_get_height(node.right)
+
+                    # Use the larger one
+                    if left_depth > right_depth:
+                        return left_depth + 1
+                    else:
+                        return right_depth + 1
+
+            self.height = helper_function_get_height(self.root)
 
     def init_node_type_count(self):
         self.unary_count = 0

@@ -76,3 +76,4 @@ class Mutation:
 
     @staticmethod
     def mutate_leaf_node(tree, mutate_leaf_rate=0.025):
+        pass

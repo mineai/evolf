@@ -77,6 +77,7 @@ class Visualize:
                     color = "#F7D7A8"
                 elif node.operator_type == "R":
                     color = "red"
+                # label = node.node_id
                 node_obj = pydot.Node(node.node_id,
                                       label=f"{label}",
                                       xlabel="",

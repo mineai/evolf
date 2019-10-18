@@ -36,6 +36,7 @@ class Tree(LinearTree, TreeConstruction):
 
         # Construct the Expression and the Linear Tree
         self.initialize_parents()
+        self.assign_level_order_id()
         self.linearize_tree()
         self.construct_symbolic_expression()
         self.validate_working()
@@ -103,8 +104,6 @@ class Tree(LinearTree, TreeConstruction):
         self.number_of_nodes += 1
         another_child.node_id = self.number_of_nodes
 
-
-
     """
     ################ Utils ################
     """
@@ -136,8 +135,8 @@ class Tree(LinearTree, TreeConstruction):
         self.binary_count = 0
         self.literal_count = 0
 
-
         self.initialize_height()
+        self.assign_level_order_id()
         self.init_node_type_count()
         self.initialize_parents()
         self.linearize_tree()
@@ -145,4 +144,3 @@ class Tree(LinearTree, TreeConstruction):
         self.validate_working()
 
         self.number_of_nodes = len(self.nodes)
-
