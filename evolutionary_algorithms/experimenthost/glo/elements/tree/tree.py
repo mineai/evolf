@@ -38,8 +38,11 @@ class Tree(LinearTree, TreeConstruction):
         self.initialize_parents()
         self.assign_level_order_id()
         self.linearize_tree()
-        self.construct_symbolic_expression()
-        self.validate_working()
+        try:
+            self.construct_symbolic_expression()
+            self.validate_working()
+        except:
+            print("Could not Validate Expression")
         # self.visualize_tree()
 
     """
@@ -114,7 +117,8 @@ class Tree(LinearTree, TreeConstruction):
         :return nothing:
         """
         if self.symbolic_expression is None:
-            raise ValueError("Expression Not Built Yet!")
+            print("Expression Not Built Yet!")
+            return ""
         else:
             expression = f"Expression: {self.root.function_str} ( {self.symbolic_expression} )"
             # print(expression)

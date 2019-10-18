@@ -2,6 +2,7 @@ import random
 import copy
 
 from evolutionary_algorithms.experimenthost.glo.elements.node import Node
+from evolutionary_algorithms.experimenthost.glo.elements.tree.tree import Tree
 from evolutionary_algorithms.experimenthost.glo.populate.function_library import FunctionLibrary
 
 
@@ -82,7 +83,21 @@ class Mutation:
         :param mutate_leaf_rate:
         :return:
         """
-        for node in tree.nodes:
+        child = copy.deepcopy(tree)
+        for node in child.nodes:
             if node.operator_type == "L":
-                pass
+                if random.random() < mutate_leaf_rate:
+                    print("Mutating Leaf Node")
+                    new_tree = Tree(2, random.randint(1, random.randint(1, 3)))
+                    if node.parent.operator_type in ["U", "R"]:
+                        node.parent.left = new_tree.root.left
+                    elif node.parent.operator_type in ["B"]:
+                        if node.parent.left == node:
+                            node.parent.left = new_tree.root.left
+                        else:
+                            node.parent.right = new_tree.root.left
+                    break
+
+        child.reset_tree()
+        return child
 
