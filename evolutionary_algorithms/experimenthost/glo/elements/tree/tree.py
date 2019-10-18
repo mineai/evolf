@@ -144,3 +144,19 @@ class Tree(LinearTree, TreeConstruction):
         self.validate_working()
 
         self.number_of_nodes = len(self.nodes)
+
+    def get_node_by_id(self, node_id):
+        """
+        This function returns the node object
+        from the tree that matches to the corresponding
+        node_id. If no node is found it returns a False.
+        :param node_id: Node Id of the node being searched
+        :return node_to_return:
+        """
+        node_to_return = False
+        for node in self.nodes:
+            if node.node_id == node_id:
+                node_to_return = node
+                break
+
+        return node_to_return

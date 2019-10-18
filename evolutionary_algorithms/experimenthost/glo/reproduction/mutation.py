@@ -76,4 +76,13 @@ class Mutation:
 
     @staticmethod
     def mutate_leaf_node(tree, mutate_leaf_rate=0.025):
-        pass
+        """
+
+        :param tree:
+        :param mutate_leaf_rate:
+        :return:
+        """
+        for node in tree.nodes:
+            if node.operator_type == "L":
+                pass
+
