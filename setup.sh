@@ -8,4 +8,4 @@ pip3 install -r requirements.txt
 
 echo ""
 echo "To start string evolution server, Run: "
-echo "python3 evolutionary_algorithms/domains/strevolve/flask_app/server.py "
+echo "python3 evolutionary_algorithms/domains/strevolve/flask_app/server.py"

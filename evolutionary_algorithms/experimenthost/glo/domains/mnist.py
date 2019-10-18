@@ -26,7 +26,7 @@ def get_data():
     # input image dimensions
     img_rows, img_cols = 28, 28
 
-    # the data, split between train and test sets
+    # the function_str, split between train and test sets
     (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
     if K.image_data_format() == 'channels_first':
@@ -115,7 +115,7 @@ class GLO:
 
     def __init__(self, min_height=2, max_height=5, pop_size=100):
         self.population = Population(min_height, max_height, pop_size)
-        self.population.generate_trees()
+        self.population.generate_population()
         self.population.get_working_trees()
 
         self.data = get_data()
@@ -152,7 +152,7 @@ class GLO:
             glo_mnist_NN = GloMnist(tree, self.data, epochs=1)
 
             print(" \n\n ######################################################## \n\n ")
-            tree.print_expression()
+            tree.generate_printable_expression()
             print("\n\n")
 
             try:

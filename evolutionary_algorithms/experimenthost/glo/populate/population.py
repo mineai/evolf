@@ -1,4 +1,4 @@
-from evolutionary_algorithms.experimenthost.glo.elements.tree \
+from evolutionary_algorithms.experimenthost.glo.elements.tree.tree \
     import Tree
 from tqdm import trange
 
@@ -9,7 +9,8 @@ from evolutionary_algorithms.servicecommon.utils.math_utils \
 
 
 class Population:
-    def __init__(self, min_height=3, max_height=10, population_size=25, num_parents=2, mating_pool_multiplier=100):
+    def __init__(self, min_height=3, max_height=10, population_size=25,
+                 num_parents=2, mating_pool_multiplier=100):
         self.min_height = min_height
         self.max_height = max_height
         self.population_size = population_size
@@ -20,9 +21,7 @@ class Population:
         self.mating_pool = None
         self.mating_pool_multiplier = mating_pool_multiplier
 
-        self.parents = None
-
-    def generate_trees(self):
+    def generate_population(self):
         """
 
         This function uses the class variable population_size that 
@@ -32,17 +31,14 @@ class Population:
         populated trees. The function then returns that list.
 
         arguments: Nothing
-        returns: tree_list (list of Tree() objects)
+        returns: Nothing
 
         """
         print("\n\n ######### Generating Tress ######### \n\n")
         while len(self.trees) < self.population_size:
             self.trees.append(Tree(self.min_height, self.max_height))
 
-        for tree_idx in trange(len(self.trees)):
-            tree = self.trees[tree_idx]
-            token = tree.request_token()
-            tree.root = tree.helper_function(token)
+        self.get_working_trees()
 
     def get_working_trees(self):
         """
@@ -102,5 +98,6 @@ class Population:
                  with the size of num_parents.
 
         """
-        self.parents = SelectionFunctionsLibrary().natural_selection(
+        parents = SelectionFunctionsLibrary().natural_selection(
             self.mating_pool, self.num_parents)
+        return parents
