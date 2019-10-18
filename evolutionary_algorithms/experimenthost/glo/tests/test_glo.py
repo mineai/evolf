@@ -17,10 +17,11 @@ from evolutionary_algorithms.experimenthost.glo.utils.statistics import Statisti
 class TestGLO:
     @staticmethod
     def run():
-        population = Population(2, 4, 100)
-        population.generate_trees()
+        population = Population(2, 4, 10)
+        population.generate_population()
         population.get_working_trees()
-        # TestGLO.print_tree_list(population.working_trees, "data")
+        # TestGLO.print_tree_list(population.trees, "function_str")
+        Visualize.visualize(population.trees)
 
         return population
         # TestGLO().persist(tree_list, population)
@@ -64,7 +65,7 @@ class TestGLO:
 
         output_type: (string) This variable will specify what kind of class variable
                      from the Node() class will be printed when printing each tree.
-                     Examples of class variables that can be selected are "data",
+                     Examples of class variables that can be selected are "function_str",
                      "operator_type", and "node_id"
 
         returns: Nothing
@@ -79,7 +80,7 @@ class TestGLO:
                 print('Bad Tree! Not enough Literals.')
                 bad_tree_count += 1
 
-            tree.print_expression()
+            tree.generate_printable_expression()
 
 
 

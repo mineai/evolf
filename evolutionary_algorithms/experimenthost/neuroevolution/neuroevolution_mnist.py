@@ -51,7 +51,7 @@ class NeuroevolutionMnist():
 
 	@staticmethod
 	def setup_mnist():
-		# the data, split between train and test sets
+		# the function_str, split between train and test sets
 		(x_train, y_train), (x_test, y_test) = mnist.load_data()
 		img_rows, img_cols = 28, 28
 		if K.image_data_format() == 'channels_first':

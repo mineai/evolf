@@ -5,15 +5,14 @@ import random
 
 import keras.backend as K
 
+
 class FunctionLibrary:
     """
-    
     This class contains the library of possible operators that we can
-    retrieve as input for the nodes of the trees. 
-
+    retrieve as input for the nodes of the trees.
     """
 
-    tenosrflow_functions = {
+    tensorflow_functions = {
         "U": {
             # "cos": K.cos,
             # "sin": K.sin,
@@ -35,14 +34,14 @@ class FunctionLibrary:
         "L": {
             "y": "y_pred",
             "t": "y_true",
-            "1": 1,
-            "-1": -1
+            "pos_scalar": 1,
+            "neg_scalar": -1
         },
         "R": {
             "mean": tf.reduce_mean,
             "sum": tf.reduce_sum,
-            "max": tf.reduce_max,
-            "min": tf.reduce_min
+            # "max": tf.reduce_max,
+            # "min": tf.reduce_min
         }
     }
 
@@ -68,8 +67,8 @@ class FunctionLibrary:
         "L": {
             "y": sp.Symbol("y_pred"),
             "t": sp.Symbol("y_true"),
-            "1": 1,
-            "-1": -1
+            "pos_scalar": 1,
+            "neg_scalar": -1
         },
         "R": {
             "mean": np.mean,
@@ -89,13 +88,11 @@ class FunctionLibrary:
         :return operator_type.upper(): sampled_function:
 
         """
-        assert operator_type.upper() in cls.tenosrflow_functions.keys(), "Function not available"
-        functions_available = list(cls.tenosrflow_functions.get(operator_type).keys())
+        assert operator_type.upper() in cls.tensorflow_functions.keys(), "Function not available"
+        functions_available = list(cls.tensorflow_functions.get(operator_type).keys())
         sampled_function = functions_available[random.randint(0, len(functions_available) - 1)]
 
-        return {
-            operator_type.upper(): sampled_function
-        }
+        return sampled_function
 
     @classmethod
     def get_tensorflow_handle(cls, operator):
@@ -107,9 +104,9 @@ class FunctionLibrary:
 
         """
         function = None
-        for function_type in cls.tenosrflow_functions.keys():
-            if operator in cls.tenosrflow_functions[function_type].keys():
-                function = cls.tenosrflow_functions[function_type][operator]
+        for function_type in cls.tensorflow_functions.keys():
+            if operator in cls.tensorflow_functions[function_type].keys():
+                function = cls.tensorflow_functions[function_type][operator]
                 break
         return function
 
@@ -140,8 +137,8 @@ class FunctionLibrary:
 
         """
         function = None
-        for function_type in cls.tenosrflow_functions.keys():
-            functions = cls.tenosrflow_functions[function_type]
+        for function_type in cls.tensorflow_functions.keys():
+            functions = cls.tensorflow_functions[function_type]
             if function_str in functions:
                 return function_type
 
@@ -152,5 +149,4 @@ class FunctionLibrary:
         That is: "U", "B" etc
         :return list: that contains the node types possible.
         """
-        return list(cls.tenosrflow_functions.keys())
-
+        return list(cls.tensorflow_functions.keys())

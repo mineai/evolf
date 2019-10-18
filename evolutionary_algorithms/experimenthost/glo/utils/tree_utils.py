@@ -5,7 +5,7 @@ class TreeUtils:
     def preorder_print(cls, start, traversal=''):
         # Root -> Left -> Right
         if start:
-            traversal += (str(start.data) + ' ')
+            traversal += (str(start.function_str) + ' ')
             traversal = cls.preorder_print(start.left, traversal)
             traversal = cls.preorder_print(start.right, traversal)
         return traversal
@@ -16,7 +16,7 @@ class TreeUtils:
         # Left -> Root -> Right
         if start:
             traversal = cls.inorder_print(start.left, traversal)
-            traversal += (str(start.data) + ' ')
+            traversal += (str(start.function_str) + ' ')
             traversal = cls.inorder_print(start.right, traversal)
         return traversal
 
@@ -27,7 +27,7 @@ class TreeUtils:
         if start:
             traversal = cls.preorder_print(start.left, traversal)
             traversal = cls.preorder_print(start.right, traversal)
-            traversal += (str(start.data) + ' ')
+            traversal += (str(start.function_str) + ' ')
         return traversal
 
     @staticmethod
@@ -45,3 +45,4 @@ class TreeUtils:
             func = func_str.split(" ")
         func.remove('')
         return func
+
