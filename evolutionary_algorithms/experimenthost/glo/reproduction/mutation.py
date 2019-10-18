@@ -30,27 +30,8 @@ class Mutation:
                     node.tensorflow_handle = FunctionLibrary.get_tensorflow_handle(new_function)
                     node.symbolic_handle = FunctionLibrary.get_symbolic_handle(new_function)
 
-                    # Create A multiplicative node for multiplication
-                    operator_type = "B"
-                    function_str = "*"
-                    symbolic_handle = FunctionLibrary.get_symbolic_handle(function_str)
-                    tensorflow_handle = FunctionLibrary.get_tensorflow_handle(function_str)
-                    multiplicative_node = Node(operator_type=operator_type, function_str=function_str,
-                                               symbolic_handle=symbolic_handle, tensorflow_handle=tensorflow_handle)
-
-                    # Weight Node
                     weight = random.uniform(-10, 10)
-                    operator_type = "L"
-                    if weight >= 0:
-                        function_str = "pos_scalar"
-                    else:
-                        function_str = "neg_scalar"
-                    symbolic_handle = weight * FunctionLibrary.get_symbolic_handle("pos_scalar")
-                    tensorflow_handle = weight * FunctionLibrary.get_tensorflow_handle("pos_scalar")
-                    weight_node = Node(operator_type=operator_type, function_str=function_str,
-                                       symbolic_handle=symbolic_handle, tensorflow_handle=tensorflow_handle)
-
-                    child.insert_binary_parent(node, multiplicative_node, weight_node)
+                    node.coefficient = weight
 
         child.reset_tree()
         return child

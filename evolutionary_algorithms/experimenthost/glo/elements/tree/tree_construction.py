@@ -141,7 +141,7 @@ class TreeConstruction:
         symbolic_handle = FunctionLibrary.get_symbolic_handle(sample_operator)
         node = Node(operator_type=token, function_str=sample_operator,
                     symbolic_handle=symbolic_handle, tensorflow_handle=tensorflow_handle)
-
+        node.coefficient = 1
         return node
 
     def initialize_parents(self):

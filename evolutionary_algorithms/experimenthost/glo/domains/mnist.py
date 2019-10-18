@@ -15,6 +15,7 @@ from tqdm import trange
 from evolutionary_algorithms.experimenthost.glo.evaluation_validation.loss_funciton_constructor import \
     LossFunctionConstructor
 from evolutionary_algorithms.experimenthost.glo.populate.population import Population
+# from evolutionary_algorithms.experimenthost.glo.reproduction.mutation import Mutation
 
 from evolutionary_algorithms.experimenthost.glo.utils.statistics import Statistics
 from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor import JsonPersistor
@@ -149,6 +150,9 @@ class GLO:
         print(f"To refer to this test Experiment, the ID is: {self.experiment_id}")
         for tree_idx in trange(len(self.population.working_trees)):
             tree = self.population.working_trees[tree_idx]
+
+            # tree = Mutation.weighted_function_mutation(tree, 0.75)
+
             glo_mnist_NN = GloMnist(tree, self.data, epochs=1)
 
             print(" \n\n ######################################################## \n\n ")

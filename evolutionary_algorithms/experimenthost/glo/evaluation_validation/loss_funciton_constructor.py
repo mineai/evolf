@@ -23,57 +23,22 @@ class LossFunctionConstructor:
                 function_type = node.operator_type
                 handle = node.tensorflow_handle
                 function = node.function_str
-                if function_type == "R":
+
+                if function_type in ["R", "U"]:
                     last_literal = stack.pop()
-
-                    if last_literal == "y":
-                        last_literal = y_pred
-                    elif last_literal == "t":
-                        last_literal = y_true
-
-                    cost = handle(last_literal)
+                    cost = node.coefficient * handle(last_literal)
                     stack.append(cost)
 
                 elif function_type == "L":
-                    stack.append(function)
-
-                elif function_type == "U":
-                    last_literal = stack.pop()
-
-                    if last_literal == "y":
-                        last_literal = y_pred
-                    elif last_literal == "t":
-                        last_literal = y_true
-                    elif last_literal == "neg_scalar":
-                        last_literal = last_literal
-                    elif last_literal == "pos_scalar":
-                        last_literal = last_literal
-
-                    cost = handle(last_literal)
-                    stack.append(cost)
+                    if function == "y":
+                        function = y_pred
+                    elif function == "t":
+                        function = y_true
+                    stack.append(node.coefficient * function)
 
                 elif function_type == "B":
                     last_two_literals = [stack.pop(), stack.pop()]
-
-                    if last_two_literals[0] == "y":
-                        last_two_literals[0] = y_pred
-                    elif last_two_literals[0] == "t":
-                        last_two_literals[0] = y_true
-                    elif last_two_literals[0] == "neg_scalar":
-                        last_two_literals[0] = int(last_two_literals[0])
-                    elif last_two_literals[0] == "pos_scalar":
-                        last_two_literals[0] = int(last_two_literals[0])
-
-                    if last_two_literals[1] == "y":
-                        last_two_literals[1] = y_pred
-                    elif last_two_literals[1] == "t":
-                        last_two_literals[1] = y_true
-                    elif last_two_literals[1] == "neg_scalar":
-                        last_two_literals[1] = int(last_two_literals[1])
-                    elif last_two_literals[1] == "pos_scalar":
-                        last_two_literals[1] = int(last_two_literals[1])
-
-                    cost = handle(last_two_literals[0], last_two_literals[1])
+                    cost = node.coefficient * handle(last_two_literals[0], last_two_literals[1])
                     stack.append(cost)
 
             return cost

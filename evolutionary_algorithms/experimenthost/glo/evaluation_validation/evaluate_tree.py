@@ -30,14 +30,14 @@ class EvaluateTree:
             if function_type == "R":
                 continue
             elif function_type == "L":
-                stack.append(node.symbolic_handle)
+                stack.append(node.coefficient * node.symbolic_handle)
             elif function_type == "U":
                 last_literal = stack.pop()
-                expression = node.symbolic_handle(last_literal)
+                expression = node.coefficient * node.symbolic_handle(last_literal)
                 stack.append(expression)
             elif function_type == "B":
                 last_two_literals = [stack.pop(), stack.pop()]
-                expression = node.symbolic_handle(last_two_literals[0], last_two_literals[1])
+                expression = node.coefficient * node.symbolic_handle(last_two_literals[0], last_two_literals[1])
                 stack.append(expression)
 
         return expression

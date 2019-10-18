@@ -66,6 +66,7 @@ class Visualize:
 
             for node_idx, node in enumerate(nodes):
                 label = node.function_str
+                xlabel = '%.3f'% node.coefficient
                 color = "green"
                 if node.function_str in ["pos_scalar", "neg_scalar"]:
                     label = '%.3f'% node.symbolic_handle
@@ -80,7 +81,7 @@ class Visualize:
                 # label = node.node_id
                 node_obj = pydot.Node(node.node_id,
                                       label=f"{label}",
-                                      xlabel="",
+                                      xlabel=f"{xlabel} * ",
                                       xlp=5,
                                       orientation=0,
                                       height=1,

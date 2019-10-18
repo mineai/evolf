@@ -19,3 +19,4 @@ class Node:
         self.left = None
         self.right = None
         self.parent = None
+        self.coefficient = 1

@@ -5,7 +5,15 @@ from evolutionary_algorithms.experimenthost.glo.elements.node import Node
 from evolutionary_algorithms.experimenthost.glo.elements.tree.tree import Tree
 from evolutionary_algorithms.experimenthost.glo.populate.function_library import FunctionLibrary
 
-tree = Tree(1, 1)
+tree = Tree(4, 4)
+
+random_node = random.choice(tree.nodes)
+while random_node.node_id == 1:
+    random_node = random.choice(tree.nodes)
+
+random_node.coefficient = 4
+
+tree.reset_tree()
 
 path = f"{os.getcwd()}/results/glo_test_add_tree/0"
 tree.visualize_tree(path)
