@@ -16,7 +16,7 @@ class MutationTest:
 
         child_function_mutation = Mutation.weighted_function_mutation(population.trees[0], 0.75)
         child_literal_mutation = Mutation.mutate_value_literal_nodes(child_function_mutation, 0.5)
-        child_leaf_mutation = Mutation.mutate_leaf_node(child_literal_mutation, 0.9)
+        child_leaf_mutation = Mutation.mutate_leaf_node(child_literal_mutation, 0.5)
         trees_to_vis = []
         trees_to_vis.extend(population.trees)
         trees_to_vis.append(child_function_mutation)
