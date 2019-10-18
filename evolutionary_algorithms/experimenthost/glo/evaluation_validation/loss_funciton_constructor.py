@@ -15,23 +15,14 @@ class LossFunctionConstructor:
         :return loss: The loss function generated in a way that Keras
         expects it to be in.
         """
-        function_list = tree.function_list
-        expression_list = tree.symbolic_handle_list
-        tensorflow_handle_list = tree.tensorflow_handle_list
-        function_library_obj = FunctionLibrary()
-
-        # import random
-        # coefficients = [random.random() for i in range(tree.number_of_nodes)]
-
-        # tensorflow_handle_list = [a*b for a, b in zip(coefficients, tensorflow_handle_list)]
-        # expression_list = [a*b for a, b in zip(coefficients, expression_list)]
-
         def loss(y_pred, y_true):
             stack = []
             cost = None
-            for function, handle in zip(function_list, tensorflow_handle_list):
-                function_type = function_library_obj.get_function_type(function)
 
+            for node in tree.nodes:
+                function_type = node.operator_type
+                handle = node.tensorflow_handle
+                function = node.function_str
                 if function_type == "R":
                     last_literal = stack.pop()
 
@@ -54,9 +45,9 @@ class LossFunctionConstructor:
                     elif last_literal == "t":
                         last_literal = y_true
                     elif last_literal == "neg_scalar":
-                        last_literal = int(last_literal)
+                        last_literal = last_literal
                     elif last_literal == "pos_scalar":
-                        last_literal = int(last_literal)
+                        last_literal = last_literal
 
                     cost = handle(last_literal)
                     stack.append(cost)
@@ -86,6 +77,4 @@ class LossFunctionConstructor:
                     stack.append(cost)
 
             return cost
-        print(expression_list)
-
         return loss

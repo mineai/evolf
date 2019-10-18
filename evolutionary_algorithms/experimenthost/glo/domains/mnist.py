@@ -152,7 +152,7 @@ class GLO:
             glo_mnist_NN = GloMnist(tree, self.data, epochs=1)
 
             print(" \n\n ######################################################## \n\n ")
-            tree.generate_printable_expression()
+            print(tree.generate_printable_expression())
             print("\n\n")
 
             try:
