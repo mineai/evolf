@@ -6,3 +6,5 @@ results
 *.iml
 *.pyc
 .DS_Store
+venv
+.idea
