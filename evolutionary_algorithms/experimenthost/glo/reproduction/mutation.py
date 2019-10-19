@@ -30,7 +30,7 @@ class Mutation:
                     node.tensorflow_handle = FunctionLibrary.get_tensorflow_handle(new_function)
                     node.symbolic_handle = FunctionLibrary.get_symbolic_handle(new_function)
 
-                    weight = random.uniform(-10, 10)
+                    weight = random.uniform(--10, 10)
                     node.coefficient = weight
 
         child.reset_tree()
