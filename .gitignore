@@ -1,0 +1,10 @@
+*.pyc
+*.ipynb_checkpoints
+__pycache__
+results
+*.xml
+*.iml
+*.pyc
+.DS_Store
+venv
+.idea

@@ -1,0 +1,10 @@
+pydot
+keras
+numpy
+matplotlib
+tqdm
+pyhocon
+flask
+sympy
+tensorflow
+tensorflow-gpu
