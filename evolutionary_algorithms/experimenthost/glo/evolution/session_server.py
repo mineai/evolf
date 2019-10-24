@@ -64,6 +64,9 @@ class SessionServer:
         population.generate_mating_pool()
         current_population = 0
         child_expressions = []
+
+        print(population.mating_pool)
+
         while current_population < self.population_size:
             parents = population.natural_selection()
             parents = TreeUtils.sort_trees_by_fitness_desc(parents)
