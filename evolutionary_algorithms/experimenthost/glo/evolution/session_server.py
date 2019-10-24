@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 from tqdm import trange
 
@@ -31,6 +33,75 @@ class SessionServer:
 
         self.data_dict = data_dict
 
+    def evaluate_current_generation(self, population):
+        print("############# Starting Evaluation ################## \n\n")
+        for tree_idx in range(len(population.working_trees)):
+            tree = population.working_trees[tree_idx]
+            print(f" \n\n \t\t {tree.generate_printable_expression()} \n")
+            fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
+
+            if tree.working:
+                fitness_evaluator.train()
+                fitness_evaluator.evaluate()
+
+                tree.fitness = fitness_evaluator.score[1]
+                print("Tree Fitness", tree.fitness)
+
+                tree.avg_epoch_time = np.mean(fitness_evaluator.times)
+                print("Average Epoch Time: ", tree.avg_epoch_time)
+
+                population.trainable_trees.append(tree)
+            else:
+                print(" \n ########### NOTE: This Tree Failed ... \n")
+
+        population.initialize_trainable_tree_fitness()
+        return population
+
+    def initialize_next_gen(self, population):
+        next_gen_trees = []
+        number_of_elites = math.ceil(len(population.trainable_trees) * self.elitism)
+        elites = population.trainable_trees[number_of_elites]
+        print("############# Starting Reproduction ################## \n")
+        population.generate_mating_pool()
+        current_population = 0
+        child_expressions = []
+        while current_population < self.population_size:
+            parents = population.natural_selection()
+            parents = TreeUtils.sort_trees_by_fitness_desc(parents)
+            child = Crossover.crossover(parents[0], parents[1])
+            child = Mutation.weighted_function_mutation(child, self.weighted_function_mutation_rate)
+            child = Mutation.mutate_leaf_node(child, self.mutate_leaf_node_rate)
+            child = Mutation.mutate_value_literal_nodes(child, self.mutate_value_literal_nodes_rate)
+            try:
+                child.reset_tree()
+            except:
+                continue
+
+            if not child.working:
+                continue
+
+            if child.symbolic_expression in child_expressions:
+                continue
+
+            next_gen_trees.append(child)
+            child_expressions.append(child.symbolic_expression)
+            current_population += 1
+            print(f"Child {current_population} after reproduction Expression: {child.symbolic_expression}")
+
+        next_gen_trees.extend(elites)
+        print("\nElites from Previous Generation: ")
+        [print(elite) for elite in elites]
+
+        print("############# Initializing new Generation ################## \n\n\n\n")
+        population = Population(None,
+                                None,
+                                self.population_size,
+                                self.number_parents,
+                                self.mating_pool_multiplier,
+                                initial_population=next_gen_trees)
+        population.get_working_trees()
+        return population
+
     def evolve(self):
 
         population = Population(self.tree_min_height,
@@ -40,62 +111,16 @@ class SessionServer:
                                 self.mating_pool_multiplier)
 
         for gen in range(self.num_of_generations):
-            next_gen_trees = []
             print(f"Starting Evolution for Generation {gen}")
-            print("############# Starting Evaluation ################## \n\n")
-            for tree_idx in range(len(population.working_trees)):
-                tree = population.working_trees[tree_idx]
-                print(f" \n\n \t\t {tree.generate_printable_expression()} \n")
-                fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
 
-                if tree.working:
-                    fitness_evaluator.train()
-                    fitness_evaluator.evaluate()
+            population = self.evaluate_current_generation(population)
 
-                    tree.fitness = fitness_evaluator.score[1]
-                    print("Tree Fitness", tree.fitness)
-
-                    tree.avg_epoch_time = np.mean(fitness_evaluator.times)
-                    print("Average Epoch Time: ", tree.avg_epoch_time)
-
-                    population.trainable_trees.append(tree)
-                else:
-                    print(" \n ########### NOTE: This Tree Failed ... \n")
-
-            population.initialize_trainable_tree_fitness()
             best_candidate = population.get_best_fitness_candidate()
             print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
              Fitness: {best_candidate.fitness} \n \
              Average Epoch Time: {best_candidate.avg_epoch_time}")
             print("\n #################################################################### ")
 
-            print("############# Starting Reproduction ################## \n")
-            population.generate_mating_pool()
-            current_population = 0
-            while current_population < self.population_size:
-                parents = population.natural_selection()
-                parents = TreeUtils.sort_trees_by_fitness_desc(parents)
-                child = Crossover.crossover(parents[0], parents[1])
-                child = Mutation.weighted_function_mutation(child, self.weighted_function_mutation_rate)
-                child = Mutation.mutate_leaf_node(child, self.mutate_leaf_node_rate)
-                child = Mutation.mutate_value_literal_nodes(child, self.mutate_value_literal_nodes_rate)
-                try:
-                    child.reset_tree()
-                except:
-                    continue
+            population = self.initialize_next_gen(population)
 
-                if not child.working:
-                    continue
 
-                next_gen_trees.append(child)
-                current_population += 1
-                print(f"Child {current_population} after reproduction Expression: {child.symbolic_expression}")
-
-            print("############# Initializing new Generation ################## \n\n\n\n")
-            population = Population(None,
-                                    None,
-                                    self.population_size,
-                                    self.number_parents,
-                                    self.mating_pool_multiplier,
-                                    initial_population=next_gen_trees)
-            population.get_working_trees()

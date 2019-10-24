@@ -18,6 +18,7 @@ class Population:
         self.working_trees = []  # These are the trees filtered out after symbolic expressions have been created
         self.trainable_trees = []  # These are the trees that were actually trainable on the evaluator
         self.trainable_trees_fitness = []  # Thus contains the fitness of the trainable trees
+        self.symbolic_experssions = []  # Cache to generate unique expressions
         self.mating_pool = None
 
         if initial_population is None:
@@ -30,7 +31,8 @@ class Population:
             tree_heights = []
             for tree in self.trees:
                 tree_heights.append(tree.height)
-
+                tree.symbolic_expression.append(tree.symbolic_expression)
+            self.population_size = len(self.trees)
             self.min_height = min(tree_heights)
             self.max_height = max(tree_heights)
 
@@ -49,7 +51,12 @@ class Population:
         """
         print("\n\nGenerating Tress ...")
         while len(self.trees) < self.population_size:
-            self.trees.append(Tree(self.min_height, self.max_height))
+
+            tree = Tree(self.min_height, self.max_height)
+            if tree.symbolic_expression in self.symbolic_experssions:
+                continue
+            self.trees.append(tree)
+            self.symbolic_experssions.append(tree.symbolic_expression)
 
         self.get_working_trees()
 
