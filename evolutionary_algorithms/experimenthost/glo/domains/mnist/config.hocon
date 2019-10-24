@@ -38,6 +38,9 @@
 },
 
 # Persistance Specs
+"persistance_specs": {
+    "output_path": "results"
+}
 
 # Hardware Specs
 
