@@ -73,6 +73,7 @@ class SessionServer:
             population.generate_mating_pool()
             for child_num in range(self.population_size):
                 parents = population.natural_selection()
+                print(parents)
                 parents = TreeUtils.sort_trees_by_fitness_desc(parents)
                 child = Crossover.crossover(parents[0], parents[1])
                 child = Mutation.weighted_function_mutation(child, self.weighted_function_mutation_rate)
