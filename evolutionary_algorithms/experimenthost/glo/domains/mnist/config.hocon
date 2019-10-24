@@ -28,8 +28,8 @@
     "mutate_leaf_node_rate": 0.025,
     "elitism": 0.1,
     "num_of_generations": 100,
-    "tree_min_height": 2,
-    "tree_max_height": 2
+    "tree_min_height": 3,
+    "tree_max_height": 3
 },
 
 # Visualization Specs

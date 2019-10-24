@@ -18,11 +18,11 @@ class FunctionLibrary:
             # "sin": K.sin,
             "log": K.log,
             "exp": K.exp,
-            # "tan": tf.tan,
+            "tan": tf.tan,
             "square": K.square,
             "sqrt": K.sqrt,
-            # "cosh": tf.math.cosh,
-            # "sinh": tf.math.sinh
+            "cosh": tf.math.cosh,
+            "sinh": tf.math.sinh
         },
         "B": {
             "+": lambda x, y: tf.add(x, y),

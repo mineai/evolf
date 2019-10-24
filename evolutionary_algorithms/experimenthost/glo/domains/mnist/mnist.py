@@ -5,7 +5,7 @@ from evolutionary_algorithms.experimenthost.glo.evolution.session_server import 
 from evolutionary_algorithms.servicecommon.parsers.parse_hocon import ParseHocon
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="This server is used to evolve strings")
+    parser = argparse.ArgumentParser(description="This server is used to evolve a loss function for the MNIST Dataset")
     # The model name should not have .json
     parser.add_argument("--config",
                         help="The Hocon Config file location")
