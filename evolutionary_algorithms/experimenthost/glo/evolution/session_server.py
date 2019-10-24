@@ -64,14 +64,15 @@ class SessionServer:
 
             population.initialize_trainable_tree_fitness()
             best_candidate = population.get_best_fitness_candidate()
-            print(f"Best Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
+            print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
              Fitness: {best_candidate.fitness} \n \
              Average Epoch Time: {best_candidate.avg_epoch_time}")
             print("\n #################################################################### ")
 
             print("############# Starting Reproduction ################## \n")
             population.generate_mating_pool()
-            for child_num in range(self.population_size):
+            current_population = 0
+            while current_population < self.population_size:
                 parents = population.natural_selection()
                 parents = TreeUtils.sort_trees_by_fitness_desc(parents)
                 child = Crossover.crossover(parents[0], parents[1])
@@ -82,12 +83,12 @@ class SessionServer:
                     child.reset_tree()
                 except:
                     print("The Child produced was bad.")
-                    child_num -= 1
+                    current_population -= 1
                     continue
 
                 next_gen_trees.append(child)
-
-                print(f"Child {child_num} after reproduction Expression: {child.symbolic_expression}")
+                current_population += 1
+                print(f"Child {current_population} after reproduction Expression: {child.symbolic_expression}")
 
             print("############# Initializing new Generation ################## \n\n\n\n")
             population = Population(None,
@@ -96,3 +97,4 @@ class SessionServer:
                                     self.number_parents,
                                     self.mating_pool_multiplier,
                                     initial_population=next_gen_trees)
+            population.get_working_trees()
