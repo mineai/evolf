@@ -16,7 +16,7 @@ class Statistics:
             "U": tree.unary_count,
             "B": tree.binary_count,
             "L": tree.literal_count,
-            "expression": str(tree.symbolic_expression),
+            "expression": tree.generate_printable_expression(),
             "fitness": tree.fitness,
             "avg_epoch_time": tree.avg_epoch_time
         }

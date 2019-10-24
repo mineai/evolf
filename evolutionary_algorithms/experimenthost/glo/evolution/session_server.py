@@ -1,4 +1,5 @@
 import math
+import matplotlib.pyplot as mpl
 
 import numpy as np
 from tqdm import trange
@@ -8,6 +9,7 @@ from evolutionary_algorithms.experimenthost.glo.populate.population import Popul
 from evolutionary_algorithms.experimenthost.glo.reproduction.crossover import Crossover
 from evolutionary_algorithms.experimenthost.glo.reproduction.mutation import Mutation
 from evolutionary_algorithms.experimenthost.glo.utils.tree_utils import TreeUtils
+from evolutionary_algorithms.experimenthost.glo.utils.evolution_persistor import EvolutionPersistor
 
 
 class SessionServer:
@@ -19,6 +21,7 @@ class SessionServer:
         self.visualization_specs = self.config.get("visualization_specs")
         self.domain_config = self.config.get("domain_config")
         self.evaluator_specs = self.domain_config.get("evaluator_specs")
+        self.persistence_specs = self.config.get("persistence_specs")
 
         self.population_size = self.evolution_specs.get("population_size")
         self.mating_pool_multiplier = self.evolution_specs.get("mating_pool_multiplier")
@@ -30,14 +33,21 @@ class SessionServer:
         self.num_of_generations = self.evolution_specs.get("num_of_generations")
         self.tree_min_height = self.evolution_specs.get("tree_min_height")
         self.tree_max_height = self.evolution_specs.get("tree_max_height")
+        self.output_path = self.persistence_specs.get("output_path")
 
         self.data_dict = data_dict
 
+        self.persistor_obj = EvolutionPersistor(self.output_path)
+        self.generation_number = 1
+
+
+
     def evaluate_current_generation(self, population):
         print("############# Starting Evaluation ################## \n\n")
+        self.persistor_obj.create_generation_folder(self.generation_number)
         for tree_idx in trange(len(population.working_trees)):
             tree = population.working_trees[tree_idx]
-            print(f" \n\n \t\t {tree.generate_printable_expression()} \n")
+            print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
             fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
 
             if tree_idx > self.population_size:
@@ -55,11 +65,19 @@ class SessionServer:
                 tree.avg_epoch_time = np.mean(fitness_evaluator.times)
                 print("Average Epoch Time: ", tree.avg_epoch_time, "\n\n ###########################################################################")
 
+                # Create tree_<index>_fitness folder at output_path
+                self.persistor_obj.create_tree_folder((tree_idx + 1), tree, self.generation_number)
+                # pickle the tree
+                # put tree stats in a json file
+
                 population.trainable_trees.append(tree)
             else:
                 print("This tree failed while training", "\n\n ###########################################################################")
 
         population.initialize_trainable_tree_fitness()
+
+        self.generation_number += 1
+
         return population
 
     def initialize_next_gen(self, population):
