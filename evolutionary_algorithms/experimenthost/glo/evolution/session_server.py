@@ -118,6 +118,9 @@ class SessionServer:
             print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
              Fitness: {best_candidate.fitness} \n \
              Average Epoch Time: {best_candidate.avg_epoch_time}")
+
+            print(f"\n\n Population Average Fitness: {np.mean(population.trainable_trees_fitness)}")
+
             print("\n #################################################################### ")
 
             population = self.initialize_next_gen(population)
