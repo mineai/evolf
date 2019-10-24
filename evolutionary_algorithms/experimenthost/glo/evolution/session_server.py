@@ -53,6 +53,7 @@ class SessionServer:
                 population.trainable_trees.append(tree)
 
         population.initialize_trainable_tree_fitness()
+        print("Trainable Trees In Evaluation: ", population.trainable_trees)
         return population
 
     def initialize_next_gen(self, population):
