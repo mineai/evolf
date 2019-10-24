@@ -1,6 +1,7 @@
 import argparse
 
 from evolutionary_algorithms.experimenthost.glo.domains.mnist.generate_mnist_data import GenerateMnistData
+from evolutionary_algorithms.experimenthost.glo.domains.mnist.network_constructor import NetworkConstructor
 from evolutionary_algorithms.experimenthost.glo.evolution.session_server import SessionServer
 from evolutionary_algorithms.servicecommon.parsers.parse_hocon import ParseHocon
 
@@ -13,5 +14,12 @@ if __name__ == "__main__":
     # Read the Config File
     conf = ParseHocon().parse(args.config)
     data_dict = GenerateMnistData.get_data()
+
+    domain_config = conf.get("domain_config")
+    data_generation_config = domain_config.get("data_generation")
+    generate_data = data_generation_config.get("generate_data")
+
+    if generate_data:
+        NetworkConstructor(data_dict.get("input_shape"), data_generation_config)
     session_server = SessionServer(conf, data_dict)
     session_server.evolve()

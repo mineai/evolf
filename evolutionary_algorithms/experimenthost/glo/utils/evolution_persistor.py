@@ -21,7 +21,7 @@ class EvolutionPersistor:
 
     def create_root_experiment_folder(self, path):
         self.experiment_root_path = f"{path}/glo_{self.experiment_id}"
-        os.mkdir(self.experiment_root_path)
+        os.makedirs(self.experiment_root_path)
 
     def create_generation_folder(self, generation_idx):
         generation_path = f"{self.experiment_root_path}/Generation_{generation_idx}"

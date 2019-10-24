@@ -8,7 +8,15 @@
         "epochs": 1,
         "verbose": 1,
         "batch_size": 32,
-        "model_path": " ",
+        "model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/medium_model/",
+        "model_file_name": "mnist_model.json",
+        "weight_file_name": "mnist_model_weights.h5"
+    },
+
+    "data_generation": {
+        "generate_data": True,
+        "medium_model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/medium_model/",
+        "small_model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/small_model/",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5"
     },
@@ -40,7 +48,7 @@
 
 # Persistance Specs
 "persistence_specs": {
-    "output_path": "C:/Users/aj132/Desktop/mine-ai/results"
+    "output_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/results"
 }
 
 # Hardware Specs
