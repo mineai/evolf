@@ -35,9 +35,13 @@
 # Visualization Specs
 "visualization_specs": {
     "visualize": True,
+
 },
 
 # Persistance Specs
+"persistence_specs": {
+    "output_path": "C:/Users/aj132/Desktop/mine-ai/results"
+}
 
 # Hardware Specs
 

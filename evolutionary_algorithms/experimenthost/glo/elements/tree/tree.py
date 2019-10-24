@@ -120,7 +120,7 @@ class Tree(LinearTree, TreeConstruction):
             print("Expression Not Built Yet!")
             return ""
         else:
-            expression = f"Expression: {self.root.function_str} ( {self.symbolic_expression} )"
+            expression = f"{self.root.function_str} ( {self.symbolic_expression} )"
             # print(expression)
             return expression
 

@@ -2,7 +2,7 @@ import json
 import os
 
 
-class JsonPersistor():
+class JsonPersistor:
 
     def __init__(self, base_file_name="file", folder="."):
         """
@@ -21,7 +21,7 @@ class JsonPersistor():
         """
         This function takes in a dictionary and
         persists at the path with the base_file_name
-        :param dict: Dictornary to persist
+        :param dict: Dictionary to persist
         :returns nothing
         """
         if not self.base_file_name:
