@@ -45,7 +45,7 @@ class SessionServer:
             print("############# Starting Evaluation ################## \n\n")
             for tree_idx in range(len(population.working_trees)):
                 tree = population.working_trees[tree_idx]
-                print(f" \n\n \t\tExpression = {tree.generate_printable_expression()} \n")
+                print(f" \n\n \t\t {tree.generate_printable_expression()} \n")
                 fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
 
                 if tree.working:
