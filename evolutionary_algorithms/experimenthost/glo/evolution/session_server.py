@@ -61,12 +61,13 @@ class SessionServer:
         sorted_parents = TreeUtils.sort_trees_by_fitness_desc(population.trainable_trees)
         elites = sorted_parents[:number_of_elites]
         print("############# Starting Reproduction ################## \n")
+        print("Trainable Trees: ", population.trainable_trees)
+
         population.generate_mating_pool()
+        print("Mating Pool: ", population.mating_pool)
+
         current_population = 0
         child_expressions = []
-
-        print(population.mating_pool)
-
         while current_population < self.population_size:
             parents = population.natural_selection()
             parents = TreeUtils.sort_trees_by_fitness_desc(parents)
@@ -121,9 +122,7 @@ class SessionServer:
             print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
              Fitness: {best_candidate.fitness} \n \
              Average Epoch Time: {best_candidate.avg_epoch_time}")
-
             print(f"\n\n Population Average Fitness: {np.mean(population.trainable_trees_fitness)}")
-
             print("\n #################################################################### ")
 
             population = self.initialize_next_gen(population)
