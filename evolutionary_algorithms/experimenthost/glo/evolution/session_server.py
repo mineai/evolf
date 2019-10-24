@@ -40,6 +40,11 @@ class SessionServer:
             print(f" \n\n \t\t {tree.generate_printable_expression()} \n")
             fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
 
+            if tree_idx > self.population_size:
+                # If it is an Elite, no need to train Again
+                population.trainable_trees.append(tree)
+                continue
+
             if tree.working:
                 fitness_evaluator.train()
                 fitness_evaluator.evaluate()
@@ -51,6 +56,8 @@ class SessionServer:
                 print("Average Epoch Time: ", tree.avg_epoch_time, "\n\n ###########################################################################")
 
                 population.trainable_trees.append(tree)
+            else:
+                print("This tree failed while training", "\n\n ###########################################################################")
 
         population.initialize_trainable_tree_fitness()
         return population

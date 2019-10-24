@@ -18,7 +18,6 @@ class InitializeKerasModel(LoadKerasEvaluator):
                           metrics=['accuracy'])
             return True
         except:
-            print("\n\n This tree failed while training \n\n")
             self.tree.working = False
             return False
 
