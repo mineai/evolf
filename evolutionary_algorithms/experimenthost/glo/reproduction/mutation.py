@@ -1,7 +1,6 @@
 import random
 import copy
 
-from evolutionary_algorithms.experimenthost.glo.elements.node import Node
 from evolutionary_algorithms.experimenthost.glo.elements.tree.tree import Tree
 from evolutionary_algorithms.experimenthost.glo.populate.function_library import FunctionLibrary
 
@@ -19,7 +18,8 @@ class Mutation:
         :param mutate_node_function_rate:
         :return child: The mutated tree object
         """
-        child = copy.deepcopy(tree)
+        # child = copy.deepcopy(tree)
+        child = tree
         for node in child.nodes:
             if node.operator_type not in ["R"]:
                 if random.random() < mutate_node_function_rate:
@@ -44,7 +44,8 @@ class Mutation:
         :param mutate_integer_nodes_rate:
         :return child: The mutated tree object
         """
-        child = copy.deepcopy(tree)
+        # child = copy.deepcopy(tree)
+        child = tree
         linearized_tree = child.nodes
         for node in linearized_tree:
             if node.function_str in ["pos_scalar", "neg_scalar"]:
@@ -64,7 +65,8 @@ class Mutation:
         :param mutate_leaf_rate:
         :return:
         """
-        child = copy.deepcopy(tree)
+        # child = copy.deepcopy(tree)
+        child = tree
         for node in child.nodes:
             if node.operator_type == "L":
                 if random.random() < mutate_leaf_rate:

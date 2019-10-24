@@ -46,3 +46,19 @@ class TreeUtils:
         func.remove('')
         return func
 
+    @staticmethod
+    def sort_trees_by_fitness_desc(tree_list):
+        import numpy as np
+        sorted_trees = []
+        fitness = []
+
+        [fitness.append(tree.fitness) for tree in tree_list]
+
+        while len(tree_list):
+            best_tree = tree_list[np.argmax(fitness)]
+            sorted_trees.append(best_tree)
+            tree_list.remove(best_tree)
+
+        return sorted_trees
+
+

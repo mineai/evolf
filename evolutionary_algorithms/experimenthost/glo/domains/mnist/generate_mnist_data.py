@@ -38,4 +38,12 @@ class GenerateMnistData:
         y_train = keras.utils.to_categorical(y_train, num_classes)
         y_test = keras.utils.to_categorical(y_test, num_classes)
 
-        return x_train, x_test, y_train, y_test, input_shape
+        data_dict = {
+            "x_train": x_train,
+            "x_test": x_test,
+            "y_train": y_train,
+            "y_test": y_test,
+            "input_shape": input_shape
+        }
+
+        return data_dict

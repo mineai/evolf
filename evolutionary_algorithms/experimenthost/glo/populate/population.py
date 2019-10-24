@@ -1,6 +1,6 @@
 from evolutionary_algorithms.experimenthost.glo.elements.tree.tree \
     import Tree
-from tqdm import trange
+import numpy as np
 
 from evolutionary_algorithms.reproduction.selection.selection_functions_library \
     import SelectionFunctionsLibrary
@@ -10,16 +10,29 @@ from evolutionary_algorithms.servicecommon.utils.math_utils \
 
 class Population:
     def __init__(self, min_height=3, max_height=10, population_size=25,
-                 num_parents=2, mating_pool_multiplier=100):
-        self.min_height = min_height
-        self.max_height = max_height
+                 num_parents=2, mating_pool_multiplier=100,
+                 initial_population=None):
         self.population_size = population_size
         self.num_parents = num_parents
-
-        self.trees = []
-        self.working_trees = []
-        self.mating_pool = None
         self.mating_pool_multiplier = mating_pool_multiplier
+        self.working_trees = []  # These are the trees filtered out after symbolic expressions have been created
+        self.trainable_trees = []  # These are the trees that were actually trainable on the evaluator
+        self.trainable_trees_fitness = []  # Thus contains the fitness of the trainable trees
+        self.mating_pool = None
+
+        if initial_population is None:
+            self.min_height = min_height
+            self.max_height = max_height
+            self.trees = []
+            self.generate_population()
+        else:
+            self.trees = initial_population
+            tree_heights = []
+            for tree in self.trees:
+                tree_heights.append(tree.height)
+
+            self.min_height = min(tree_heights)
+            self.max_height = max(tree_heights)
 
     def generate_population(self):
         """
@@ -34,7 +47,7 @@ class Population:
         returns: Nothing
 
         """
-        print("\n\n ######### Generating Tress ######### \n\n")
+        print("\n\nGenerating Tress ...")
         while len(self.trees) < self.population_size:
             self.trees.append(Tree(self.min_height, self.max_height))
 
@@ -46,8 +59,8 @@ class Population:
         stores them in self.working_trees.
         :return nothing:
         """
-        print("\n\n ######### Extracting Working Tress ######### \n\n")
-        for tree_idx in trange(len(self.trees)):
+        print("Extracting Working Tress ... \n\n")
+        for tree_idx in range(len(self.trees)):
             tree = self.trees[tree_idx]
             if tree.symbolic_expression is None:
                 tree.construct_symbolic_expression()
@@ -56,6 +69,14 @@ class Population:
 
             if tree.working:
                 self.working_trees.append(tree)
+
+    def get_best_fitness_candidate(self):
+        if not len(self.trainable_trees):
+            print("Trees have not yet been trained or no Trained Trees Exist")
+        else:
+            best_candidate_index = np.argmax(self.trainable_trees_fitness)
+            best_candidate = self.trainable_trees[best_candidate_index]
+            return best_candidate
 
     def generate_mating_pool(self):
         """
@@ -70,15 +91,15 @@ class Population:
         Returns: mating_pool: The larger mating pool that reflects individual trees' fitness 
                  probability along with the mating_pool_multiplier.
 
-                 fitnes_probs: The list of fitness probablities for each tree from the original
+                 fitness_probs: The list of fitness probabilities for each tree from the original
                  trees list.
 
         """
 
-        fitness = []
-        for tree in self.trees:
-            fitness.append(tree.fitness)
-        fitness_probs = MathUtils.softmax(fitness)
+        self.trainable_trees_fitness = []
+        for tree in self.trainable_trees:
+            self.trainable_trees_fitness.append(tree.fitness)
+        fitness_probs = MathUtils.softmax(self.trainable_trees_fitness)
         self.mating_pool = SelectionFunctionsLibrary.default_mating_pool(
             self.trees, fitness_probs, self.mating_pool_multiplier)
 

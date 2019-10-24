@@ -1,8 +1,10 @@
 import json
+import os
+
 
 class JsonPersistor():
 
-    def __init__(self, base_file_name=".", folder=""):
+    def __init__(self, base_file_name="file", folder="."):
         """
         This constructor initializes the name of the file to
         persist at what path.
@@ -26,9 +28,10 @@ class JsonPersistor():
             file_name = "default_dict"
         else:
             file_name = self.base_file_name
-        if not self.folder[-1] == "/":
-            self.folder += "/"
-        with open(self.folder + self.base_file_name +'.json', 'w') as fp:
+        if len(self.folder.strip()):
+            if not self.folder[-1] == "/":
+                self.folder += "/"
+        with open(self.folder + self.base_file_name + '.json', 'w') as fp:
             json.dump(dict, fp, indent=4)
 
     def restore(self):
@@ -40,12 +43,18 @@ class JsonPersistor():
         :returns dict: Dictionary created from the
         JSON
         """
-        if not self.folder[-1] == "/":
-            self.folder += "/"
-        file = self.folder + self.base_file_name +'.json'
+        if len(self.folder.strip()):
+            if not self.folder[-1] == "/":
+                self.folder += "/"
+        file = self.folder + self.base_file_name + '.json'
+        print(file)
+        print(os.getcwd())
         try:
             dict = json.load(file)
-        except e:
-            print(e)
+        except:
+            try:
+                dict = json.loads(file)
+            except:
+                print("Cannot read Dictionary")
 
         return dict
