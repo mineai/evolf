@@ -62,6 +62,7 @@ class SessionServer:
                 else:
                     print(" \n ########### NOTE: This Tree Failed ... \n")
 
+            population.initialize_trainable_tree_fitness()
             best_candidate = population.get_best_fitness_candidate()
             print(f"Best Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
              Fitness: {best_candidate.fitness} \n \

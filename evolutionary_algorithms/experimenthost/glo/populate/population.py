@@ -70,6 +70,11 @@ class Population:
             if tree.working:
                 self.working_trees.append(tree)
 
+    def initialize_trainable_tree_fitness(self):
+        self.trainable_trees_fitness = []
+        for tree in self.trainable_trees:
+            self.trainable_trees_fitness.append(tree.fitness)
+
     def get_best_fitness_candidate(self):
         if not len(self.trainable_trees):
             print("Trees have not yet been trained or no Trained Trees Exist")
@@ -95,10 +100,10 @@ class Population:
                  trees list.
 
         """
-
-        self.trainable_trees_fitness = []
-        for tree in self.trainable_trees:
-            self.trainable_trees_fitness.append(tree.fitness)
+        if not len(self.trainable_trees_fitness):
+            self.trainable_trees_fitness = []
+            for tree in self.trainable_trees:
+                self.trainable_trees_fitness.append(tree.fitness)
         fitness_probs = MathUtils.softmax(self.trainable_trees_fitness)
         self.mating_pool = SelectionFunctionsLibrary.default_mating_pool(
             self.trees, fitness_probs, self.mating_pool_multiplier)
