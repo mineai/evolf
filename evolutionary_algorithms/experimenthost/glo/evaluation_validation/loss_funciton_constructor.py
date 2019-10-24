@@ -1,6 +1,3 @@
-from evolutionary_algorithms.experimenthost.glo.populate.function_library import FunctionLibrary
-
-
 class LossFunctionConstructor:
     """
     This class provides a wrapper to construct the loss function

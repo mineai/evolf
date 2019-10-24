@@ -21,6 +21,7 @@ class TreeConstruction:
 
         token = self.request_token()
         self.root = self.helper_function(token)
+        self.assign_level_order_id()
 
     def request_token(self):
         """

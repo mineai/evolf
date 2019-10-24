@@ -1,3 +1,9 @@
+import os
+
+from evolutionary_algorithms.experimenthost.glo.utils.statistics import Statistics
+from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor import JsonPersistor
+
+
 class MnistPersistor:
     def persist(self, tree, tree_idx, base_dir=None):
 

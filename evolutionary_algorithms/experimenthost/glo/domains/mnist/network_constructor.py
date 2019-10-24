@@ -3,6 +3,9 @@ from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 import keras
 
+from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor import JsonPersistor
+
+
 class NetworkConstructor:
 
     def __init__(self, input_shape):
@@ -11,6 +14,12 @@ class NetworkConstructor:
         self.initial_model = self.create_conv_model(self.input_shape)
         self.initial_model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
         self.initial_model_weights = self.initial_model.get_weights()
+        self.model_json = self.initial_model.to_json()
+
+        # Save Locally
+        with open("mnist_model.json", "w") as json_file:
+            json_file.write(self.model_json)
+        self.initial_model.save_weights("mnist_model_weights.h5")
 
     def create_conv_model(self, input_shape):
         model = Sequential()
