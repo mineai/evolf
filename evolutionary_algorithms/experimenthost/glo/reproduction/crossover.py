@@ -45,6 +45,6 @@ class Crossover:
                 selected_node_1.parent.right = selected_node_2
 
         # Reset the node id's
-        child.reset_tree()
+        # child.reset_tree()
 
         return child

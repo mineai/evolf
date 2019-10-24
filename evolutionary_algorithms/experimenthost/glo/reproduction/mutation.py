@@ -33,7 +33,7 @@ class Mutation:
                     weight = random.uniform(--10, 10)
                     node.coefficient = weight
 
-        child.reset_tree()
+        # child.reset_tree()
         return child
 
     @staticmethod
@@ -54,7 +54,7 @@ class Mutation:
                     node.symbolic_handle += random_int
                     node.tensorflow_handle += random_int
 
-        child.reset_tree()
+        # child.reset_tree()
         return child
 
     @staticmethod
@@ -81,6 +81,6 @@ class Mutation:
                             node.parent.right = new_tree.root.left
                     break
 
-        child.reset_tree()
+        # child.reset_tree()
         return child
 

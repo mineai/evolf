@@ -78,7 +78,12 @@ class SessionServer:
                 child = Mutation.weighted_function_mutation(child, self.weighted_function_mutation_rate)
                 child = Mutation.mutate_leaf_node(child, self.mutate_leaf_node_rate)
                 child = Mutation.mutate_value_literal_nodes(child, self.mutate_value_literal_nodes_rate)
-                child.reset_tree()
+                try:
+                    child.reset_tree()
+                except:
+                    print("The Child produced was bad.")
+                    child_num -= 1
+                    continue
 
                 next_gen_trees.append(child)
 
@@ -91,8 +96,3 @@ class SessionServer:
                                     self.number_parents,
                                     self.mating_pool_multiplier,
                                     initial_population=next_gen_trees)
-
-
-
-
-
