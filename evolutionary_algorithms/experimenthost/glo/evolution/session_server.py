@@ -82,11 +82,9 @@ class SessionServer:
                 try:
                     child.reset_tree()
                 except:
-                    print("The Child produced was bad.")
                     continue
 
                 if not child.working:
-                    print("The Child produced was bad.")
                     continue
 
                 next_gen_trees.append(child)
