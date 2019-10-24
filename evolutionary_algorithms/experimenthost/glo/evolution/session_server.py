@@ -35,7 +35,7 @@ class SessionServer:
 
     def evaluate_current_generation(self, population):
         print("############# Starting Evaluation ################## \n\n")
-        for tree_idx in range(len(population.working_trees)):
+        for tree_idx in trange(len(population.working_trees)):
             tree = population.working_trees[tree_idx]
             print(f" \n\n \t\t {tree.generate_printable_expression()} \n")
             fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
@@ -51,8 +51,6 @@ class SessionServer:
                 print("Average Epoch Time: ", tree.avg_epoch_time)
 
                 population.trainable_trees.append(tree)
-            else:
-                print(" \n ########### NOTE: This Tree Failed ... \n")
 
         population.initialize_trainable_tree_fitness()
         return population
@@ -60,7 +58,8 @@ class SessionServer:
     def initialize_next_gen(self, population):
         next_gen_trees = []
         number_of_elites = math.ceil(len(population.trainable_trees) * self.elitism)
-        elites = population.trainable_trees[number_of_elites]
+        sorted_parents = TreeUtils.sort_trees_by_fitness_desc(population.trainable_trees)
+        elites = sorted_parents[:number_of_elites]
         print("############# Starting Reproduction ################## \n")
         population.generate_mating_pool()
         current_population = 0
@@ -90,7 +89,7 @@ class SessionServer:
 
         next_gen_trees.extend(elites)
         print("\nElites from Previous Generation: ")
-        [print(elite) for elite in elites]
+        [print(elite.generate_printable_expression()) for elite in elites]
 
         print("############# Initializing new Generation ################## \n\n\n\n")
         population = Population(None,
