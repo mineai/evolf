@@ -49,7 +49,7 @@ class TreeUtils:
     @staticmethod
     def sort_trees_by_fitness_desc(tree_list):
         import copy
-        tree_list = copy.deepcopy(tree_list)
+        tree_list = copy.copy(tree_list)
         import numpy as np
         sorted_trees = []
         fitness = []
