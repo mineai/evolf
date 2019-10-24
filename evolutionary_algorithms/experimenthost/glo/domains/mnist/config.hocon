@@ -29,7 +29,7 @@
     "elitism": 0.1,
     "num_of_generations": 100,
     "tree_min_height": 2,
-    "tree_max_height": 3
+    "tree_max_height": 2
 },
 
 # Visualization Specs
