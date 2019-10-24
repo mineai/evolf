@@ -58,6 +58,7 @@ class TreeUtils:
             best_tree = tree_list[np.argmax(fitness)]
             sorted_trees.append(best_tree)
             tree_list.remove(best_tree)
+            fitness.remove(max(fitness))
 
         return sorted_trees
 
