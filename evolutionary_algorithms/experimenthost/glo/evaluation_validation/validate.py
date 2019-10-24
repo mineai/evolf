@@ -21,7 +21,6 @@ class Validate:
         for literal in literals:
             deriv = sp.diff(symbolic_expression,
                             sp.Symbol(literal))
-            print(f"Deriv of {symbolic_expression} wrt {literal} = {deriv}")
             if deriv == 0:
                 return False
 
