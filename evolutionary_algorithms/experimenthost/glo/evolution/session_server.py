@@ -45,7 +45,7 @@ class SessionServer:
             print("############# Starting Evaluation ################## \n\n")
             for tree_idx in range(len(population.working_trees)):
                 tree = population.working_trees[tree_idx]
-                print(f" \n\n Expression = {tree.symbolic_expression} \n")
+                print(f" \n\n \t\tExpression = {tree.symbolic_expression} \n")
                 fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
 
                 if tree.working:
@@ -67,8 +67,7 @@ class SessionServer:
             print(f"Best Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
              Fitness: {best_candidate.fitness} \n \
              Average Epoch Time: {best_candidate.avg_epoch_time}")
-            print("\n #################################################################### \
-                                ################################################################")
+            print("\n #################################################################### ")
 
             print("############# Starting Reproduction ################## \n")
             population.generate_mating_pool()
