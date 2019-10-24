@@ -48,7 +48,7 @@ class SessionServer:
                 print("Tree Fitness", tree.fitness)
 
                 tree.avg_epoch_time = np.mean(fitness_evaluator.times)
-                print("Average Epoch Time: ", tree.avg_epoch_time)
+                print("Average Epoch Time: ", tree.avg_epoch_time, "\n\n ###########################################################################")
 
                 population.trainable_trees.append(tree)
 
