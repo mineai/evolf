@@ -31,7 +31,7 @@ class Population:
             tree_heights = []
             for tree in self.trees:
                 tree_heights.append(tree.height)
-                tree.symbolic_expressions.append(tree.symbolic_expression)
+                self.symbolic_expressions.append(tree.symbolic_expression)
             self.population_size = len(self.trees)
             self.min_height = min(tree_heights)
             self.max_height = max(tree_heights)
