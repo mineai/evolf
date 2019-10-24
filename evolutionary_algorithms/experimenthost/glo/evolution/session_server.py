@@ -53,7 +53,6 @@ class SessionServer:
                 population.trainable_trees.append(tree)
 
         population.initialize_trainable_tree_fitness()
-        print("Trainable Trees In Evaluation: ", population.trainable_trees)
         return population
 
     def initialize_next_gen(self, population):
@@ -118,7 +117,7 @@ class SessionServer:
             print(f"Starting Evolution for Generation {gen}")
 
             population = self.evaluate_current_generation(population)
-
+            print("Trainable Trees After Evaluation: ", population.trainable_trees)
             best_candidate = population.get_best_fitness_candidate()
             print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
              Fitness: {best_candidate.fitness} \n \
