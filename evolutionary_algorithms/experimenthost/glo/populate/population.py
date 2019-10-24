@@ -104,9 +104,10 @@ class Population:
             self.trainable_trees_fitness = []
             for tree in self.trainable_trees:
                 self.trainable_trees_fitness.append(tree.fitness)
+
         fitness_probs = MathUtils.softmax(self.trainable_trees_fitness)
         self.mating_pool = SelectionFunctionsLibrary.default_mating_pool(
-            self.trainable_trees_fitness, fitness_probs, self.mating_pool_multiplier)
+            self.trainable_trees, fitness_probs, self.mating_pool_multiplier)
 
     def natural_selection(self):
         """
