@@ -35,7 +35,7 @@ class NetworkConstructor:
             os.makedirs(path_to_write_model)
         with open(f"{path_to_write_model}/{model_file_name}", "w") as json_file:
             json_file.write(self.model_json)
-        self.model_medium.save_weights(f"{path_to_write_model}/{weight_file_name}")
+        self.model_small.save_weights(f"{path_to_write_model}/{weight_file_name}")
 
     def create_conv_model_medium(self, input_shape):
         model = Sequential()
