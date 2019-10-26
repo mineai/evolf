@@ -73,8 +73,7 @@ class Crossover:
     time'''
         # Methods for level order traversal through trees------------------------------
 
-        @classmethod
-        def get_given_level(cls, root, level):
+        def get_given_level(root, level):
 
             if root is None:
 
@@ -96,11 +95,10 @@ class Crossover:
 
             elif level > 1:
 
-                cls.get_given_level(root.left, level-1)
-                cls.get_given_level(root.right, level-1)
+                get_given_level(root.left, level-1)
+                get_given_level(root.right, level-1)
 
-        @classmethod
-        def height(cls, node):
+        def height(node):
 
             if node is None:
 
@@ -108,8 +106,8 @@ class Crossover:
 
             else:
 
-                lheight = cls.height(node.left)
-                rheight = cls.height(node.right)
+                lheight = height(node.left)
+                rheight = height(node.right)
                 if lheight > rheight:
 
                     return lheight+1
@@ -118,14 +116,13 @@ class Crossover:
 
                     return rheight+1
 
-        @classmethod
-        def get_level_order(cls, root):
+        def get_level_order(root):
 
-            h = cls.height(root)
+            h = height(root)
             print("New tree")
             for i in range(1, h+1):
 
-                cls.get_given_level(root, i)
+                get_given_level(root, i)
 
     # End--------------------------------------------------------------------
 
@@ -154,11 +151,11 @@ class Crossover:
             cls.tracking = list_of_main_coeff[val]
             cls.tracker = 0
             cls.is_main = True
-            cls.get_level_order(main_tree.root)
+            get_level_order(main_tree.root)
             cls.tracker = 0
             cls.is_main = False
             cls.tracking = list_of_other_coeff[val]
-            cls.get_level_order(copy.deepcopy(lists[val+1].root))
+            get_level_order(copy.deepcopy(lists[val+1].root))
 
             if(cls.main_node.parent.left == cls.main_node):
 
@@ -170,6 +167,6 @@ class Crossover:
 
             main_tree.reset_tree()
 
-        cls.get_level_order(main_tree.root)
+        get_level_order(main_tree.root)
         return main_tree
 
