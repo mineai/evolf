@@ -55,7 +55,6 @@ class TreeUtils:
         fitness = []
 
         [fitness.append(tree.fitness) for tree in tree_list]
-
         while len(tree_list):
             best_tree = tree_list[np.argmax(fitness)]
             sorted_trees.append(best_tree)
