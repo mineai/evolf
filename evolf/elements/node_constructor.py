@@ -1,7 +1,7 @@
 import random
 
-from evol.elements.node import Node
-from evol.populate.function_library import FunctionLibrary
+from evolf.elements.node import Node
+from evolf.populate.function_library import FunctionLibrary
 
 
 class NodeConstructor:

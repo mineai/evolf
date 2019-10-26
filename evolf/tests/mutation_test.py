@@ -1,6 +1,6 @@
-from evol.populate.population import Population
-from evol.reproduction.mutation import Mutation
-from evol.utils.visualize \
+from evolf.populate.population import Population
+from evolf.reproduction.mutation import Mutation
+from evolf.utils.visualize \
     import Visualize
 
 

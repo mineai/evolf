@@ -3,13 +3,13 @@ import math
 import numpy as np
 from tqdm import trange
 
-from evol.elements.tree.tree import Tree
-from evol.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
-from evol.populate.population import Population
-from evol.reproduction.crossover import Crossover
-from evol.reproduction.mutation import Mutation
-from evol.utils.tree_utils import TreeUtils
-from evol.utils.evolution_persistor import EvolutionPersistor
+from evolf.elements.tree.tree import Tree
+from evolf.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
+from evolf.populate.population import Population
+from evolf.reproduction.crossover import Crossover
+from evolf.reproduction.mutation import Mutation
+from evolf.utils.tree_utils import TreeUtils
+from evolf.utils.evolution_persistor import EvolutionPersistor
 
 
 class SessionServer:

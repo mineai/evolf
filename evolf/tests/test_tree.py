@@ -1,7 +1,7 @@
 import random
 import os
 
-from evol.elements.tree.tree import Tree
+from evolf.elements.tree.tree import Tree
 
 tree = Tree(4, 4)
 

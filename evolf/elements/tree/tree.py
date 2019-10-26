@@ -1,8 +1,8 @@
-from evol.elements.tree.linear_tree import LinearTree
-from evol.elements.tree.tree_construction import TreeConstruction
-from evol.utils.visualize import Visualize
-from evol.lossconstructor.evaluate_tree import EvaluateTree
-from evol.lossconstructor.validate import Validate
+from evolf.elements.tree.linear_tree import LinearTree
+from evolf.elements.tree.tree_construction import TreeConstruction
+from evolf.utils.visualize import Visualize
+from evolf.lossconstructor.evaluate_tree import EvaluateTree
+from evolf.lossconstructor.validate import Validate
 
 
 class Tree(LinearTree, TreeConstruction):

@@ -2,15 +2,15 @@ import os
 import time
 import calendar
 
-from evol.populate.population import Population
+from evolf.populate.population import Population
 from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor \
     import JsonPersistor
 from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persistor \
     import PicklePersistor
-from evol.utils.visualize \
+from evolf.utils.visualize \
     import Visualize
 
-from evol.utils.statistics import Statistics
+from evolf.utils.statistics import Statistics
 
 
 class TestGLO:

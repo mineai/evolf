@@ -1,6 +1,6 @@
 from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor import JsonPersistor
-from evol.utils.statistics import Statistics
-from evol.utils.visualize import Visualize
+from evolf.utils.statistics import Statistics
+from evolf.utils.visualize import Visualize
 
 import os
 import calendar
