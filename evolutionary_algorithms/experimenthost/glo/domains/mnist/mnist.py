@@ -19,7 +19,7 @@ if __name__ == "__main__":
     data_dict = GenerateMnistData.get_data(data_config)
 
     model_generation_config = domain_config.get("model_generation")
-    generate_data = model_generation_config.get("generate_data")
+    generate_data = model_generation_config.get("generate_model")
 
     if generate_data:
         NetworkConstructor(data_dict.get("input_shape"), model_generation_config)

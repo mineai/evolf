@@ -16,7 +16,7 @@
     },
 
     "model_generation": {
-        "generate_data": True,
+        "generate_model": True,
         "medium_model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/medium_model/",
         "small_model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/small_model/",
         "model_file_name": "mnist_model.json",
