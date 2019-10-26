@@ -62,6 +62,11 @@ class SessionServer:
 
         print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
         fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
+
+        if self.generation_number == 0 and \
+            self.current_tree == 1:
+            print(fitness_evaluator.model.summary())
+
         if tree.working:
             fitness_evaluator.train()
             fitness_evaluator.evaluate()
