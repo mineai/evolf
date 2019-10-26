@@ -30,7 +30,7 @@
     },
 
     "state_of_the_art_config": {
-        "evaluate": False,
+        "evaluate": True,
         "epochs": 1,
         "verbose": True,
         "batch_size": 32,
@@ -47,15 +47,16 @@
 
 # Evolution Specs
 "evolution_specs": {
-    "population_size": 10,
+    "initial_population_size": 100,
+    "population_size": 20,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
     "weighted_function_mutation_rate": 0.05,
     "mutate_value_literal_nodes_rate": 0.025,
     "mutate_leaf_node_rate": 0.025,
     "elitism": 0.1,
-    "num_of_generations": 100,
-    "tree_min_height": 3,
+    "num_of_generations": 50,
+    "tree_min_height": 2,
     "tree_max_height": 3
 },
 

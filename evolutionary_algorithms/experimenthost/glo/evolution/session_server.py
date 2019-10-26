@@ -24,6 +24,7 @@ class SessionServer:
         self.persistence_specs = self.config.get("persistence_specs")
         self.state_of_the_art_config = self.domain_config.get("state_of_the_art_config")
 
+        self.initial_population_size = self.evolution_specs.get("initial_population_size")
         self.population_size = self.evolution_specs.get("population_size")
         self.mating_pool_multiplier = self.evolution_specs.get("mating_pool_multiplier")
         self.number_parents = self.evolution_specs.get("num_parents")
@@ -36,7 +37,7 @@ class SessionServer:
         self.tree_max_height = self.evolution_specs.get("tree_max_height")
         self.output_path = self.persistence_specs.get("output_path")
         self.state_of_the_art_loss = self.state_of_the_art_config.get("loss")
-        self.evaluate_state_of_the_art = self.state_of_the_art_config.get("evaluate")
+        self.evaluate_state_of_the_art_flag = self.state_of_the_art_config.get("evaluate")
 
         self.data_dict = data_dict
 
@@ -157,21 +158,21 @@ class SessionServer:
         import tensorflow as tf
         tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
-        if self.evaluate_state_of_the_art:
+        if self.evaluate_state_of_the_art_flag:
             print("###################### Evaluating State of the Art\n\n")
             self.evaluate_state_of_the_art()
             print("\n\n ###########################################################################")
 
         population = Population(self.tree_min_height,
                                 self.tree_max_height,
-                                self.population_size,
+                                self.initial_population_size,
                                 self.number_parents,
                                 self.mating_pool_multiplier)
 
         while not len(population.working_trees):
             population = Population(self.tree_min_height,
                                     self.tree_max_height,
-                                    self.population_size,
+                                    self.initial_population_size,
                                     self.number_parents,
                                     self.mating_pool_multiplier)
 
@@ -179,8 +180,10 @@ class SessionServer:
             print(f"Starting Evolution for Generation {gen}")
 
             population = self.evaluate_current_generation(population)
-
-            best_candidate = population.get_best_fitness_candidate()
+            try:
+                best_candidate = population.get_best_fitness_candidate()
+            except:
+                best_candidate = False
             if best_candidate:
                 print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
                  Fitness: {best_candidate.fitness} \n \
