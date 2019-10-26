@@ -207,3 +207,4 @@ class SessionServer:
             population = self.initialize_next_gen(population)
 
             self.generation_number += 1
+            self.current_tree = 1
