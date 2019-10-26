@@ -50,3 +50,17 @@ class EvolutionPersistor:
         from sympy.plotting import plot3d
         graph = plot3d(expression, show=False)
         graph.save(f"{path}/loss_function")
+
+    def persist_best_candidate(self, best_candidate, generation_idx):
+        best_candidate_path = f"{self.experiment_root_path}/Generation_{generation_idx}/best_candidate"
+        os.mkdir(best_candidate_path)
+        tree_stats = Statistics.statistics(best_candidate)
+        json_persistor = JsonPersistor("stats", best_candidate_path)
+        json_persistor.persist(tree_stats)
+
+        try:
+            self.plot_loss(best_candidate.symbolic_expression, best_candidate_path)
+        except:
+            print("Failed to Visualize Loss Function")
+
+

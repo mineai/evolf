@@ -86,6 +86,7 @@ class Population:
     def get_best_fitness_candidate(self):
         if not len(self.trainable_trees):
             print("Trees have not yet been trained or no Trained Trees Exist")
+            return False
         else:
             best_candidate_index = np.argmax(self.trainable_trees_fitness)
             best_candidate = self.trainable_trees[best_candidate_index]

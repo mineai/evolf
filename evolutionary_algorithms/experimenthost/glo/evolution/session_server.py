@@ -44,7 +44,7 @@ class SessionServer:
         self.state_of_the_art_epoch_time = None
 
         self.persistor_obj = EvolutionPersistor(self.output_path)
-        self.generation_number = 1
+        self.generation_number = 0
 
     def evaluate_candidate(self, population, tree_idx):
         tree = population.working_trees[tree_idx]
@@ -88,14 +88,10 @@ class SessionServer:
         print("############# Starting Evaluation ################## \n\n")
         self.persistor_obj.create_generation_folder(self.generation_number)
 
-        processes = []
         for tree_idx in trange(len(population.working_trees)):
             self.evaluate_candidate(population, tree_idx)
 
         population.initialize_trainable_tree_fitness()
-
-        self.generation_number += 1
-
         return population
 
     def initialize_next_gen(self, population):
@@ -185,14 +181,14 @@ class SessionServer:
             population = self.evaluate_current_generation(population)
 
             best_candidate = population.get_best_fitness_candidate()
-
-            try:
+            if best_candidate:
                 print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
                  Fitness: {best_candidate.fitness} \n \
                  Average Epoch Time: {best_candidate.avg_epoch_time}")
                 print(f"\n\n Population Average Fitness: {np.mean(population.trainable_trees_fitness)}")
                 print("\n #################################################################### ")
-            except:
-                pass
 
+                self.persistor_obj.persist_best_candidate(best_candidate, self.generation_number)
             population = self.initialize_next_gen(population)
+
+            self.generation_number += 1
