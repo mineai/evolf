@@ -1,8 +1,8 @@
 import argparse
 
-from evolutionary_algorithms.experimenthost.glo.domains.mnist.generate_mnist_data import GenerateMnistData
-from evolutionary_algorithms.experimenthost.glo.domains.mnist.network_constructor import NetworkConstructor
-from evolutionary_algorithms.experimenthost.glo.evolution.session_server import SessionServer
+from evol.domains.mnist.generate_mnist_data import GenerateMnistData
+from evol.domains.mnist.network_constructor import NetworkConstructor
+from evol.evolution.session_server import SessionServer
 from evolutionary_algorithms.servicecommon.parsers.parse_hocon import ParseHocon
 
 if __name__ == "__main__":

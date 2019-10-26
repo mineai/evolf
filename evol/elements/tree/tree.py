@@ -1,8 +1,8 @@
-from evolutionary_algorithms.experimenthost.glo.elements.tree.linear_tree import LinearTree
-from evolutionary_algorithms.experimenthost.glo.elements.tree.tree_construction import TreeConstruction
-from evolutionary_algorithms.experimenthost.glo.utils.visualize import Visualize
-from evolutionary_algorithms.experimenthost.glo.lossconstructor.evaluate_tree import EvaluateTree
-from evolutionary_algorithms.experimenthost.glo.lossconstructor.validate import Validate
+from evol.elements.tree.linear_tree import LinearTree
+from evol.elements.tree.tree_construction import TreeConstruction
+from evol.utils.visualize import Visualize
+from evol.lossconstructor.evaluate_tree import EvaluateTree
+from evol.lossconstructor.validate import Validate
 
 
 class Tree(LinearTree, TreeConstruction):

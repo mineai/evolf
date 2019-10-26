@@ -1,7 +1,7 @@
-from evolutionary_algorithms.experimenthost.glo.populate.population \
+from evol.populate.population \
     import Population
-from evolutionary_algorithms.experimenthost.glo.reproduction.crossover import Crossover
-from evolutionary_algorithms.experimenthost.glo.utils.visualize import Visualize
+from evol.reproduction.crossover import Crossover
+from evol.utils.visualize import Visualize
 
 
 pop = Population(2, 3, 100)

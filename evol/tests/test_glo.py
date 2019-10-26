@@ -2,16 +2,15 @@ import os
 import time
 import calendar
 
-from evolutionary_algorithms.experimenthost.glo.populate.population import Population
+from evol.populate.population import Population
 from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor \
     import JsonPersistor
 from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persistor \
     import PicklePersistor
-from evolutionary_algorithms.experimenthost.glo.lossconstructor.evaluate_tree import EvaluateTree
-from evolutionary_algorithms.experimenthost.glo.utils.visualize \
+from evol.utils.visualize \
     import Visualize
 
-from evolutionary_algorithms.experimenthost.glo.utils.statistics import Statistics
+from evol.utils.statistics import Statistics
 
 
 class TestGLO:

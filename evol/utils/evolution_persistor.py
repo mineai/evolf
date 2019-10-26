@@ -1,12 +1,10 @@
 from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor import JsonPersistor
-from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persistor import PicklePersistor
-from evolutionary_algorithms.experimenthost.glo.utils.statistics import Statistics
-from evolutionary_algorithms.experimenthost.glo.utils.visualize import Visualize
+from evol.utils.statistics import Statistics
+from evol.utils.visualize import Visualize
 
 import os
 import calendar
 import time
-import shutil
 
 
 class EvolutionPersistor:

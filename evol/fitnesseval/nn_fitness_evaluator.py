@@ -1,5 +1,5 @@
 import time
-from evolutionary_algorithms.experimenthost.glo.fitnesseval.initialize_keras_model import InitializeKerasModel
+from evol.fitnesseval.initialize_keras_model import InitializeKerasModel
 
 
 class NNFitnessEvaluator(InitializeKerasModel):

@@ -1,7 +1,7 @@
 import random
 
-from evolutionary_algorithms.experimenthost.glo.elements.node import Node
-from evolutionary_algorithms.experimenthost.glo.populate.function_library import FunctionLibrary
+from evol.elements.node import Node
+from evol.populate.function_library import FunctionLibrary
 
 
 class NodeConstructor:

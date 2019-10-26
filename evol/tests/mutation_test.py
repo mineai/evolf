@@ -1,7 +1,6 @@
-from evolutionary_algorithms.experimenthost.glo.populate.population import Population
-from evolutionary_algorithms.experimenthost.glo.reproduction.mutation import Mutation
-from evolutionary_algorithms.experimenthost.glo.utils.tree_utils import TreeUtils
-from evolutionary_algorithms.experimenthost.glo.utils.visualize \
+from evol.populate.population import Population
+from evol.reproduction.mutation import Mutation
+from evol.utils.visualize \
     import Visualize
 
 

@@ -1,4 +1,4 @@
-from evolutionary_algorithms.experimenthost.glo.elements.tree.tree \
+from evol.elements.tree.tree \
     import Tree
 import numpy as np
 
