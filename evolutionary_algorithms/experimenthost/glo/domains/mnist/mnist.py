@@ -13,13 +13,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
     # Read the Config File
     conf = ParseHocon().parse(args.config)
-    data_dict = GenerateMnistData.get_data()
-
     domain_config = conf.get("domain_config")
-    data_generation_config = domain_config.get("data_generation")
-    generate_data = data_generation_config.get("generate_data")
+    data_config = domain_config.get("data_config")
+
+    data_dict = GenerateMnistData.get_data(data_config)
+
+    model_generation_config = domain_config.get("model_generation")
+    generate_data = model_generation_config.get("generate_data")
 
     if generate_data:
-        NetworkConstructor(data_dict.get("input_shape"), data_generation_config)
+        NetworkConstructor(data_dict.get("input_shape"), model_generation_config)
     session_server = SessionServer(conf, data_dict)
     session_server.evolve()

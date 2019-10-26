@@ -7,3 +7,6 @@ results
 .DS_Store
 venv
 .idea
+results
+*.h5
+*.json

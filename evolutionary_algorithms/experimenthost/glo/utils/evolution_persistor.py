@@ -38,7 +38,10 @@ class EvolutionPersistor:
         json_persistor = JsonPersistor("stats", tree_path)
         json_persistor.persist(tree_stats)
 
-        self.plot_loss(tree.symbolic_expression, tree_path)
+        try:
+            self.plot_loss(tree.symbolic_expression, tree_path)
+        except:
+            print("Failed to Visualize Loss Function")
 
         # pickle_persistor = PicklePersistor("tree", tree_path)
         # pickle_persistor.persist(tree)
@@ -47,5 +50,3 @@ class EvolutionPersistor:
         from sympy.plotting import plot3d
         graph = plot3d(expression, show=False)
         graph.save(f"{path}/loss_function")
-        # import matplotlib.pyplot as plt
-        # plt.savefig(f'{path}/loss_function.png', dpi=300)

@@ -20,6 +20,7 @@ class Population:
         self.trainable_trees_fitness = []  # Thus contains the fitness of the trainable trees
         self.symbolic_expressions = []  # Cache to generate unique expressions
         self.mating_pool = None
+        self.elites = None
 
         if initial_population is None:
             self.min_height = min_height

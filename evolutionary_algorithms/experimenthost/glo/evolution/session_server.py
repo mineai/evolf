@@ -22,6 +22,7 @@ class SessionServer:
         self.domain_config = self.config.get("domain_config")
         self.evaluator_specs = self.domain_config.get("evaluator_specs")
         self.persistence_specs = self.config.get("persistence_specs")
+        self.state_of_the_art_config = self.domain_config.get("state_of_the_art_config")
 
         self.population_size = self.evolution_specs.get("population_size")
         self.mating_pool_multiplier = self.evolution_specs.get("mating_pool_multiplier")
@@ -34,13 +35,15 @@ class SessionServer:
         self.tree_min_height = self.evolution_specs.get("tree_min_height")
         self.tree_max_height = self.evolution_specs.get("tree_max_height")
         self.output_path = self.persistence_specs.get("output_path")
+        self.state_of_the_art_loss = self.state_of_the_art_config.get("loss")
 
         self.data_dict = data_dict
 
+        self.state_of_the_art_testing_accuracy = None
+        self.state_of_the_art_epoch_time = None
+
         self.persistor_obj = EvolutionPersistor(self.output_path)
         self.generation_number = 1
-
-
 
     def evaluate_current_generation(self, population):
         print("############# Starting Evaluation ################## \n\n")
@@ -48,22 +51,29 @@ class SessionServer:
         for tree_idx in trange(len(population.working_trees)):
             tree = population.working_trees[tree_idx]
             print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
-            fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
+
+            if len(population.trainable_trees_fitness):
+                print("Best Running in this Generation: ", np.max(population.trainable_trees_fitness))
 
             if tree_idx > self.population_size:
                 # If it is an Elite, no need to train Again
                 population.trainable_trees.append(tree)
                 continue
 
+            print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
+            fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
+
             if tree.working:
                 fitness_evaluator.train()
                 fitness_evaluator.evaluate()
 
+                print("Scores: ", fitness_evaluator.score)
                 tree.fitness = fitness_evaluator.score[1]
                 print("Tree Fitness", tree.fitness)
 
                 tree.avg_epoch_time = np.mean(fitness_evaluator.times)
-                print("Average Epoch Time: ", tree.avg_epoch_time, "\n\n ###########################################################################")
+                print("Average Epoch Time: ", tree.avg_epoch_time,
+                      "\n\n ###########################################################################")
 
                 # Create tree_<index>_fitness folder at output_path
                 self.persistor_obj.create_tree_folder((tree_idx + 1), tree, self.generation_number)
@@ -71,8 +81,10 @@ class SessionServer:
                 # put tree stats in a json file
 
                 population.trainable_trees.append(tree)
+                population.trainable_trees_fitness.append(tree.fitness)
             else:
-                print("This tree failed while training", "\n\n ###########################################################################")
+                print("This tree failed while training",
+                      "\n\n ###########################################################################")
 
         population.initialize_trainable_tree_fitness()
 
@@ -86,7 +98,6 @@ class SessionServer:
         sorted_parents = TreeUtils.sort_trees_by_fitness_desc(population.trainable_trees)
         elites = sorted_parents[:number_of_elites]
         print("############# Starting Reproduction ################## \n")
-
         population.generate_mating_pool()
 
         current_population = 0
@@ -128,7 +139,23 @@ class SessionServer:
         population.get_working_trees()
         return population
 
+    def evaluate_state_of_the_art(self):
+        fitness_evaluator = NNFitnessEvaluator(None, self.state_of_the_art_config, self.data_dict)
+        fitness_evaluator.train()
+        fitness_evaluator.evaluate()
+
+        self.state_of_the_art_testing_accuracy = fitness_evaluator.score[1]
+        self.state_of_the_art_epoch_time = fitness_evaluator.times
+        print("Testing Accuracy: ", self.state_of_the_art_testing_accuracy)
+        avg_epoch_time = np.mean(self.state_of_the_art_epoch_time)
+        print("Average Epoch Time: ", avg_epoch_time,
+              "\n\n ###########################################################################")
+
     def evolve(self):
+
+        print("###################### Evaluating State of the Art\n\n")
+        self.evaluate_state_of_the_art()
+        print("\n\n ###########################################################################")
 
         population = Population(self.tree_min_height,
                                 self.tree_max_height,
@@ -136,10 +163,18 @@ class SessionServer:
                                 self.number_parents,
                                 self.mating_pool_multiplier)
 
+        while not len(population.working_trees):
+            population = Population(self.tree_min_height,
+                                    self.tree_max_height,
+                                    self.population_size,
+                                    self.number_parents,
+                                    self.mating_pool_multiplier)
+
         for gen in range(self.num_of_generations):
             print(f"Starting Evolution for Generation {gen}")
 
             population = self.evaluate_current_generation(population)
+
             best_candidate = population.get_best_fitness_candidate()
             print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
              Fitness: {best_candidate.fitness} \n \
@@ -148,5 +183,3 @@ class SessionServer:
             print("\n #################################################################### ")
 
             population = self.initialize_next_gen(population)
-
-

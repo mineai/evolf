@@ -6,20 +6,38 @@
 
     "evaluator_specs": {
         "epochs": 1,
-        "verbose": 1,
+        "verbose": True,
         "batch_size": 32,
         "model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/small_model/",
         "model_file_name": "mnist_model.json",
-        "weight_file_name": "mnist_model_weights.h5"
+        "weight_file_name": "mnist_model_weights.h5",
+        "state_of_the_art_performance": 0.98,
+        "switch_threshold": 0.9796
     },
 
-    "data_generation": {
+    "model_generation": {
         "generate_data": True,
         "medium_model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/medium_model/",
         "small_model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/small_model/",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5"
     },
+
+    "data_config": {
+        "train_percentage": 0.1,
+        "validation_percentage": 0.4,
+        "test_percentage": 0.5
+    },
+
+    "state_of_the_art_config": {
+        "epochs": 2,
+        "verbose": True,
+        "batch_size": 32,
+        "model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/small_model/",
+        "model_file_name": "mnist_model.json",
+        "weight_file_name": "mnist_model_weights.h5",
+        "loss": "categorical_crossentropy"
+    }
 
     "search_space": {
 
@@ -28,7 +46,7 @@
 
 # Evolution Specs
 "evolution_specs": {
-    "population_size": 100,
+    "population_size": 10,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
     "weighted_function_mutation_rate": 0.05,

@@ -7,7 +7,7 @@ from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor \
     import JsonPersistor
 from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persistor \
     import PicklePersistor
-from evolutionary_algorithms.experimenthost.glo.evaluation_validation.evaluate_tree import EvaluateTree
+from evolutionary_algorithms.experimenthost.glo.lossconstructor.evaluate_tree import EvaluateTree
 from evolutionary_algorithms.experimenthost.glo.utils.visualize \
     import Visualize
 
