@@ -64,7 +64,7 @@ class EvolutionPersistor:
         # This code only works when put before the json_persistence.
         # When you put it after, it only visualizes
         try:
-            Visualize.visualize([tree], self.experiment_id, best_candidate_path)
+            Visualize.visualize([best_candidate], self.experiment_id, best_candidate_path)
         except:
             print("Failed to Visualize Expression Tree")
 
