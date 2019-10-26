@@ -46,6 +46,7 @@ class SessionServer:
 
         self.persistor_obj = EvolutionPersistor(self.output_path)
         self.generation_number = 0
+        self.current_tree = 1
 
     def evaluate_candidate(self, population, tree_idx):
         tree = population.working_trees[tree_idx]
@@ -73,7 +74,9 @@ class SessionServer:
                   "\n\n ###########################################################################")
 
             # Create tree_<index>_fitness folder at output_path
-            self.persistor_obj.create_tree_folder((tree_idx + 1), tree, self.generation_number)
+            self.persistor_obj.create_tree_folder(self.current_tree, tree, self.generation_number, tree.fitness)
+
+            self.current_tree += 1
             # pickle the tree
             # put tree stats in a json file
 
