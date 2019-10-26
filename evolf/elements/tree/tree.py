@@ -164,3 +164,6 @@ class Tree(LinearTree, TreeConstruction):
                 break
 
         return node_to_return
+
+    def __lt__(self, other):
+        return self.fitness < other.fitness
