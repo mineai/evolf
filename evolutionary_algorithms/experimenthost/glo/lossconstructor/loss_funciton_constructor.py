@@ -12,7 +12,7 @@ class LossFunctionConstructor:
         :return loss: The loss function generated in a way that Keras
         expects it to be in.
         """
-        def loss(y_pred, y_true):
+        def loss(y_true, y_pred):
             stack = []
             cost = None
 
@@ -32,7 +32,6 @@ class LossFunctionConstructor:
                     elif function == "t":
                         function = y_true
                     stack.append(node.coefficient * function)
-
                 elif function_type == "B":
                     last_two_literals = [stack.pop(), stack.pop()]
                     cost = node.coefficient * handle(last_two_literals[0], last_two_literals[1])

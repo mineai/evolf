@@ -30,7 +30,7 @@
     },
 
     "state_of_the_art_config": {
-        "epochs": 2,
+        "epochs": 1,
         "verbose": True,
         "batch_size": 32,
         "model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/small_model/",

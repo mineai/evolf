@@ -67,7 +67,6 @@ class SessionServer:
                 fitness_evaluator.train()
                 fitness_evaluator.evaluate()
 
-                print("Scores: ", fitness_evaluator.score)
                 tree.fitness = fitness_evaluator.score[1]
                 print("Tree Fitness", tree.fitness)
 

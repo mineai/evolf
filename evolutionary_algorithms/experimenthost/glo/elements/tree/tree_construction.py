@@ -158,7 +158,6 @@ class TreeConstruction:
 
         initialize_parents_helper(self.root)
 
-
     """
     Functions to Reset Tree
     """
@@ -200,22 +199,22 @@ class TreeConstruction:
 
     def initialize_height(self):
 
-            def helper_function_get_height(node):
-                if node is None:
-                    return 0
+        def helper_function_get_height(node):
+            if node is None:
+                return 0
+            else:
+
+                # Compute the depth of each subtree
+                left_depth = helper_function_get_height(node.left)
+                right_depth = helper_function_get_height(node.right)
+
+                # Use the larger one
+                if left_depth > right_depth:
+                    return left_depth + 1
                 else:
+                    return right_depth + 1
 
-                    # Compute the depth of each subtree
-                    left_depth = helper_function_get_height(node.left)
-                    right_depth = helper_function_get_height(node.right)
-
-                    # Use the larger one
-                    if left_depth > right_depth:
-                        return left_depth + 1
-                    else:
-                        return right_depth + 1
-
-            self.height = helper_function_get_height(self.root)
+        self.height = helper_function_get_height(self.root)
 
     def init_node_type_count(self):
         self.unary_count = 0
@@ -228,7 +227,3 @@ class TreeConstruction:
                 self.literal_count += 1
             elif node.operator_type == "B":
                 self.binary_count += 1
-
-
-
-
