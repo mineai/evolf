@@ -3,7 +3,6 @@
 "domain_config": {
 
     # Evaluator Specs
-
     "evaluator_specs": {
         "epochs": 1,
         "verbose": True,

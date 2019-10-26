@@ -59,7 +59,7 @@ class FunctionLibrary:
                 "exp": sp.exp,
                 "tan": sp.tan,
                 "square": np.square,
-                "sqrt": lambda x: np.power(x, 0.5),
+                "sqrt": sp.sqrt,
                 "cosh": sp.cosh,
                 "sinh": sp.sinh
             },
