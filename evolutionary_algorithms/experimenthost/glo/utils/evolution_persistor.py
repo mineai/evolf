@@ -1,6 +1,7 @@
 from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor import JsonPersistor
 from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persistor import PicklePersistor
 from evolutionary_algorithms.experimenthost.glo.utils.statistics import Statistics
+from evolutionary_algorithms.experimenthost.glo.utils.visualize import Visualize
 
 import os
 import calendar
@@ -29,9 +30,16 @@ class EvolutionPersistor:
         candidate_path = f"{generation_path}/Candidates"
         os.mkdir(candidate_path)
 
-    def create_tree_folder(self, tree_index, tree, generation_number):
-        tree_path = f"{self.experiment_root_path}/Generation_{generation_number}/Candidates/Tree{tree_index}"
+    def create_tree_folder(self, tree_index, tree, generation_number, fitness):
+        tree_path = f"{self.experiment_root_path}/Generation_{generation_number}/Candidates/Tree{tree_index}_{fitness}"
         os.mkdir(tree_path)
+
+        # This code only works when put before the json_persistence.
+        # When you put it after, it only visualizes
+        try:
+            Visualize.visualize([tree], self.experiment_id, tree_path)
+        except:
+            print("Failed to Visualize Expression Tree")
 
         tree_stats = Statistics.statistics(tree)
 
@@ -52,9 +60,18 @@ class EvolutionPersistor:
         graph.save(f"{path}/loss_function")
 
     def persist_best_candidate(self, best_candidate, generation_idx):
-        best_candidate_path = f"{self.experiment_root_path}/Generation_{generation_idx}/best_candidate"
+        best_candidate_path = f"{self.experiment_root_path}/Generation_{generation_idx}/Best_Candidate"
         os.mkdir(best_candidate_path)
+
+        # This code only works when put before the json_persistence.
+        # When you put it after, it only visualizes
+        try:
+            Visualize.visualize([tree], self.experiment_id, best_candidate_path)
+        except:
+            print("Failed to Visualize Expression Tree")
+
         tree_stats = Statistics.statistics(best_candidate)
+        
         json_persistor = JsonPersistor("stats", best_candidate_path)
         json_persistor.persist(tree_stats)
 
