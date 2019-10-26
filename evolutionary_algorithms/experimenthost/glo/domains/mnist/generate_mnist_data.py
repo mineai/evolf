@@ -1,7 +1,3 @@
-import keras
-import keras.backend as K
-from keras.datasets import mnist
-import numpy as np
 
 class GenerateMnistData:
 
@@ -10,6 +6,12 @@ class GenerateMnistData:
 
     @staticmethod
     def get_data(data_config):
+
+        import keras
+        import keras.backend as K
+        from keras.datasets import mnist
+        import numpy as np
+
         num_classes = 10
         # input image dimensions
         img_rows, img_cols = 28, 28
@@ -42,10 +44,10 @@ class GenerateMnistData:
         num_test_samples = int(num_samples * test_percentage)
 
         x_train, y_train = x[:num_train_samples], y[:num_train_samples]
-        x_validation, y_validation = x[num_train_samples:num_train_samples+num_validation_samples], \
-                                     y[num_train_samples:num_train_samples+num_validation_samples]
-        x_test, y_test = x[num_train_samples+num_validation_samples:], \
-                                     y[num_train_samples+num_validation_samples:]
+        x_validation, y_validation = x[num_train_samples:num_train_samples +num_validation_samples], \
+                                     y[num_train_samples:num_train_samples +num_validation_samples]
+        x_test, y_test = x[num_train_samples +num_validation_samples:], \
+                                     y[num_train_samples +num_validation_samples:]
 
 
 

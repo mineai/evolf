@@ -1,6 +1,3 @@
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D, MaxPooling2D
 import keras
 import os
 
@@ -38,6 +35,9 @@ class NetworkConstructor:
         self.model_small.save_weights(f"{path_to_write_model}/{weight_file_name}")
 
     def create_conv_model_medium(self, input_shape):
+        from keras.models import Sequential
+        from keras.layers import Dense, Dropout, Flatten
+        from keras.layers import Conv2D, MaxPooling2D
         model = Sequential()
         model.add(Conv2D(32, kernel_size=(3, 3),
                          activation='relu',
@@ -53,6 +53,9 @@ class NetworkConstructor:
         return model
 
     def create_conv_model_small(self, input_shape):
+        from keras.models import Sequential
+        from keras.layers import Dense, Dropout, Flatten
+        from keras.layers import Conv2D, MaxPooling2D
         model = Sequential()
         model.add(Conv2D(32, kernel_size=(3, 3),
                          activation='relu',

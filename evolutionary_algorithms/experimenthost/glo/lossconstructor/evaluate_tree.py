@@ -1,10 +1,3 @@
-from evolutionary_algorithms.experimenthost.glo.utils.tree_utils \
-    import TreeUtils
-
-from evolutionary_algorithms.experimenthost.glo.populate.function_library \
-    import FunctionLibrary
-
-
 class EvaluateTree:
     """
     This class provides functions to evaluate and build the

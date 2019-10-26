@@ -1,5 +1,5 @@
 import math
-import matplotlib.pyplot as mpl
+import multiprocessing
 
 import numpy as np
 from tqdm import trange
@@ -36,6 +36,7 @@ class SessionServer:
         self.tree_max_height = self.evolution_specs.get("tree_max_height")
         self.output_path = self.persistence_specs.get("output_path")
         self.state_of_the_art_loss = self.state_of_the_art_config.get("loss")
+        self.evaluate_state_of_the_art = self.state_of_the_art_config.get("evaluate")
 
         self.data_dict = data_dict
 
@@ -45,45 +46,51 @@ class SessionServer:
         self.persistor_obj = EvolutionPersistor(self.output_path)
         self.generation_number = 1
 
+    def evaluate_candidate(self, population, tree_idx):
+        tree = population.working_trees[tree_idx]
+        print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
+
+        if len(population.trainable_trees_fitness):
+            print("Best Running in this Generation: ", np.max(population.trainable_trees_fitness))
+
+        if tree_idx > self.population_size:
+            # If it is an Elite, no need to train Again
+            population.trainable_trees.append(tree)
+            return
+
+        print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
+        fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
+        if tree.working:
+            fitness_evaluator.train()
+            fitness_evaluator.evaluate()
+
+            tree.fitness = fitness_evaluator.score[1]
+            print("Tree Fitness", tree.fitness)
+
+            tree.avg_epoch_time = np.mean(fitness_evaluator.times)
+            print("Average Epoch Time: ", tree.avg_epoch_time,
+                  "\n\n ###########################################################################")
+
+            # Create tree_<index>_fitness folder at output_path
+            self.persistor_obj.create_tree_folder((tree_idx + 1), tree, self.generation_number)
+            # pickle the tree
+            # put tree stats in a json file
+
+            population.trainable_trees.append(tree)
+            population.trainable_trees_fitness.append(tree.fitness)
+        else:
+            print("This tree failed while training",
+                  "\n\n ###########################################################################")
+
+        return population
+
     def evaluate_current_generation(self, population):
         print("############# Starting Evaluation ################## \n\n")
         self.persistor_obj.create_generation_folder(self.generation_number)
+
+        processes = []
         for tree_idx in trange(len(population.working_trees)):
-            tree = population.working_trees[tree_idx]
-            print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
-
-            if len(population.trainable_trees_fitness):
-                print("Best Running in this Generation: ", np.max(population.trainable_trees_fitness))
-
-            if tree_idx > self.population_size:
-                # If it is an Elite, no need to train Again
-                population.trainable_trees.append(tree)
-                continue
-
-            print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
-            fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
-
-            if tree.working:
-                fitness_evaluator.train()
-                fitness_evaluator.evaluate()
-
-                tree.fitness = fitness_evaluator.score[1]
-                print("Tree Fitness", tree.fitness)
-
-                tree.avg_epoch_time = np.mean(fitness_evaluator.times)
-                print("Average Epoch Time: ", tree.avg_epoch_time,
-                      "\n\n ###########################################################################")
-
-                # Create tree_<index>_fitness folder at output_path
-                self.persistor_obj.create_tree_folder((tree_idx + 1), tree, self.generation_number)
-                # pickle the tree
-                # put tree stats in a json file
-
-                population.trainable_trees.append(tree)
-                population.trainable_trees_fitness.append(tree.fitness)
-            else:
-                print("This tree failed while training",
-                      "\n\n ###########################################################################")
+            self.evaluate_candidate(population, tree_idx)
 
         population.initialize_trainable_tree_fitness()
 
@@ -151,10 +158,13 @@ class SessionServer:
               "\n\n ###########################################################################")
 
     def evolve(self):
+        import tensorflow as tf
+        tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
-        print("###################### Evaluating State of the Art\n\n")
-        self.evaluate_state_of_the_art()
-        print("\n\n ###########################################################################")
+        if self.evaluate_state_of_the_art:
+            print("###################### Evaluating State of the Art\n\n")
+            self.evaluate_state_of_the_art()
+            print("\n\n ###########################################################################")
 
         population = Population(self.tree_min_height,
                                 self.tree_max_height,
@@ -175,10 +185,14 @@ class SessionServer:
             population = self.evaluate_current_generation(population)
 
             best_candidate = population.get_best_fitness_candidate()
-            print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
-             Fitness: {best_candidate.fitness} \n \
-             Average Epoch Time: {best_candidate.avg_epoch_time}")
-            print(f"\n\n Population Average Fitness: {np.mean(population.trainable_trees_fitness)}")
-            print("\n #################################################################### ")
+
+            try:
+                print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
+                 Fitness: {best_candidate.fitness} \n \
+                 Average Epoch Time: {best_candidate.avg_epoch_time}")
+                print(f"\n\n Population Average Fitness: {np.mean(population.trainable_trees_fitness)}")
+                print("\n #################################################################### ")
+            except:
+                pass
 
             population = self.initialize_next_gen(population)

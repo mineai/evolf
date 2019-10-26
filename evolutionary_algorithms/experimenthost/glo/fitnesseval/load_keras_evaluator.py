@@ -1,10 +1,4 @@
 import os
-from keras.models import load_model
-from keras.models import model_from_json
-
-from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor import JsonPersistor
-from evolutionary_algorithms.servicecommon.utils.file_utils import FileUtils
-
 
 class LoadKerasEvaluator:
 
@@ -15,7 +9,7 @@ class LoadKerasEvaluator:
         self.model = self.initialize_model()
 
     def initialize_model(self):
-
+        from keras.models import model_from_json
         if not len(self.model_path.strip()):
             path = f"{self.model_file_name}"
             weight_path = self.weight_file_name

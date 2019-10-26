@@ -1,6 +1,5 @@
 import sympy as sp
 
-
 class Validate:
     """
     This class contains all the methods required
