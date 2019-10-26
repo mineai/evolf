@@ -1,8 +1,7 @@
 import random
-import copy
 
-from evolutionary_algorithms.experimenthost.glo.elements.tree.tree import Tree
-from evolutionary_algorithms.experimenthost.glo.populate.function_library import FunctionLibrary
+from evolf.elements.tree.tree import Tree
+from evolf.populate.function_library import FunctionLibrary
 
 
 class Mutation:

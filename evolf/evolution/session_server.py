@@ -1,15 +1,15 @@
 import math
-import multiprocessing
 
 import numpy as np
 from tqdm import trange
 
-from evolutionary_algorithms.experimenthost.glo.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
-from evolutionary_algorithms.experimenthost.glo.populate.population import Population
-from evolutionary_algorithms.experimenthost.glo.reproduction.crossover import Crossover
-from evolutionary_algorithms.experimenthost.glo.reproduction.mutation import Mutation
-from evolutionary_algorithms.experimenthost.glo.utils.tree_utils import TreeUtils
-from evolutionary_algorithms.experimenthost.glo.utils.evolution_persistor import EvolutionPersistor
+from evolf.elements.tree.tree import Tree
+from evolf.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
+from evolf.populate.population import Population
+from evolf.reproduction.crossover import Crossover
+from evolf.reproduction.mutation import Mutation
+from evolf.utils.tree_utils import TreeUtils
+from evolf.utils.evolution_persistor import EvolutionPersistor
 
 
 class SessionServer:
@@ -62,10 +62,6 @@ class SessionServer:
 
         print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
         fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
-
-        if self.generation_number == 0 and \
-            self.current_tree == 1:
-            print(fitness_evaluator.model.summary())
 
         if tree.working:
             fitness_evaluator.train()
@@ -151,7 +147,9 @@ class SessionServer:
         return population
 
     def evaluate_state_of_the_art(self):
+        print("State of the Art Model: ")
         fitness_evaluator = NNFitnessEvaluator(None, self.state_of_the_art_config, self.data_dict)
+        print(fitness_evaluator.model.summary())
         fitness_evaluator.train()
         fitness_evaluator.evaluate()
 
@@ -186,6 +184,12 @@ class SessionServer:
 
         for gen in range(self.num_of_generations):
             print(f"Starting Evolution for Generation {gen}")
+
+            print("Evaluator NN: ")
+            dummy_tree = Tree(2, 2)
+            fitness_evaluator = NNFitnessEvaluator(dummy_tree, self.evaluator_specs, self.data_dict)
+            print(fitness_evaluator.model.summary())
+            del fitness_evaluator, dummy_tree
 
             population = self.evaluate_current_generation(population)
             try:

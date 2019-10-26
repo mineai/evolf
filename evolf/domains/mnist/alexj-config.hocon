@@ -8,7 +8,7 @@
         "epochs": 1,
         "verbose": True,
         "batch_size": 32,
-        "model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/small_model/",
+        "model_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/small_model/",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
         "state_of_the_art_performance": 0.98,
@@ -17,8 +17,8 @@
 
     "model_generation": {
         "generate_model": False,
-        "medium_model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/medium_model/",
-        "small_model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/small_model/",
+        "medium_model_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/medium_model/",
+        "small_model_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/small_model/",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5"
     },
@@ -34,7 +34,7 @@
         "epochs": 1,
         "verbose": True,
         "batch_size": 32,
-        "model_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/small_model/",
+        "model_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/small_model/",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
         "loss": "categorical_crossentropy"
@@ -68,7 +68,7 @@
 
 # Persistance Specs
 "persistence_specs": {
-    "output_path": "/Users/mohok/Desktop/mineai/evolutionary_algorithms/experimenthost/glo/domains/mnist/results"
+    "output_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/results"
 }
 
 # Hardware Specs

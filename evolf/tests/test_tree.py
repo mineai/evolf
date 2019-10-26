@@ -1,9 +1,7 @@
 import random
 import os
 
-from evolutionary_algorithms.experimenthost.glo.elements.node import Node
-from evolutionary_algorithms.experimenthost.glo.elements.tree.tree import Tree
-from evolutionary_algorithms.experimenthost.glo.populate.function_library import FunctionLibrary
+from evolf.elements.tree.tree import Tree
 
 tree = Tree(4, 4)
 
