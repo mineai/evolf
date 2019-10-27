@@ -48,17 +48,18 @@ class SessionServer:
         self.generation_number = 0
         self.current_tree = 1
 
-    def evaluate_candidate(self, population, tree_idx):
+    def evaluate_candidate(self, population, tree_idx, eval_all=False):
         tree = population.working_trees[tree_idx]
         print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
 
         if len(population.trainable_trees_fitness):
             print("Best Running in this Generation: ", np.max(population.trainable_trees_fitness))
 
-        if tree_idx > self.population_size:
-            # If it is an Elite, no need to train Again
-            population.trainable_trees.append(tree)
-            return
+        if not eval_all:
+            if tree_idx > self.population_size:
+                # If it is an Elite, no need to train Again
+                population.trainable_trees.append(tree)
+                return
 
         print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
         fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
@@ -89,20 +90,21 @@ class SessionServer:
 
         return population
 
-    def evaluate_current_generation(self, population):
+    def evaluate_current_generation(self, population, eval_all=False):
         print("############# Starting Evaluation ################## \n\n")
         self.persistor_obj.create_generation_folder(self.generation_number)
-
+        population.get_working_trees()
         for tree_idx in trange(len(population.working_trees)):
-            self.evaluate_candidate(population, tree_idx)
+            self.evaluate_candidate(population, tree_idx, eval_all)
 
         population.initialize_trainable_tree_fitness()
         return population
 
     def initialize_next_gen(self, population):
         next_gen_trees = []
-        number_of_elites = math.ceil(len(population.trainable_trees) * self.elitism)
         sorted_parents = TreeUtils.sort_trees_by_fitness_desc(population.trainable_trees)
+
+        number_of_elites = math.ceil(len(population.trainable_trees) * self.elitism)
         elites = sorted_parents[:number_of_elites]
         print("############# Starting Reproduction ################## \n")
         population.generate_mating_pool()
@@ -116,10 +118,8 @@ class SessionServer:
             child = Mutation.weighted_function_mutation(child, self.weighted_function_mutation_rate)
             child = Mutation.mutate_leaf_node(child, self.mutate_leaf_node_rate)
             child = Mutation.mutate_value_literal_nodes(child, self.mutate_value_literal_nodes_rate)
-            try:
-                child.reset_tree()
-            except:
-                continue
+
+            child.reset_tree()
 
             if not child.working:
                 continue
@@ -160,6 +160,21 @@ class SessionServer:
         print("Average Epoch Time: ", avg_epoch_time,
               "\n\n ###########################################################################")
 
+    def get_best_candidate(self, population, gen):
+        try:
+            best_candidate = population.get_best_fitness_candidate()
+        except:
+            best_candidate = False
+        if best_candidate:
+            print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
+                         Fitness: {best_candidate.fitness} \n \
+                         Average Epoch Time: {best_candidate.avg_epoch_time}")
+            print(f"\n\n Population Average Fitness: {np.mean(population.trainable_trees_fitness)}")
+            print("\n #################################################################### ")
+            self.persistor_obj.persist_best_candidate(best_candidate, self.generation_number)
+
+        return best_candidate
+
     def evolve(self):
         import tensorflow as tf
         tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
@@ -191,19 +206,14 @@ class SessionServer:
             print(fitness_evaluator.model.summary())
             del fitness_evaluator, dummy_tree
 
-            population = self.evaluate_current_generation(population)
-            try:
-                best_candidate = population.get_best_fitness_candidate()
-            except:
-                best_candidate = False
-            if best_candidate:
-                print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
-                 Fitness: {best_candidate.fitness} \n \
-                 Average Epoch Time: {best_candidate.avg_epoch_time}")
-                print(f"\n\n Population Average Fitness: {np.mean(population.trainable_trees_fitness)}")
-                print("\n #################################################################### ")
+            if gen == 0:
+                eval_all = True
+            else:
+                eval_all = False
+            population = self.evaluate_current_generation(population, eval_all)
 
-                self.persistor_obj.persist_best_candidate(best_candidate, self.generation_number)
+            self.get_best_candidate(population, gen)
+
             population = self.initialize_next_gen(population)
 
             self.generation_number += 1
