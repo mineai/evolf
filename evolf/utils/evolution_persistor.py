@@ -5,6 +5,7 @@ from evolf.utils.visualize import Visualize
 import os
 import calendar
 import time
+import csv
 
 
 class EvolutionPersistor:
@@ -51,6 +52,14 @@ class EvolutionPersistor:
 
         # pickle_persistor = PicklePersistor("tree", tree_path)
         # pickle_persistor.persist(tree)
+
+        csv_file_name = f"{tree_path}/Tree.csv"
+        csv_input = [str(generation_number), tree.generate_printable_expression(), str(fitness)]
+        with open(csv_file_name, 'w+') as writeFile:
+            writer = csv.writer(writeFile)
+            writer.writerow(csv_input)
+
+        writeFile.close()
 
     def plot_loss(self, expression, path):
         from sympy.plotting import plot3d
