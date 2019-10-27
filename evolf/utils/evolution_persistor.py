@@ -53,14 +53,6 @@ class EvolutionPersistor:
         # pickle_persistor = PicklePersistor("tree", tree_path)
         # pickle_persistor.persist(tree)
 
-        csv_file_name = f"{tree_path}/Tree.csv"
-        csv_input = [str(generation_number), tree.generate_printable_expression(), str(fitness)]
-        with open(csv_file_name, 'w+') as writeFile:
-            writer = csv.writer(writeFile)
-            writer.writerow(csv_input)
-
-        writeFile.close()
-
     def plot_loss(self, expression, path):
         from sympy.plotting import plot3d
         graph = plot3d(expression, show=False)
@@ -86,5 +78,27 @@ class EvolutionPersistor:
             self.plot_loss(best_candidate.symbolic_expression, best_candidate_path)
         except:
             print("Failed to Visualize Loss Function")
+
+        # set the file path and name for the csv file
+        csv_file_name = f"{self.experiment_root_path}/Best_Trees.csv"
+
+        # create an input list to write to the csv file
+        csv_input = [str(generation_idx), best_candidate.generate_printable_expression(), str(best_candidate.fitness)]
+
+        # if the file exists, append the next generation's best candidate to the end
+
+        if os.path.exists(csv_file_name):
+            with open(csv_file_name, 'a') as writeFile:
+                writer = csv.writer(writeFile)
+                writer.writerow(csv_input)
+            writeFile.close()
+
+        # if the file does not exist, create a new file and write to the first row
+
+        else:
+            with open(csv_file_name, 'w+') as writeFile:
+                writer = csv.writer(writeFile)
+                writer.writerow(csv_input)
+            writeFile.close()
 
 
