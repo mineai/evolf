@@ -28,6 +28,8 @@ class SelectionFunctionsLibrary():
         mating_pool = ListUtils.copy_elements(population, fitness_prob)
         if not len(mating_pool):
               mating_pool = population
+        import random
+        random.shuffle(mating_pool)
         return mating_pool
 
     @staticmethod

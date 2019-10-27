@@ -3,6 +3,8 @@ import numpy as np
 
 import random
 
+from evolutionary_algorithms.reproduction.selection.selection_functions_library \
+    import SelectionFunctionsLibrary
 
 class FunctionLibrary:
     """
@@ -19,30 +21,30 @@ class FunctionLibrary:
             "U": {
                 # "cos": K.cos,
                 # "sin": K.sin,
-                "log": K.log,
-                "exp": K.exp,
-                "tan": tf.tan,
-                "square": K.square,
-                "sqrt": K.sqrt,
-                "cosh": tf.math.cosh,
-                "sinh": tf.math.sinh
+                "log": [K.log, 10],
+                "exp": [K.exp, 1],
+                "tan": [tf.tan, 1],
+                "square": [K.square, 2],
+                "sqrt": [K.sqrt, 2],
+                "cosh": [tf.math.cosh, 1],
+                "sinh": [tf.math.sinh, 1]
             },
             "B": {
-                "+": lambda x, y: tf.add(x, y),
-                "-": lambda x, y: tf.subtract(x, y),
-                "*": lambda x, y: tf.multiply(x, y),
-                "/": lambda x, y: tf.divide(x, y)
+                "+": [lambda x, y: tf.add(x, y), 10],
+                "-": [lambda x, y: tf.subtract(x, y), 10],
+                "*": [lambda x, y: tf.multiply(x, y), 3],
+                "/": [lambda x, y: tf.divide(x, y), 1]
                 # ".": tf.
             },
             "L": {
-                "y": "y_pred",
-                "t": "y_true",
-                "pos_scalar": 1,
-                "neg_scalar": -1
+                "y": ["y_pred", 1],
+                "t": ["y_true", 1],
+                "pos_scalar": [1, 1],
+                "neg_scalar": [-1, 1]
             },
             "R": {
-                "mean": tf.reduce_mean,
-                "sum": tf.reduce_sum,
+                "mean": [tf.reduce_mean, 1],
+                # "sum": tf.reduce_sum,
                 # "max": tf.reduce_max,
                 # "min": tf.reduce_min
             }
@@ -97,8 +99,16 @@ class FunctionLibrary:
         """
         assert operator_type.upper() in cls.get_tensorflow_expression().keys(), "Function not available"
         functions_available = list(cls.get_tensorflow_expression().get(operator_type).keys())
-        sampled_function = functions_available[random.randint(0, len(functions_available) - 1)]
 
+        functions = []
+        fitness = []
+
+        for function in functions_available:
+            functions.append(function)
+            fitness.append(cls.get_tensorflow_expression().get(operator_type)[function][1])
+
+        mating_pool = SelectionFunctionsLibrary.default_mating_pool(functions, fitness, 100)
+        sampled_function = SelectionFunctionsLibrary.natural_selection(mating_pool, 1)[0]
         return sampled_function
 
     @classmethod
@@ -115,7 +125,7 @@ class FunctionLibrary:
             if operator in cls.get_tensorflow_expression()[function_type].keys():
                 function = cls.get_tensorflow_expression()[function_type][operator]
                 break
-        return function
+        return function[0]
 
     @classmethod
     def get_symbolic_handle(cls, operator):
@@ -126,7 +136,6 @@ class FunctionLibrary:
             :return function:
 
         """
-        function = None
         function = None
         for function_type in cls.get_symbolic_expression().keys():
             if operator in cls.get_symbolic_expression()[function_type].keys():
@@ -143,7 +152,6 @@ class FunctionLibrary:
             :return function_type:
 
         """
-        function = None
         for function_type in cls.get_tensorflow_expression().keys():
             functions = cls.get_tensorflow_expression()[function_type]
             if function_str in functions:
