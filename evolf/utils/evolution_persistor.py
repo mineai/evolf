@@ -19,7 +19,7 @@ class EvolutionPersistor:
         self.experiment_id = calendar.timegm(time.gmtime())
 
     def create_root_experiment_folder(self, path):
-        self.experiment_root_path = f"{path}/glo_{self.experiment_id}"
+        self.experiment_root_path = f"{path}/evolf_{self.experiment_id}"
         os.makedirs(self.experiment_root_path)
 
     def create_generation_folder(self, generation_idx):

@@ -118,10 +118,8 @@ class SessionServer:
             child = Mutation.weighted_function_mutation(child, self.weighted_function_mutation_rate)
             child = Mutation.mutate_leaf_node(child, self.mutate_leaf_node_rate)
             child = Mutation.mutate_value_literal_nodes(child, self.mutate_value_literal_nodes_rate)
-            try:
-                child.reset_tree()
-            except:
-                continue
+
+            child.reset_tree()
 
             if not child.working:
                 continue

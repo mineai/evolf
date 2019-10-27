@@ -144,8 +144,11 @@ class Tree(LinearTree, TreeConstruction):
         self.init_node_type_count()
         self.initialize_parents()
         self.linearize_tree()
-        self.construct_symbolic_expression()
-        self.validate_working()
+        try:
+            self.construct_symbolic_expression()
+            self.validate_working()
+        except:
+            self.working = False
 
         self.number_of_nodes = len(self.nodes)
 
