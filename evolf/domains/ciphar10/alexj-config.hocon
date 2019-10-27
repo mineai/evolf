@@ -1,0 +1,75 @@
+# Define the Domain Config
+
+"domain_config": {
+
+    # Evaluator Specs
+
+    "evaluator_specs": {
+        "epochs": 1,
+        "verbose": True,
+        "batch_size": 32,
+        "model_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/small_model/",
+        "model_file_name": "mnist_model.json",
+        "weight_file_name": "mnist_model_weights.h5",
+        "state_of_the_art_performance": 0.98,
+        "switch_threshold": 0.9796
+    },
+
+    "model_generation": {
+        "generate_model": False,
+        "medium_model_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/medium_model/",
+        "small_model_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/small_model/",
+        "model_file_name": "mnist_model.json",
+        "weight_file_name": "mnist_model_weights.h5"
+    },
+
+    "data_config": {
+        "train_percentage": 0.1,
+        "validation_percentage": 0.4,
+        "test_percentage": 0.5
+    },
+
+    "state_of_the_art_config": {
+        "evaluate": True,
+        "epochs": 1,
+        "verbose": True,
+        "batch_size": 32,
+        "model_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/small_model/",
+        "model_file_name": "mnist_model.json",
+        "weight_file_name": "mnist_model_weights.h5",
+        "loss": "categorical_crossentropy"
+    }
+
+    "search_space": {
+
+    }
+},
+
+# Evolution Specs
+"evolution_specs": {
+    "initial_population_size": 100,
+    "population_size": 20,
+    "mating_pool_multiplier": 100,
+    "num_parents": 2,
+    "weighted_function_mutation_rate": 0.05,
+    "mutate_value_literal_nodes_rate": 0.025,
+    "mutate_leaf_node_rate": 0.025,
+    "elitism": 0.1,
+    "num_of_generations": 50,
+    "tree_min_height": 2,
+    "tree_max_height": 3
+},
+
+# Visualization Specs
+"visualization_specs": {
+    "visualize": True,
+
+},
+
+# Persistance Specs
+"persistence_specs": {
+    "output_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/results"
+}
+
+# Hardware Specs
+
