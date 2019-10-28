@@ -56,7 +56,6 @@ class Visualize:
             trees = [trees]
         for tree_idx, tree in enumerate(trees):
             nodes = tree.nodes
-            print(f"Visualizing Tree {tree_idx}")
             graph = pydot.Dot(graph_type='digraph',
                               label=f"{tree.generate_printable_expression()}",
                               fontsize=16,

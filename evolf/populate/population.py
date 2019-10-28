@@ -84,9 +84,9 @@ class Population:
             self.trainable_trees_fitness.append(tree.fitness)
 
     def get_best_fitness_candidate(self):
-        if not len(self.trainable_trees):
-            print("Trees have not yet been trained or no Trained Trees Exist")
-            return False
+        if not len(self.trainable_trees) and \
+                None not in self.trainable_trees_fitness:
+            return None
         else:
             best_candidate_index = np.argmax(self.trainable_trees_fitness)
             best_candidate = self.trainable_trees[best_candidate_index]
@@ -136,3 +136,7 @@ class Population:
         parents = SelectionFunctionsLibrary().natural_selection(
             self.mating_pool, self.num_parents)
         return parents
+
+    def get_average_fitness(self):
+        average_fitness = np.mean(self.trainable_trees_fitness)
+        return average_fitness
