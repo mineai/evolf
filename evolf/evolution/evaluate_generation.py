@@ -7,7 +7,7 @@ class EvaluateGeneration:
     def evaluate_candidate(self, population, tree_idx, eval_all=False):
         tree = population.working_trees[tree_idx]
 
-        print(f"Best Candidate Ever: {self.best_candidate_ever.generate_printable_expression()}, "
+        print(f"\nBest Candidate Ever: {self.best_candidate_ever.generate_printable_expression()}, "
               f"with fitness {self.best_candidate_ever.fitness}")
         if len(population.trainable_trees_fitness):
             best_running_in_gen = population.trainable_trees[np.argmax(population.trainable_trees_fitness)]
