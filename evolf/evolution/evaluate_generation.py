@@ -60,7 +60,6 @@ class EvaluateGeneration:
     def evaluate_current_generation(self, population, eval_all=False):
         print("############# Starting Evaluation ################## \n\n")
         self.persistor_obj.create_generation_folder(self.generation_number)
-        population.get_working_trees()
         for tree_idx in trange(len(population.working_trees)):
             self.evaluate_candidate(population, tree_idx, eval_all)
 

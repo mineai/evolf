@@ -57,7 +57,6 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
         EvaluateStateOfTheArt.__init__(self)
         EvaluateGeneration.__init__(self)
         InitializeNextGen.__init__(self)
-        
 
     def evolve(self):
 
@@ -81,8 +80,8 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
 
         self.best_candidate_ever = population.working_trees[0]
 
-        for gen in range(self.num_of_generations):
-            print(f"Starting Evolution for Generation {gen}")
+        for generation in range(self.num_of_generations):
+            print(f"Starting Evolution for Generation {generation}")
 
             print("Evaluator NN: ")
             dummy_tree = Tree(2, 2)
@@ -90,7 +89,7 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
             print(fitness_evaluator.model.summary())
             del fitness_evaluator, dummy_tree
 
-            if gen == 0:
+            if generation == 0:
                 eval_all = True
             else:
                 eval_all = False
@@ -98,32 +97,36 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
 
             best_candidate = population.get_best_fitness_candidate()
             if best_candidate:
-                print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
+                print(f"\nBest Candidate for Generation {generation}: {best_candidate.symbolic_expression} \n \
                              Fitness: {best_candidate.fitness} \n \
                              Average Epoch Time: {best_candidate.avg_epoch_time}")
                 # Update the lists of average fitness and best fitness for each generation
                 self.best_fitness_list.append(best_candidate.fitness)
 
-                self.persistor_obj.persist_best_candidate(best_candidate, self.generation_number, self.persist_status, self.visualize_tree_status, self.visualize_function_status)
-                
+                self.persistor_obj.persist_best_candidate(best_candidate, self.generation_number, self.persist_status,
+                                                          self.visualize_tree_status, self.visualize_function_status)
+
                 if self.visualize_best_fitness:
                     plot_file_name = "Best_Fitness_Plot.png"
-                    plot_title = f"Best Fitness Over {self.generation_number+1} Generations"
+                    plot_title = f"Best Fitness Over {self.generation_number + 1} Generations"
                     x_label = "Generations"
                     y_label = "Best Fitness"
-                    self.persistor_obj.create_fitness_plot(self.best_fitness_list, self.generation_number, self.num_of_generations, plot_file_name, plot_title, x_label, y_label)
-            
+                    self.persistor_obj.create_fitness_plot(self.best_fitness_list, self.generation_number,
+                                                           self.num_of_generations, plot_file_name, plot_title, x_label,
+                                                           y_label)
+
             average_fitness = population.get_average_fitness()
             self.avg_fitness_list.append(average_fitness)
             print(f"\n\n Population Average Fitness: {average_fitness}")
             print("\n ###############################################################################")
             if self.visualize_avg_fitness:
-                    plot_file_name = "Average_Fitness_Plot.png"
-                    plot_title = f"Average Fitness Over {self.generation_number+1} Generations"
-                    x_label = "Generations"
-                    y_label = "Average Fitness"
-                    self.persistor_obj.create_fitness_plot(self.avg_fitness_list, self.generation_number, self.num_of_generations, plot_file_name, plot_title, x_label, y_label)
-
+                plot_file_name = "Average_Fitness_Plot.png"
+                plot_title = f"Average Fitness Over {self.generation_number + 1} Generations"
+                x_label = "Generations"
+                y_label = "Average Fitness"
+                self.persistor_obj.create_fitness_plot(self.avg_fitness_list, self.generation_number,
+                                                       self.num_of_generations, plot_file_name, plot_title, x_label,
+                                                       y_label)
 
             print(
                 "#################### Starting Reproduction And Initializing New Generation ######################## \n")

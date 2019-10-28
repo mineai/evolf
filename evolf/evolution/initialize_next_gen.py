@@ -50,5 +50,4 @@ class InitializeNextGen:
                                 self.number_parents,
                                 self.mating_pool_multiplier,
                                 initial_population=next_gen_trees)
-        population.get_working_trees()
         return population

@@ -63,7 +63,7 @@
 
 # Evolution Specs
 "evolution_specs": {
-    "initial_population_size": 100,
+    "initial_population_size": 10,
     "population_size": 20,
     "mating_pool_multiplier": 100,
     "num_parents": 2,

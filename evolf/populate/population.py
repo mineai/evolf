@@ -36,6 +36,7 @@ class Population:
             self.population_size = len(self.trees)
             self.min_height = min(tree_heights)
             self.max_height = max(tree_heights)
+            self.get_working_trees()
 
     def generate_population(self):
         """
@@ -68,6 +69,7 @@ class Population:
         :return nothing:
         """
         print("Extracting Working Tress ... \n\n")
+        self.working_trees = []
         for tree_idx in range(len(self.trees)):
             tree = self.trees[tree_idx]
             if tree.symbolic_expression is None:
