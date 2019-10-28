@@ -31,7 +31,7 @@ class Tree(LinearTree, TreeConstruction):
         # that it has not yet been validated.
         self.working = None
 
-        self.fitness = None  # The fitness of the tree
+        self.fitness = 0  # The fitness of the tree
         self.avg_epoch_time = None  # If the NN is a fitness function, then the time for each Epoch.
 
         # Construct the Expression and the Linear Tree
@@ -167,3 +167,13 @@ class Tree(LinearTree, TreeConstruction):
                 break
 
         return node_to_return
+
+    def __lt__(self, other):
+        """
+        This function serves as the replacement
+        less then operator definition of trees.
+        It compares the fitness and returns a boolean value.
+        :param other: The other tree to be compared to.
+        :return: Boolean value
+        """
+        return self.fitness < other.fitness

@@ -6,11 +6,16 @@ from evolf.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
 class EvaluateGeneration:
     def evaluate_candidate(self, population, tree_idx, eval_all=False):
         tree = population.working_trees[tree_idx]
-        print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
 
+        print(f"Best Candidate Ever: {self.best_candidate_ever.generate_printable_expression()}, "
+              f"with fitness {self.best_candidate_ever.fitness}")
         if len(population.trainable_trees_fitness):
-            print("Best Running in this Generation: ", np.max(population.trainable_trees_fitness))
+            best_running_in_gen = population.trainable_trees[np.argmax(population.trainable_trees_fitness)]
 
+            print(f"Best Running in this Generation: {best_running_in_gen.generate_printable_expression()}, "
+                  f"with fitness {best_running_in_gen.fitness}")
+
+        print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
         if not eval_all:
             if tree_idx > self.population_size:
                 # If it is an Elite, no need to train Again
@@ -40,6 +45,10 @@ class EvaluateGeneration:
 
             population.trainable_trees.append(tree)
             population.trainable_trees_fitness.append(tree.fitness)
+
+            if self.best_candidate_ever < tree:
+                self.best_candidate_ever = tree
+
         else:
             print("This tree failed while training",
                   "\n\n ###########################################################################")

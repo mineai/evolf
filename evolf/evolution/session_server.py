@@ -43,6 +43,9 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
         self.generation_number = 0
         self.current_tree = 1
 
+        self.global_cache = []
+        self.best_candidate_ever = None
+
         EvaluateStateOfTheArt.__init__(self)
         EvaluateGeneration.__init__(self)
         InitializeNextGen.__init__(self)
@@ -68,6 +71,8 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
                                     self.initial_population_size,
                                     self.number_parents,
                                     self.mating_pool_multiplier)
+
+        self.best_candidate_ever = population.working_trees[0]
 
         for gen in range(self.num_of_generations):
             print(f"Starting Evolution for Generation {gen}")
