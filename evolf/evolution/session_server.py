@@ -31,6 +31,11 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
         self.tree_min_height = self.evolution_specs.get("tree_min_height")
         self.tree_max_height = self.evolution_specs.get("tree_max_height")
         self.output_path = self.persistence_specs.get("output_path")
+        self.persist_status = self.persistence_specs.get("persist")
+        self.visualize_tree_status = self.visualization_specs.get("visualize_tree")
+        self.visualize_function_status = self.visualization_specs.get("visualize_function")
+        self.visualize_avg_fitness = self.visualization_specs.get("visualize_avg_fitness")
+        self.visualize_best_fitness = self.visualization_specs.get("visualize_best_fitness")
         self.state_of_the_art_loss = self.state_of_the_art_config.get("loss")
         self.evaluate_state_of_the_art_flag = self.state_of_the_art_config.get("evaluate")
 
@@ -46,9 +51,13 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
         self.global_cache = []
         self.best_candidate_ever = None
 
+        self.avg_fitness_list = []
+        self.best_fitness_list = []
+
         EvaluateStateOfTheArt.__init__(self)
         EvaluateGeneration.__init__(self)
         InitializeNextGen.__init__(self)
+        
 
     def evolve(self):
         import tensorflow as tf
@@ -94,11 +103,29 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
                 print(f"\nBest Candidate for Generation {gen}: {best_candidate.symbolic_expression} \n \
                              Fitness: {best_candidate.fitness} \n \
                              Average Epoch Time: {best_candidate.avg_epoch_time}")
-                self.persistor_obj.persist_best_candidate(best_candidate, self.generation_number)
+                # Update the lists of average fitness and best fitness for each generation
+                self.best_fitness_list.append(best_candidate.fitness)
 
+                self.persistor_obj.persist_best_candidate(best_candidate, self.generation_number, self.persist_status, self.visualize_tree_status, self.visualize_function_status)
+                
+                if self.visualize_best_fitness:
+                    plot_file_name = "Best_Fitness_Plot.png"
+                    plot_title = f"Best Fitness Over {self.generation_number+1} Generations"
+                    x_label = "Generations"
+                    y_label = "Best Fitness"
+                    self.persistor_obj.create_fitness_plot(self.best_fitness_list, self.generation_number, self.num_of_generations, plot_file_name, plot_title, x_label, y_label)
+            
             average_fitness = population.get_average_fitness()
+            self.avg_fitness_list.append(average_fitness)
             print(f"\n\n Population Average Fitness: {average_fitness}")
             print("\n ###############################################################################")
+            if self.visualize_avg_fitness:
+                    plot_file_name = "Average_Fitness_Plot.png"
+                    plot_title = f"Average Fitness Over {self.generation_number+1} Generations"
+                    x_label = "Generations"
+                    y_label = "Average Fitness"
+                    self.persistor_obj.create_fitness_plot(self.avg_fitness_list, self.generation_number, self.num_of_generations, plot_file_name, plot_title, x_label, y_label)
+
 
             print(
                 "#################### Starting Reproduction And Initializing New Generation ######################## \n")

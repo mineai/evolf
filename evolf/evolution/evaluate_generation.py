@@ -37,7 +37,9 @@ class EvaluateGeneration:
                   "\n\n ###########################################################################")
 
             # Create tree_<index>_fitness folder at output_path
-            self.persistor_obj.create_tree_folder(self.current_tree, tree, self.generation_number, tree.fitness)
+            self.persistor_obj.create_tree_folder(self.current_tree, tree, self.generation_number, 
+                                                tree.fitness, self.persist_status, 
+                                                self.visualize_tree_status, self.visualize_function_status)
 
             self.current_tree += 1
             # pickle the tree

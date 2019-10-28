@@ -78,13 +78,17 @@
 
 # Visualization Specs
 "visualization_specs": {
-    "visualize": True,
+    "visualize_tree": True,
+    "visualize_function": True,
+    "visualize_avg_fitness": True,
+    "visualize_best_fitness": True
 
 },
 
 # Persistance Specs
 "persistence_specs": {
-    "output_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/results"
+    "output_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/results",
+    "persist": True
 }
 
 # Hardware Specs
