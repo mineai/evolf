@@ -10,8 +10,8 @@ class CipharNetworkConstructor(NetworkConstructor):
         from keras.models import Sequential
         from keras.layers import Dense, Dropout, Flatten, Activation
         from keras.layers import Conv2D, MaxPooling2D
+
         model = Sequential()
-        print(self.input_shape)
         model.add(Conv2D(32, (3, 3), padding='same',
                          input_shape=self.input_shape))
         model.add(Activation('relu'))

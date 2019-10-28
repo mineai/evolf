@@ -2,15 +2,25 @@
 
 "domain_config": {
 
+    "domain": "MNIST",
+
     # Evaluator Specs
     "evaluator_specs": {
-        "epochs": 1,
+        "epochs": 3,
         "verbose": True,
-        "batch_size": 32,
+        "batch_size": 128,
         "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
-        "state_of_the_art_performance": 0.98,
+
+        "early_stopping_config": {
+            "monitor": "val_acc",
+            "mode": "max",
+            "print_early_stopping": True,
+            "patience": 1,
+            "min_delta": 1
+        },
+
         "switch_threshold": 0.9796
     },
 
@@ -30,14 +40,21 @@
 
     "state_of_the_art_config": {
         "evaluate": False,
-        "epochs": 1,
+        "epochs": 10,
         "verbose": True,
-        "batch_size": 32,
+        "batch_size": 128,
         "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
-        "loss": "categorical_crossentropy"
-    }
+        "loss": "categorical_crossentropy",
+        "early_stopping_config": {
+            "monitor": "val_acc",
+            "mode": "max",
+            "print_early_stopping": True,
+            "patience": 10,
+            "min_delta": 1
+        }
+    },
 
     "search_space": {
 
