@@ -20,6 +20,7 @@ class GenerateCipharData:
         test_percentage = data_config.get("test_percentage")
 
         # convert class vectors to binary class matrices
+        x = x.astype('float32')
         y = keras.utils.to_categorical(y, num_classes)
 
         num_samples = len(x)
