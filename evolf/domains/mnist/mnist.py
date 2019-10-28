@@ -14,6 +14,10 @@ if __name__ == "__main__":
     # Read the Config File
     conf = ParseHocon().parse(args.config)
     domain_config = conf.get("domain_config")
+    domain_name = domain_config.get("domain")
+
+    print(f"################################# Evolf is currently Running on {domain_name} ######################################")
+
     data_config = domain_config.get("data_config")
 
     data_dict = GenerateMnistData.get_data(data_config)
@@ -23,5 +27,6 @@ if __name__ == "__main__":
 
     if generate_data:
         NetworkConstructor(data_dict.get("input_shape"), model_generation_config)
+
     session_server = SessionServer(conf, data_dict)
     session_server.evolve()
