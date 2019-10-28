@@ -16,7 +16,7 @@ if __name__ == "__main__":
     domain_config = conf.get("domain_config")
     domain_name = domain_config.get("domain")
 
-    print(f"################################# Evolf is currently Running on {domain_config}")
+    print(f"################################# Evolf is currently Running on {domain_name}")
     data_config = domain_config.get("data_config")
 
     data_dict = GenerateCipharData.get_data(data_config)
