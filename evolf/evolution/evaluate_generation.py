@@ -12,8 +12,9 @@ class EvaluateGeneration:
         if len(population.trainable_trees_fitness):
             best_running_in_gen = population.trainable_trees[np.argmax(population.trainable_trees_fitness)]
 
-            print(f"Best Running in this Generation: {best_running_in_gen.generate_printable_expression()}, "
+            print(f"\nBest Running in this Generation: {best_running_in_gen.generate_printable_expression()}, "
                   f"with fitness {best_running_in_gen.fitness}")
+        print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
 
         print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
         if not eval_all:
@@ -22,7 +23,6 @@ class EvaluateGeneration:
                 population.trainable_trees.append(tree)
                 return
 
-        print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
         fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
 
         if tree.working:

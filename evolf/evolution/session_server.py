@@ -51,8 +51,6 @@ class SessionServer(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen
         InitializeNextGen.__init__(self)
 
     def evolve(self):
-        import tensorflow as tf
-        tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
         if self.evaluate_state_of_the_art_flag:
             print("\n\n ########################################### Evaluating State of the Art\n\n")
