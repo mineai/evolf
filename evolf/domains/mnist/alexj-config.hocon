@@ -30,7 +30,7 @@
     },
 
     "state_of_the_art_config": {
-        "evaluate": True,
+        "evaluate": False,
         "epochs": 1,
         "verbose": True,
         "batch_size": 32,
@@ -47,7 +47,7 @@
 
 # Evolution Specs
 "evolution_specs": {
-    "initial_population_size": 100,
+    "initial_population_size": 10,
     "population_size": 20,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
@@ -55,20 +55,23 @@
     "mutate_value_literal_nodes_rate": 0.025,
     "mutate_leaf_node_rate": 0.025,
     "elitism": 0.1,
-    "num_of_generations": 50,
+    "num_of_generations": 10,
     "tree_min_height": 2,
     "tree_max_height": 3
 },
 
 # Visualization Specs
 "visualization_specs": {
-    "visualize": True,
-
+    "visualize_tree": True,
+    "visualize_function": True,
+    "visualize_avg_fitness": True,
+    "visualize_best_fitness": True
 },
 
 # Persistance Specs
 "persistence_specs": {
-    "output_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/results"
+    "output_path": "/Users/aj132/Desktop/mine-ai/evolf/domains/mnist/results",
+    "persist": True
 }
 
 # Hardware Specs

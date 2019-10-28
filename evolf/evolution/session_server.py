@@ -36,6 +36,11 @@ class SessionServer:
         self.tree_min_height = self.evolution_specs.get("tree_min_height")
         self.tree_max_height = self.evolution_specs.get("tree_max_height")
         self.output_path = self.persistence_specs.get("output_path")
+        self.persist_status = self.persistence_specs.get("persist")
+        self.visualize_tree_status = self.visualization_specs.get("visualize_tree")
+        self.visualize_function_status = self.visualization_specs.get("visualize_function")
+        self.visualize_avg_fitness = self.visualization_specs.get("visualize_avg_fitness")
+        self.visualize_best_fitness = self.visualization_specs.get("visualize_best_fitness")
         self.state_of_the_art_loss = self.state_of_the_art_config.get("loss")
         self.evaluate_state_of_the_art_flag = self.state_of_the_art_config.get("evaluate")
 
@@ -47,6 +52,9 @@ class SessionServer:
         self.persistor_obj = EvolutionPersistor(self.output_path)
         self.generation_number = 0
         self.current_tree = 1
+
+        self.avg_fitness_list = []
+        self.best_fitness_list = []
 
     def evaluate_candidate(self, population, tree_idx, eval_all=False):
         tree = population.working_trees[tree_idx]
@@ -76,7 +84,8 @@ class SessionServer:
                   "\n\n ###########################################################################")
 
             # Create tree_<index>_fitness folder at output_path
-            self.persistor_obj.create_tree_folder(self.current_tree, tree, self.generation_number, tree.fitness)
+            self.persistor_obj.create_tree_folder(self.current_tree, tree, self.generation_number, tree.fitness, self.persist_status, self.visualize_tree_status, self.visualize_function_status)
+
 
             self.current_tree += 1
             # pickle the tree
@@ -171,7 +180,25 @@ class SessionServer:
                          Average Epoch Time: {best_candidate.avg_epoch_time}")
             print(f"\n\n Population Average Fitness: {np.mean(population.trainable_trees_fitness)}")
             print("\n #################################################################### ")
-            self.persistor_obj.persist_best_candidate(best_candidate, self.generation_number)
+
+            # Update the lists of average fitness and best fitness for each generation
+            self.avg_fitness_list.append(np.mean(population.trainable_trees_fitness))
+            self.best_fitness_list.append(best_candidate.fitness)
+
+            self.persistor_obj.persist_best_candidate(best_candidate, self.generation_number, self.persist_status, self.visualize_tree_status, self.visualize_function_status)
+            if self.visualize_avg_fitness:
+                plot_file_name = "Average_Fitness_Plot.png"
+                plot_title = f"Average Fitness Over {self.generation_number+1} Generations"
+                x_label = "Generations"
+                y_label = "Average Fitness"
+                self.persistor_obj.create_fitness_plot(self.avg_fitness_list, self.generation_number, self.num_of_generations, plot_file_name, plot_title, x_label, y_label)
+
+            if self.visualize_best_fitness:
+                plot_file_name = "Best_Fitness_Plot.png"
+                plot_title = f"Best Fitness Over {self.generation_number+1} Generations"
+                x_label = "Generations"
+                y_label = "Best Fitness"
+                self.persistor_obj.create_fitness_plot(self.best_fitness_list, self.generation_number, self.num_of_generations, plot_file_name, plot_title, x_label, y_label)
 
         return best_candidate
 
