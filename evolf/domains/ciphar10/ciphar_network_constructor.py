@@ -41,4 +41,4 @@ class CipharNetworkConstructor(NetworkConstructor):
         model.add(Dense(self.num_classes))
         model.add(Activation('softmax'))
 
-        self.model = model
+        return model

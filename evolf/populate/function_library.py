@@ -34,7 +34,12 @@ class FunctionLibrary:
                 "-": [lambda x, y: tf.subtract(x, y), 10],
                 "*": [lambda x, y: tf.multiply(x, y), 3],
                 "/": [lambda x, y: tf.divide(x, y), 1]
-                # ".": tf.
+            },
+            "BBL": {
+                "- y * log(x)":  [lambda x, y: -y * K.log(x), 3],
+                "(1 - y) * log(1 - x)": [lambda x, y: (1 - y) * K.log(1 - x), 3],
+                # "crossentropy": [lambda x, y: -y * K.log(x) + (1 - y) * K.log(1 - x), 1],
+                # "squared_differnece": [lambda x, y: K.square(x - y), 1]
             },
             "L": {
                 "y": ["y_pred", 1],
@@ -69,8 +74,13 @@ class FunctionLibrary:
                 "+": lambda x, y: x + y,
                 "-": lambda x, y: x - y,
                 "*": lambda x, y: x * y,
-                "/": lambda x, y: x / y,
-                # ".": tf.
+                "/": lambda x, y: x / y
+            },
+            "BBL": {
+                "- y * log(x)": lambda x, y: -y * sp.log(x),
+                "(1 - y) * log(1 - x)": lambda x, y: (1 - y) * sp.log(1 - x),
+                "crossentropy": lambda x, y: -y * sp.log(x) + (1 - y) * sp.log(1 - x),
+                "squared_differnece": lambda x, y: (x - y)**2
             },
             "L": {
                 "y": sp.Symbol("y_pred"),

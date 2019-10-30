@@ -2,14 +2,14 @@
 
 "domain_config": {
 
-    "domain": "Ciphar 10",
+    "domain": "MNIST",
 
     # Evaluator Specs
     "evaluator_specs": {
-        "epochs": 10,
+        "epochs": 3,
         "verbose": True,
-        "batch_size": 1000,
-        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/ciphar10/model",
+        "batch_size": 128,
+        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
 
@@ -17,7 +17,7 @@
             "monitor": "val_acc",
             "mode": "max",
             "print_early_stopping": True,
-            "patience": 2,
+            "patience": 1,
             "min_delta": 1
         },
 
@@ -26,23 +26,24 @@
 
     "model_generation": {
         "generate_model": True,
-        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/ciphar10/model",
+        "medium_model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/medium_model",
+        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5"
     },
 
     "data_config": {
-        "train_percentage": 0.8,
-        "validation_percentage": 0.1,
-        "test_percentage": 0.1
+        "train_percentage": 0.1,
+        "validation_percentage": 0.4,
+        "test_percentage": 0.5
     },
 
     "state_of_the_art_config": {
-        "evaluate": True,
+        "evaluate": False,
         "epochs": 10,
         "verbose": True,
-        "batch_size": 1000,
-        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/ciphar10/model",
+        "batch_size": 128,
+        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
         "loss": "categorical_crossentropy",
@@ -50,10 +51,10 @@
             "monitor": "val_acc",
             "mode": "max",
             "print_early_stopping": True,
-            "patience": 5,
+            "patience": 10,
             "min_delta": 1
         }
-    }
+    },
 
     "search_space": {
 
@@ -62,8 +63,8 @@
 
 # Evolution Specs
 "evolution_specs": {
-    "initial_population_size": 100,
-    "population_size": 20,
+    "initial_population_size": 200,
+    "population_size": 50,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
     "weighted_function_mutation_rate": 0.05,

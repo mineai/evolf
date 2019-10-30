@@ -16,7 +16,7 @@ class NetworkConstructor:
         """
         raise NotImplementedError
 
-    def complie_model(self):
+    def compile_model(self):
         assert self.model is not None, "Please Override the interface create_model in NetworkConstructo"
         self.model.compile(optimizer='rmsprop', loss='categorical_crossentropy')
 
