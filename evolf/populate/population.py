@@ -2,11 +2,9 @@ from evolf.elements.tree.tree \
     import Tree
 import numpy as np
 
+from evolf.populate.function_library import FunctionLibrary
 from evolutionary_algorithms.reproduction.selection.selection_functions_library \
     import SelectionFunctionsLibrary
-from evolutionary_algorithms.servicecommon.utils.math_utils \
-    import MathUtils
-
 
 class Population:
     def __init__(self, min_height=3, max_height=10, population_size=25,
@@ -21,6 +19,7 @@ class Population:
         self.symbolic_expressions = []  # Cache to generate unique expressions
         self.mating_pool = None
         self.elites = None
+        self.search_space_obj = FunctionLibrary()
 
         if initial_population is None:
             self.min_height = min_height
@@ -54,13 +53,13 @@ class Population:
         """
         print("\n\nGenerating Tress ...")
         while len(self.trees) < self.population_size:
-            tree = Tree(self.min_height, self.max_height)
+            tree = Tree(self.min_height, self.max_height, self.search_space_obj)
             if tree.symbolic_expression in self.symbolic_expressions:
                 continue
             self.symbolic_expressions.append(tree.symbolic_expression)
 
             while not tree.working:
-                tree = Tree(self.min_height, self.max_height)
+                tree = Tree(self.min_height, self.max_height, self.search_space_obj)
                 if tree.symbolic_expression in self.symbolic_expressions:
                     continue
                 self.symbolic_expressions.append(tree.symbolic_expression)

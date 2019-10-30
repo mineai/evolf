@@ -83,11 +83,11 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
         for generation in range(self.num_of_generations):
             print(f"Starting Evolution for Generation {generation}")
 
-            print("Evaluator NN: ")
-            dummy_tree = Tree(2, 2)
-            fitness_evaluator = NNFitnessEvaluator(dummy_tree, self.evaluator_specs, self.data_dict)
-            print(fitness_evaluator.model.summary())
-            del fitness_evaluator, dummy_tree
+            # print("Evaluator NN: ")
+            # dummy_tree = Tree(2, 2, )
+            # fitness_evaluator = NNFitnessEvaluator(dummy_tree, self.evaluator_specs, self.data_dict)
+            # print(fitness_evaluator.model.summary())
+            # del fitness_evaluator, dummy_tree
 
             if generation == 0:
                 eval_all = True

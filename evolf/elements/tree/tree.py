@@ -12,7 +12,7 @@ class Tree(LinearTree, TreeConstruction):
     """
 
     # Constructor
-    def __init__(self, min_height=2, max_height=4):
+    def __init__(self, min_height=2, max_height=4, search_space_obj=None):
         """
         The constructor Tree objects.
 
@@ -22,7 +22,7 @@ class Tree(LinearTree, TreeConstruction):
         are set to max_height.
 
         """
-        TreeConstruction.__init__(self, min_height, max_height)
+        TreeConstruction.__init__(self, min_height, max_height, search_space_obj)
         LinearTree.__init__(self, self.root)
 
         self.symbolic_expression = None

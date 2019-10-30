@@ -39,7 +39,7 @@
     },
 
     "state_of_the_art_config": {
-        "evaluate": True,
+        "evaluate": False,
         "epochs": 10,
         "verbose": True,
         "batch_size": 128,
