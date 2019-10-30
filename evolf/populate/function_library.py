@@ -1,8 +1,6 @@
 import sympy as sp
 import numpy as np
 
-import random
-
 from evolutionary_algorithms.reproduction.selection.selection_functions_library \
     import SelectionFunctionsLibrary
 
@@ -36,14 +34,14 @@ class FunctionLibrary:
                 "/": [lambda x, y: tf.divide(x, y), 1]
             },
             "BBL": {
-                "- y * log(x)":  [lambda x, y: -y * K.log(x), 3],
-                "(1 - y) * log(1 - x)": [lambda x, y: (1 - y) * K.log(1 - x), 3],
+                "- y * log(x)":  [lambda x, y: -y * K.log(x), 1],
+                "(1 - y) * log(1 - x)": [lambda x, y: (1 - y) * K.log(1 - x), 1],
                 # "crossentropy": [lambda x, y: -y * K.log(x) + (1 - y) * K.log(1 - x), 1],
                 # "squared_differnece": [lambda x, y: K.square(x - y), 1]
             },
             "L": {
-                "y": ["y_pred", 1],
-                "t": ["y_true", 1],
+                "y": ["y_pred", 3],
+                "t": ["y_true", 3],
                 "pos_scalar": [1, 1],
                 "neg_scalar": [-1, 1]
             },

@@ -14,7 +14,7 @@ class NNFitnessEvaluator(InitializeKerasModel):
             loss = None
 
         InitializeKerasModel.__init__(self, tree, evaluator_config, loss)
-        self.epochs = evaluator_config.get("epochs", 1)
+        self.epochs = evaluator_config.get("epochs")
         self.verbose = evaluator_config.get("verbose", 1)
         self.batch_size = evaluator_config.get("batch_size", 32)
 

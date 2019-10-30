@@ -9,7 +9,7 @@ class TreeConstruction:
 
     def __init__(self, min_height, max_height):
         self.height = 0  # Current height of tree
-        self.token_list = ["U", "B", "BBL", "L", "R"]  # Types of operators the tree can have. Eg: ["B", "U"]
+        self.token_list = ["L", "U", "B", "BBL", "R"]  # Types of operators the tree can have. Eg: ["B", "U"]
         self.max_height = max_height  # Maximum Height Allowed for the tree
         self.min_height = min_height  # minimum height allowed for the tree
         self.number_of_nodes = 0  # Number of nodes in the tree
@@ -36,14 +36,14 @@ class TreeConstruction:
         if self.height == 0:
             return self.token_list[-1]
         elif self.height == self.max_height - 1:
-            return self.token_list[random.randint(0, 2)]
+            return self.token_list[random.randint(1, 3)]
         elif self.height < self.min_height:
             if self.min_height == self.max_height:
-                return self.token_list[random.randint(0, 1)]
+                return self.token_list[random.randint(1, 2)]
             else:
-                return self.token_list[1]
+                return self.token_list[2]
         elif self.height >= self.max_height:
-            return self.token_list[-2]
+            return self.token_list[0]
         else:
             return self.token_list[random.randint(0, 2)]
 

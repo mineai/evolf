@@ -17,6 +17,19 @@ class EvaluateGeneration:
         print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
 
         print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
+
+        evaluated_tree = self.is_tree_evaluated(population.working_trees[tree_idx])
+        if evaluated_tree:
+            print("This Tree has already been evaluated.")
+            print("Status: ", evaluated_tree.working)
+            print("Fitness: ", evaluated_tree.fitness)
+
+            if evaluated_tree.working:
+                population.trainable_trees.append(evaluated_tree)
+
+            print(" \n\n ###########################################################################")
+            return
+
         if not eval_all:
             if tree_idx > self.population_size:
                 # If it is an Elite, no need to train Again
@@ -54,13 +67,19 @@ class EvaluateGeneration:
         else:
             print("This tree failed while training",
                   "\n\n ###########################################################################")
+        self.global_cache.append(tree)
 
-        return population
+    def is_tree_evaluated(self, tree):
+        for evaluated_tree in self.global_cache:
+            if tree.symbolic_expression == evaluated_tree.symbolic_expression:
+                return evaluated_tree
+        return False
 
     def evaluate_current_generation(self, population, eval_all=False):
         print("############# Starting Evaluation ################## \n\n")
         self.persistor_obj.create_generation_folder(self.generation_number)
         for tree_idx in trange(len(population.working_trees)):
+
             self.evaluate_candidate(population, tree_idx, eval_all)
 
         population.initialize_trainable_tree_fitness()

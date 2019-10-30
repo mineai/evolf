@@ -1,6 +1,7 @@
 import argparse
-
 from evolf.evolution.evolve import Evolve
+from evolf.evolution.get_default_config import GetDefaultConfig
+from evolf.utils.overlayer import Overlayer
 from evolutionary_algorithms.servicecommon.parsers.parse_hocon import ParseHocon
 
 
@@ -14,6 +15,10 @@ class SessionServer(Evolve):
         args = parser.parse_args()
         # Read the Config File
         self.conf = ParseHocon().parse(args.config)
+
+        default_config = GetDefaultConfig.get_default_config()
+        self.conf = Overlayer.overlay_configs(default_config, self.conf)
+
         self.domain_config = self.conf.get("domain_config")
         self.domain_name = self.domain_config.get("domain")
 

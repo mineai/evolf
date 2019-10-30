@@ -6,7 +6,7 @@
 
     # Evaluator Specs
     "evaluator_specs": {
-        "epochs": 3,
+        "epochs": 100,
         "verbose": True,
         "batch_size": 128,
         "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
@@ -17,8 +17,8 @@
             "monitor": "val_acc",
             "mode": "max",
             "print_early_stopping": True,
-            "patience": 1,
-            "min_delta": 1
+            "patience": 3,
+            "min_delta": 0.1
         },
 
         "switch_threshold": 0.9796
@@ -39,7 +39,7 @@
     },
 
     "state_of_the_art_config": {
-        "evaluate": False,
+        "evaluate": True,
         "epochs": 10,
         "verbose": True,
         "batch_size": 128,
@@ -64,7 +64,7 @@
 # Evolution Specs
 "evolution_specs": {
     "initial_population_size": 200,
-    "population_size": 50,
+    "population_size": 80,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
     "weighted_function_mutation_rate": 0.05,

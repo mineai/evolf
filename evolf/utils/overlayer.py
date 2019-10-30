@@ -9,7 +9,7 @@ class Overlayer:
         :param user_config:
         :return user_config with updated keys:
         """
-        return Overlay.update_keys(default_config, user_config)
+        return Overlayer.update_keys(default_config, user_config)
 
     @staticmethod
     def update_keys(default_dict, user_dict):
@@ -38,6 +38,6 @@ class Overlayer:
                 else:
                     # if the key exists in user_config validate it's children by recursively calling update_keys
                     # with the dictionary's children
-                    user_dict[key] = Overlay.update_keys(default_dict[key], user_dict[key])
+                    user_dict[key] = Overlayer.update_keys(default_dict[key], user_dict[key])
 
         return user_dict

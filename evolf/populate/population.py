@@ -27,6 +27,7 @@ class Population:
             self.max_height = max_height
             self.trees = []
             self.generate_population()
+            self.get_working_trees()
         else:
             self.trees = initial_population
             tree_heights = []
@@ -53,14 +54,17 @@ class Population:
         """
         print("\n\nGenerating Tress ...")
         while len(self.trees) < self.population_size:
-
             tree = Tree(self.min_height, self.max_height)
             if tree.symbolic_expression in self.symbolic_expressions:
                 continue
-            self.trees.append(tree)
             self.symbolic_expressions.append(tree.symbolic_expression)
 
-        self.get_working_trees()
+            while not tree.working:
+                tree = Tree(self.min_height, self.max_height)
+                if tree.symbolic_expression in self.symbolic_expressions:
+                    continue
+                self.symbolic_expressions.append(tree.symbolic_expression)
+            self.trees.append(tree)
 
     def get_working_trees(self):
         """
