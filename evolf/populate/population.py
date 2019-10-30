@@ -2,14 +2,13 @@ from evolf.elements.tree.tree \
     import Tree
 import numpy as np
 
-from evolf.populate.function_library import FunctionLibrary
 from evolutionary_algorithms.reproduction.selection.selection_functions_library \
     import SelectionFunctionsLibrary
 
 class Population:
     def __init__(self, min_height=3, max_height=10, population_size=25,
                  num_parents=2, mating_pool_multiplier=100,
-                 initial_population=None):
+                 initial_population=None, search_space_obj=None):
         self.population_size = population_size
         self.num_parents = num_parents
         self.mating_pool_multiplier = mating_pool_multiplier
@@ -19,7 +18,7 @@ class Population:
         self.symbolic_expressions = []  # Cache to generate unique expressions
         self.mating_pool = None
         self.elites = None
-        self.search_space_obj = FunctionLibrary()
+        self.search_space_obj = search_space_obj
 
         if initial_population is None:
             self.min_height = min_height

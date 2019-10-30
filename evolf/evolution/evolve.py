@@ -9,7 +9,7 @@ from evolf.utils.evolution_persistor import EvolutionPersistor
 
 class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
 
-    def __init__(self, config, data_dict):
+    def __init__(self, config, data_dict, search_space_obj):
         # # Parse and initialize variables
         self.config = config
         self.evolution_specs = self.config.get("evolution_specs")
@@ -54,6 +54,8 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
         self.avg_fitness_list = []
         self.best_fitness_list = []
 
+        self.search_space_obj = search_space_obj
+
         EvaluateStateOfTheArt.__init__(self)
         EvaluateGeneration.__init__(self)
         InitializeNextGen.__init__(self)
@@ -69,14 +71,14 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
                                 self.tree_max_height,
                                 self.initial_population_size,
                                 self.number_parents,
-                                self.mating_pool_multiplier)
+                                self.mating_pool_multiplier, search_space_obj=self.search_space_obj)
 
         while not len(population.working_trees):
             population = Population(self.tree_min_height,
                                     self.tree_max_height,
                                     self.initial_population_size,
                                     self.number_parents,
-                                    self.mating_pool_multiplier)
+                                    self.mating_pool_multiplier, search_space_obj=self.search_space_obj)
 
         self.best_candidate_ever = population.working_trees[0]
 

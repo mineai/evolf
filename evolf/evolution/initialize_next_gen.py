@@ -25,7 +25,8 @@ class InitializeNextGen:
             children = Crossover.crossover(parents[0], parents[1])
 
             for child in children:
-                child = Mutation.weighted_function_mutation(child, self.weighted_function_mutation_rate)
+                child = Mutation.weighted_function_mutation(child, self.weighted_function_mutation_rate,
+                                                            self.search_space_obj)
                 child = Mutation.mutate_leaf_node(child, self.mutate_leaf_node_rate)
                 child = Mutation.mutate_value_literal_nodes(child, self.mutate_value_literal_nodes_rate)
                 child.reset_tree()
@@ -50,5 +51,6 @@ class InitializeNextGen:
                                 self.population_size,
                                 self.number_parents,
                                 self.mating_pool_multiplier,
-                                initial_population=next_gen_trees)
+                                initial_population=next_gen_trees,
+                                search_space_obj=self.search_space_obj)
         return population

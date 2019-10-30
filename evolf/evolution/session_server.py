@@ -1,6 +1,7 @@
 import argparse
 from evolf.evolution.evolve import Evolve
 from evolf.evolution.get_default_config import GetDefaultConfig
+from evolf.populate.function_library import FunctionLibrary
 from evolf.utils.overlayer import Overlayer
 from evolutionary_algorithms.servicecommon.parsers.parse_hocon import ParseHocon
 
@@ -39,7 +40,8 @@ class SessionServer(Evolve):
             network_constructor.compile_model()
             network_constructor.save_model()
 
-        super().__init__(self.conf, self.data_dict)
+        self.search_space_obj = FunctionLibrary()
+        super().__init__(self.conf, self.data_dict, self.search_space_obj)
 
     def run(self):
         self.evolve()
