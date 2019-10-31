@@ -1,15 +1,11 @@
-import random
-from evolf.elements.node \
-    import Node
-from evolf.populate.function_library \
-    import FunctionLibrary
+from evolf.elements.node import Node
 
 
 class TreeConstruction:
 
-    def __init__(self, min_height, max_height):
+    def __init__(self, min_height, max_height, search_space_obj):
         self.height = 0  # Current height of tree
-        self.token_list = ["U", "B", "L", "R"]  # Types of operators the tree can have. Eg: ["B", "U"]
+        self.search_space_obj = search_space_obj
         self.max_height = max_height  # Maximum Height Allowed for the tree
         self.min_height = min_height  # minimum height allowed for the tree
         self.number_of_nodes = 0  # Number of nodes in the tree
@@ -19,8 +15,8 @@ class TreeConstruction:
         self.binary_count = 0
         self.literal_count = 0
 
-        token = self.request_token()
-        self.root = self.helper_function(token)
+        root_type = "R"
+        self.root = self.helper_function(root_type)
         self.assign_level_order_id()
 
     def request_token(self):
@@ -33,17 +29,14 @@ class TreeConstruction:
         returns: token (string) - either 'U', 'B', or 'L'
 
         """
-        if self.height == 0:
-            return "R"
-        elif self.height < self.min_height:
-            if self.min_height == self.max_height:
-                return self.token_list[random.randint(0, 1)]
-            else:
-                return self.token_list[1]
+        if self.height < self.min_height:
+            function = self.search_space_obj.sample(["U", "B"])
         elif self.height >= self.max_height:
-            return 'L'
+            function = self.search_space_obj.sample(["L"])
         else:
-            return self.token_list[random.randint(0, 2)]
+            function = self.search_space_obj.sample(["L", "U", "B"])
+
+        return self.search_space_obj.get_function_type(function)
 
     def helper_function(self, token):
         """
@@ -102,7 +95,6 @@ class TreeConstruction:
             U       L
 
         """
-
         current_node = self.generate_node(token)
         self.height += 1
         self.binary_count += 1
@@ -135,11 +127,10 @@ class TreeConstruction:
         self.number_of_nodes += 1
         return current_node
 
-    @staticmethod
-    def generate_node(token):
-        sample_operator = FunctionLibrary.sample(token)
-        tensorflow_handle = FunctionLibrary.get_tensorflow_handle(sample_operator)
-        symbolic_handle = FunctionLibrary.get_symbolic_handle(sample_operator)
+    def generate_node(self, token):
+        sample_operator = self.search_space_obj.sample(token)
+        tensorflow_handle = self.search_space_obj.get_tensorflow_handle(sample_operator)
+        symbolic_handle = self.search_space_obj.get_symbolic_handle(sample_operator)
         node = Node(operator_type=token, function_str=sample_operator,
                     symbolic_handle=symbolic_handle, tensorflow_handle=tensorflow_handle)
         node.coefficient = 1

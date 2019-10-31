@@ -2,6 +2,9 @@ import copy
 import random
 from random import randint
 
+from evolf.populate.population import Population
+
+
 
 class Crossover:
     """
@@ -33,29 +36,47 @@ class Crossover:
         will replace a node in tree1
         :return: tree_1 with the switched out node
         """
+
+        import copy
+        import random
+
+        tree_1, tree_2 = copy.deepcopy(tree_1), copy.deepcopy(tree_2)
+
         # Randomly generate ids to select nodes within each tree
         cutting_point_1 = random.randint(2, tree_1.number_of_nodes)
         cutting_point_2 = random.randint(2, tree_2.number_of_nodes)
 
-        child = copy.deepcopy(tree_1)
-
+        # Make Child 1
+        child1 = copy.deepcopy(tree_1)
         # Retrieve the Node objects by id
-        selected_node_1 = child.get_node_by_id(cutting_point_1)
+        selected_node_1 = child1.get_node_by_id(cutting_point_1)
         selected_node_2 = copy.deepcopy(tree_2.get_node_by_id(cutting_point_2))
 
         # Replace selected_node_1 with selected_node_2 in its respective tree.
         if selected_node_1.parent.operator_type in ['U', 'R']:
             selected_node_1.parent.left = selected_node_2
-        elif selected_node_1.parent.operator_type in ['B']:
+        elif selected_node_1.parent.operator_type in ['B', "BBL"]:
             if selected_node_1.parent.left == selected_node_1:
                 selected_node_1.parent.left = selected_node_2
             else:
                 selected_node_1.parent.right = selected_node_2
 
-        # Reset the node id's
-        # child.reset_tree()
+        # Make Child 2
+        child2 = copy.deepcopy(tree_2)
+        selected_node_2 = copy.deepcopy(tree_1.get_node_by_id(cutting_point_1))
+        selected_node_1 = child2.get_node_by_id(cutting_point_2)
 
-        return child
+        # Replace selected_node_1 with selected_node_2 in its respective tree.
+        if selected_node_1.parent.operator_type in ['U', 'R']:
+            selected_node_1.parent.left = selected_node_2
+        elif selected_node_1.parent.operator_type in ['B', "BBL"]:
+            if selected_node_1.parent.left == selected_node_1:
+                selected_node_1.parent.left = selected_node_2
+            else:
+                selected_node_1.parent.right = selected_node_2
+                
+        return [child1, child2]
+
 
     @classmethod
     def crossover_n_trees(cls, lists):
@@ -169,4 +190,3 @@ class Crossover:
 
         get_level_order(main_tree.root)
         return main_tree
-

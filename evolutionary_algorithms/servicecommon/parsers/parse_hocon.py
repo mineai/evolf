@@ -2,6 +2,8 @@ from evolutionary_algorithms.servicecommon.parsers.parser \
     import Parser
 
 from pyhocon import ConfigFactory
+from pyhocon import HOCONConverter
+import json
 
 class ParseHocon(Parser):
     """
@@ -19,4 +21,5 @@ class ParseHocon(Parser):
         :returns conf: Dictionary version of passed hocon file
         """
         conf = ConfigFactory.parse_file(hocon_file)
+        conf = json.loads(HOCONConverter.convert(conf, 'json'))
         return conf

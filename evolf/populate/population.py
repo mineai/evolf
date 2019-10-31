@@ -4,14 +4,11 @@ import numpy as np
 
 from evolutionary_algorithms.reproduction.selection.selection_functions_library \
     import SelectionFunctionsLibrary
-from evolutionary_algorithms.servicecommon.utils.math_utils \
-    import MathUtils
-
 
 class Population:
     def __init__(self, min_height=3, max_height=10, population_size=25,
                  num_parents=2, mating_pool_multiplier=100,
-                 initial_population=None):
+                 initial_population=None, search_space_obj=None):
         self.population_size = population_size
         self.num_parents = num_parents
         self.mating_pool_multiplier = mating_pool_multiplier
@@ -21,12 +18,14 @@ class Population:
         self.symbolic_expressions = []  # Cache to generate unique expressions
         self.mating_pool = None
         self.elites = None
+        self.search_space_obj = search_space_obj
 
         if initial_population is None:
             self.min_height = min_height
             self.max_height = max_height
             self.trees = []
             self.generate_population()
+            self.get_working_trees()
         else:
             self.trees = initial_population
             tree_heights = []
@@ -36,6 +35,7 @@ class Population:
             self.population_size = len(self.trees)
             self.min_height = min(tree_heights)
             self.max_height = max(tree_heights)
+            self.get_working_trees()
 
     def generate_population(self):
         """
@@ -52,14 +52,17 @@ class Population:
         """
         print("\n\nGenerating Tress ...")
         while len(self.trees) < self.population_size:
-
-            tree = Tree(self.min_height, self.max_height)
+            tree = Tree(self.min_height, self.max_height, self.search_space_obj)
             if tree.symbolic_expression in self.symbolic_expressions:
                 continue
-            self.trees.append(tree)
             self.symbolic_expressions.append(tree.symbolic_expression)
 
-        self.get_working_trees()
+            while not tree.working:
+                tree = Tree(self.min_height, self.max_height, self.search_space_obj)
+                if tree.symbolic_expression in self.symbolic_expressions:
+                    continue
+                self.symbolic_expressions.append(tree.symbolic_expression)
+            self.trees.append(tree)
 
     def get_working_trees(self):
         """
@@ -68,6 +71,7 @@ class Population:
         :return nothing:
         """
         print("Extracting Working Tress ... \n\n")
+        self.working_trees = []
         for tree_idx in range(len(self.trees)):
             tree = self.trees[tree_idx]
             if tree.symbolic_expression is None:
@@ -84,9 +88,9 @@ class Population:
             self.trainable_trees_fitness.append(tree.fitness)
 
     def get_best_fitness_candidate(self):
-        if not len(self.trainable_trees):
-            print("Trees have not yet been trained or no Trained Trees Exist")
-            return False
+        if not len(self.trainable_trees) and \
+                None not in self.trainable_trees_fitness:
+            return None
         else:
             best_candidate_index = np.argmax(self.trainable_trees_fitness)
             best_candidate = self.trainable_trees[best_candidate_index]
@@ -114,9 +118,8 @@ class Population:
             for tree in self.trainable_trees:
                 self.trainable_trees_fitness.append(tree.fitness)
 
-        fitness_probs = MathUtils.softmax(self.trainable_trees_fitness)
         self.mating_pool = SelectionFunctionsLibrary.default_mating_pool(
-            self.trainable_trees, fitness_probs, self.mating_pool_multiplier)
+            self.trainable_trees, self.trainable_trees_fitness, self.mating_pool_multiplier)
 
     def natural_selection(self):
         """
@@ -137,3 +140,7 @@ class Population:
         parents = SelectionFunctionsLibrary().natural_selection(
             self.mating_pool, self.num_parents)
         return parents
+
+    def get_average_fitness(self):
+        average_fitness = np.mean(self.trainable_trees_fitness)
+        return average_fitness
