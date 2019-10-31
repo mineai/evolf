@@ -42,7 +42,8 @@ class Tree(LinearTree, TreeConstruction):
             self.construct_symbolic_expression()
             self.validate_working()
         except:
-            print("Could not Validate Expression")
+            self.working = False
+            pass
         # self.visualize_tree()
 
     """
