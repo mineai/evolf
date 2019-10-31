@@ -1,13 +1,12 @@
 import random
 
 from evolf.elements.tree.tree import Tree
-from evolf.populate.function_library import FunctionLibrary
 
 
 class Mutation:
 
     @staticmethod
-    def weighted_function_mutation(tree, mutate_node_function_rate=0.1):
+    def weighted_function_mutation(tree, mutate_node_function_rate=0.1, search_space_obj=None):
         """
         THis function mutates nodes of the tree by replacing them with another
         weighted function of the same type.
@@ -24,10 +23,10 @@ class Mutation:
                 if random.random() < mutate_node_function_rate:
                     # Mutate the Operator in this node
                     operator_type = node.operator_type
-                    new_function = FunctionLibrary.sample(operator_type)
+                    new_function = search_space_obj.sample(operator_type)
                     node.function_str = new_function
-                    node.tensorflow_handle = FunctionLibrary.get_tensorflow_handle(new_function)
-                    node.symbolic_handle = FunctionLibrary.get_symbolic_handle(new_function)
+                    node.tensorflow_handle = search_space_obj.get_tensorflow_handle(new_function)
+                    node.symbolic_handle = search_space_obj.get_symbolic_handle(new_function)
 
                     weight = random.uniform(--10, 10)
                     node.coefficient = weight

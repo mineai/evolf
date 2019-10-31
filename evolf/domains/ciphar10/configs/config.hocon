@@ -6,7 +6,7 @@
 
     # Evaluator Specs
     "evaluator_specs": {
-        "epochs": 10,
+        "epochs": 50,
         "verbose": True,
         "batch_size": 1000,
         "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/ciphar10/model",
@@ -62,7 +62,7 @@
 
 # Evolution Specs
 "evolution_specs": {
-    "initial_population_size": 100,
+    "initial_population_size": 200,
     "population_size": 20,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
