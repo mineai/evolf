@@ -75,6 +75,9 @@ class Crossover:
             else:
                 selected_node_1.parent.right = selected_node_2
                 
+        child1.reset_tree()
+        child2.reset_tree()
+
         return [child1, child2]
 
 

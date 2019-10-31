@@ -61,13 +61,15 @@
 
 # Evolution Specs
 "evolution_specs": {
-    "initial_population_size": 10,
+    "initial_population_size": 6,
     "population_size": 20,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
     "weighted_function_mutation_rate": 0.05,
     "mutate_value_literal_nodes_rate": 0.025,
     "mutate_leaf_node_rate": 0.025,
+    "shrink_mutation": 0.5,
+    "hoist_mutation": 1.0,
     "elitism": 0.1,
     "num_of_generations": 10,
     "tree_min_height": 2,

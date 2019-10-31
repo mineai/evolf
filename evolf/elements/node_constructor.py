@@ -24,11 +24,24 @@ class NodeConstructor:
         return weight_node
 
     @staticmethod
+    def create_literal_node(operator=None, search_space_obj=None):
+        # Create A binary node
+        operator_type = "L"
+        if operator is None:
+            operator = search_space_obj.sample(operator_type)
+
+        symbolic_handle = search_space_obj.get_symbolic_handle(operator)
+        tensorflow_handle = search_space_obj.get_tensorflow_handle(operator)
+        literal_node = Node(operator_type=operator_type, function_str=operator,
+                           symbolic_handle=symbolic_handle, tensorflow_handle=tensorflow_handle)
+        return literal_node
+    
+    @staticmethod
     def create_binary_node(operator=None, search_space_obj=None):
         # Create A binary node
         operator_type = "B"
         if operator is None:
-            operator = SearchSpace.sample(operator_type)
+            operator = search_space_obj.sample(operator_type)
 
         symbolic_handle = search_space_obj.get_symbolic_handle(operator)
         tensorflow_handle = search_space_obj.get_tensorflow_handle(operator)
