@@ -1,7 +1,4 @@
-import random
-
 from evolf.elements.node import Node
-from evolutionary_algorithms.reproduction.selection.selection_functions_library import SelectionFunctionsLibrary
 
 
 class TreeConstruction:
@@ -9,9 +6,6 @@ class TreeConstruction:
     def __init__(self, min_height, max_height, search_space_obj):
         self.height = 0  # Current height of tree
         self.search_space_obj = search_space_obj
-        self.token_dict = self.search_space_obj.tokens
-        self.token_list = list(self.token_dict.keys())  # Types of operators the tree can have. Eg: ["B", "U"]
-        self.token_list_probs = list(self.token_dict.values())  # Types of operators the tree can have. Eg: ["B", "U"]
         self.max_height = max_height  # Maximum Height Allowed for the tree
         self.min_height = min_height  # minimum height allowed for the tree
         self.number_of_nodes = 0  # Number of nodes in the tree
@@ -21,8 +15,8 @@ class TreeConstruction:
         self.binary_count = 0
         self.literal_count = 0
 
-        token = self.request_token()
-        self.root = self.helper_function(token)
+        root_type = "R"
+        self.root = self.helper_function(root_type)
         self.assign_level_order_id()
 
     def request_token(self):
@@ -35,25 +29,14 @@ class TreeConstruction:
         returns: token (string) - either 'U', 'B', or 'L'
 
         """
-        if self.height == 0:
-            return self.token_list[-1]
-        # elif self.height == self.max_height - 1:
-        #     options = SelectionFunctionsLibrary.default_mating_pool(
-        #     self.token_list[1:4], self.token_list_probs[1:4], 100)
-        #     return SelectionFunctionsLibrary.natural_selection(options, 1)[0]
-        elif self.height < self.min_height:
-            if self.min_height == self.max_height:
-                options = SelectionFunctionsLibrary.default_mating_pool(
-                    self.token_list[1:3], self.token_list_probs[1:3], 100)
-                return SelectionFunctionsLibrary.natural_selection(options, 1)[0]
-            else:
-                return self.token_list[2]
+        if self.height < self.min_height:
+            function = self.search_space_obj.sample(["U", "B"])
         elif self.height >= self.max_height:
-            return self.token_list[0]
+            function = self.search_space_obj.sample(["L"])
         else:
-            options = SelectionFunctionsLibrary.default_mating_pool(
-                self.token_list[1:3], self.token_list_probs[1:3], 100)
-            return SelectionFunctionsLibrary.natural_selection(options, 1)[0]
+            function = self.search_space_obj.sample(["L", "U", "B"])
+
+        return self.search_space_obj.get_function_type(function)
 
     def helper_function(self, token):
         """
@@ -72,7 +55,7 @@ class TreeConstruction:
         """
         if token in ['U', 'R']:
             return self.unary(token)
-        elif token in ['B', "BBL"]:
+        elif token == 'B':
             return self.binary(token)
         elif token == 'L':
             return self.literal(token)
@@ -112,7 +95,6 @@ class TreeConstruction:
             U       L
 
         """
-
         current_node = self.generate_node(token)
         self.height += 1
         self.binary_count += 1
