@@ -1,7 +1,8 @@
 class LinearTree:
 
     def __init__(self, root):
-        self.nodes = []  # Consists of all the nodes in a pre-order traversal manner.
+        self.nodes = []  # Consists of all the nodes in a level traversal manner from top to bottom
+        # and starts with ID 1, operator type R
         # The symbolic expression of the tree (the formula this tree represents)
         self.root = root
 
@@ -21,4 +22,4 @@ class LinearTree:
                 traversal = helper_function_generate_nodes(start.right, traversal)
             return traversal
 
-        self.nodes = helper_function_generate_nodes(self.root)[::-1]
+        self.nodes = helper_function_generate_nodes(self.root)

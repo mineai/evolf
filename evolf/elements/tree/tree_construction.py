@@ -4,7 +4,7 @@ from evolf.elements.node import Node
 class TreeConstruction:
 
     def __init__(self, min_height, max_height, search_space_obj):
-        self.height = 0  # Current height of tree
+        self.height = 1  # Current height of tree
         self.search_space_obj = search_space_obj
         self.max_height = max_height  # Maximum Height Allowed for the tree
         self.min_height = min_height  # minimum height allowed for the tree
@@ -121,7 +121,8 @@ class TreeConstruction:
 
         current_node = self.generate_node(token)
         self.height += 1
-        self.unary_count += 1
+        if token is not "R":
+            self.unary_count += 1
         current_node.left = self.helper_function(self.request_token())
         current_node.right = None
         self.number_of_nodes += 1
@@ -207,14 +208,4 @@ class TreeConstruction:
 
         self.height = helper_function_get_height(self.root)
 
-    def init_node_type_count(self):
-        self.unary_count = 0
-        self.binary_count = 0
-        self.literal_count = 0
-        for node in self.nodes:
-            if node.operator_type == "U":
-                self.unary_count += 1
-            elif node.operator_type == "L":
-                self.literal_count += 1
-            elif node.operator_type == "B":
-                self.binary_count += 1
+

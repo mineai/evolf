@@ -17,8 +17,8 @@ class EvaluateTree:
         """
         expression = None
         stack = []
-
-        for node in tree.nodes:
+        level_order_traversing_inverted = tree.nodes[::-1]
+        for node in level_order_traversing_inverted:
             function_type = node.operator_type
             if function_type == "R":
                 continue

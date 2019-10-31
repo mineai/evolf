@@ -8,6 +8,15 @@ from evolf.reproduction.mutation import Mutation
 
 class InitializeNextGen:
 
+    def __init__(self, evolution_specs):
+        self.evolution_specs = evolution_specs
+        self.weighted_function_mutation_rate = self.evolution_specs.get("weighted_function_mutation_rate")
+        self.mutate_value_literal_nodes_rate = self.evolution_specs.get("mutate_value_literal_nodes_rate")
+        self.mutate_leaf_node_rate = self.evolution_specs.get("mutate_leaf_node_rate")
+        self.shrink_mutation_rate = self.evolution_specs.get("shrink_mutation_rate")
+        self.hoist_mutation_rate = self.evolution_specs.get("hoist_mutation_rate")
+        self.elitism = self.evolution_specs.get("elitism")
+
     def initialize_next_gen(self, population):
         next_gen_trees = []
         sorted_parents = TreeUtils.sort_trees_by_fitness_desc(population.trainable_trees)

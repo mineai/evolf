@@ -23,12 +23,6 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
         self.population_size = self.evolution_specs.get("population_size")
         self.mating_pool_multiplier = self.evolution_specs.get("mating_pool_multiplier")
         self.number_parents = self.evolution_specs.get("num_parents")
-        self.weighted_function_mutation_rate = self.evolution_specs.get("weighted_function_mutation_rate")
-        self.mutate_value_literal_nodes_rate = self.evolution_specs.get("mutate_value_literal_nodes_rate")
-        self.mutate_leaf_node_rate = self.evolution_specs.get("mutate_leaf_node_rate")
-        self.shrink_mutation_rate = self.evolution_specs.get("shrink_mutation_rate")
-        self.hoist_mutation_rate = self.evolution_specs.get("hoist_mutation_rate")
-        self.elitism = self.evolution_specs.get("elitism")
         self.num_of_generations = self.evolution_specs.get("num_of_generations")
         self.tree_min_height = self.evolution_specs.get("tree_min_height")
         self.tree_max_height = self.evolution_specs.get("tree_max_height")
@@ -60,7 +54,7 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
 
         EvaluateStateOfTheArt.__init__(self)
         EvaluateGeneration.__init__(self)
-        InitializeNextGen.__init__(self)
+        InitializeNextGen.__init__(self, self.evolution_specs)
 
     def evolve(self):
 

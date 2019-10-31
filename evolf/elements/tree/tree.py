@@ -130,6 +130,18 @@ class Tree(LinearTree, TreeConstruction):
             path = f"{os.getcwd()}/results/glo_test_tree"
         Visualize.visualize(self, path=path)
 
+    def init_node_type_count(self):
+        self.unary_count = 0
+        self.binary_count = 0
+        self.literal_count = 0
+        for node in self.nodes:
+            if node.operator_type == "U":
+                self.unary_count += 1
+            elif node.operator_type == "L":
+                self.literal_count += 1
+            elif node.operator_type == "B":
+                self.binary_count += 1
+
     def reset_tree(self):
         self.nodes = []
         self.symbolic_expression = None
@@ -141,9 +153,9 @@ class Tree(LinearTree, TreeConstruction):
 
         self.initialize_height()
         self.assign_level_order_id()
+        self.linearize_tree()
         self.init_node_type_count()
         self.initialize_parents()
-        self.linearize_tree()
         try:
             self.construct_symbolic_expression()
             self.validate_working()

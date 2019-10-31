@@ -6,7 +6,7 @@
 
     # Evaluator Specs
     "evaluator_specs": {
-        "epochs": 2,
+        "epochs": 1,
         "verbose": True,
         "batch_size": 128,
         "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
@@ -67,9 +67,11 @@
     "population_size": 80,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
-    "weighted_function_mutation_rate": 1,
+    "weighted_function_mutation_rate": 0.025,
     "mutate_value_literal_nodes_rate": 0.025,
     "mutate_leaf_node_rate": 0.025,
+    "shrink_mutation_rate": 0.025,
+    "hoist_mutation_rate": 0.025,
     "elitism": 0.1,
     "num_of_generations": 50,
     "tree_min_height": 2,

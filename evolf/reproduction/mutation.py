@@ -23,7 +23,6 @@ class Mutation:
         for node in child.nodes:
             if node.operator_type not in ["R"]:
                 if random.random() < mutate_node_function_rate:
-                    print('Weighted Function Mutation will occur')
                     # Mutate the Operator in this node
                     operator_type = node.operator_type
                     new_function = search_space_obj.sample(operator_type)
@@ -51,7 +50,6 @@ class Mutation:
         for node in linearized_tree:
             if node.function_str in ["pos_scalar", "neg_scalar"]:
                 if random.random() < mutate_integer_nodes_rate:
-                    print('Literal Value Mutation will occur')
                     random_int = random.randint(-2, 2)
                     node.symbolic_handle += random_int
                     node.tensorflow_handle += random_int
@@ -75,7 +73,6 @@ class Mutation:
         for node in child.nodes:
             if node.operator_type == "L":
                 if random.random() < mutate_leaf_rate:
-                    print('Leaf Node Mutation will occur')
                     new_tree = Tree(2, random.randint(2, 3), search_space_obj=search_space_obj)
                     if node.parent.operator_type in ["U", "R"]:
                         node.parent.left = new_tree.root.left
@@ -102,24 +99,19 @@ class Mutation:
         """
 
         child = copy.deepcopy(tree)
+        if child.height <= 3:
+            return child
 
         mutation_prob = random.random()
-
         if mutation_prob < mutation_rate:
-
-            print('Hoist Mutation will occur.')
-
+            print(f"Hoisting {tree.symbolic_expression}")
             # Select a random node as the root of the new subtree
-            selected_node_id = random.randint(2, len(child.nodes))
+            selected_node_id = random.randint(3, len(child.nodes) - child.literal_count)
             selected_node = child.get_node_by_id(selected_node_id)
 
             # make sure that the selected node is going to be a non-terminal
             # by checking if it's a terminal node. If it is, select another
             # node.
-            while selected_node.operator_type in ['L']:
-                print(selected_node.operator_type)
-                selected_node_id = random.randint(2, len(child.nodes))
-                selected_node = child.get_node_by_id(selected_node_id)
 
             child.root.left = selected_node
 
@@ -139,21 +131,18 @@ class Mutation:
         """
 
         child = copy.deepcopy(tree)
+        if child.height <= 3:
+            return child
 
-        selected_node_id = random.randint(1, len(child.nodes))
+        selected_node_id = random.randint(3, len(child.nodes) - child.literal_count)
         selected_node = child.get_node_by_id(selected_node_id)
 
         mutation_prob = random.random()
-
         if mutation_prob < mutation_rate:
+            print(f"Shrinking {tree.symbolic_expression}")
             # if the first node selected is a literal, keep
             # picking random nodes until you find a non-terminal
             # node.
-            print('Shrink Mutation Will Occur')
-            while selected_node.operator_type in ['L']:
-                selected_node_id = random.randint(2, len(child.nodes))
-                selected_node = child.get_node_by_id(selected_node_id)
-
             # Create a terminal node to replace the randomly selected non terminal
             new_node = NodeConstructor.create_literal_node(search_space_obj=search_space_obj)
 
@@ -167,4 +156,3 @@ class Mutation:
 
         child.reset_tree()
         return child
-
