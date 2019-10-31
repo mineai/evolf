@@ -1,7 +1,7 @@
 import random
 
 from evolf.elements.node import Node
-from evolf.populate.function_library import FunctionLibrary
+from evolf.populate.search_space import SearchSpace
 
 
 class NodeConstructor:
@@ -16,8 +16,8 @@ class NodeConstructor:
             function_str = "pos_scalar"
         else:
             function_str = "neg_scalar"
-        symbolic_handle = weight * FunctionLibrary.get_symbolic_handle("pos_scalar")
-        tensorflow_handle = weight * FunctionLibrary.get_tensorflow_handle("pos_scalar")
+        symbolic_handle = weight * SearchSpace.get_symbolic_handle("pos_scalar")
+        tensorflow_handle = weight * SearchSpace.get_tensorflow_handle("pos_scalar")
         weight_node = Node(operator_type=operator_type, function_str=function_str,
                            symbolic_handle=symbolic_handle, tensorflow_handle=tensorflow_handle)
 
@@ -28,10 +28,10 @@ class NodeConstructor:
         # Create A binary node
         operator_type = "B"
         if operator is None:
-            operator = FunctionLibrary.sample(operator_type)
+            operator = SearchSpace.sample(operator_type)
 
-        symbolic_handle = FunctionLibrary.get_symbolic_handle(operator)
-        tensorflow_handle = FunctionLibrary.get_tensorflow_handle(operator)
+        symbolic_handle = SearchSpace.get_symbolic_handle(operator)
+        tensorflow_handle = SearchSpace.get_tensorflow_handle(operator)
         binary_node = Node(operator_type=operator_type, function_str=operator,
                                    symbolic_handle=symbolic_handle, tensorflow_handle=tensorflow_handle)
         return binary_node
@@ -41,9 +41,9 @@ class NodeConstructor:
         # Create A binary node
         operator_type = "U"
         if operator is None:
-            operator = FunctionLibrary.sample(operator_type)
-        symbolic_handle = FunctionLibrary.get_symbolic_handle(operator)
-        tensorflow_handle = FunctionLibrary.get_tensorflow_handle(operator)
+            operator = SearchSpace.sample(operator_type)
+        symbolic_handle = SearchSpace.get_symbolic_handle(operator)
+        tensorflow_handle = SearchSpace.get_tensorflow_handle(operator)
         unary_node = Node(operator_type=operator_type, function_str=operator,
                            symbolic_handle=symbolic_handle, tensorflow_handle=tensorflow_handle)
         return unary_node

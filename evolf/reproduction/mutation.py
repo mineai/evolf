@@ -1,7 +1,7 @@
 import random
 
 from evolf.elements.tree.tree import Tree
-from evolf.populate.function_library import FunctionLibrary
+from evolf.populate.search_space import SearchSpace
 
 
 class Mutation:
@@ -24,10 +24,10 @@ class Mutation:
                 if random.random() < mutate_node_function_rate:
                     # Mutate the Operator in this node
                     operator_type = node.operator_type
-                    new_function = FunctionLibrary.sample(operator_type)
+                    new_function = SearchSpace.sample(operator_type)
                     node.function_str = new_function
-                    node.tensorflow_handle = FunctionLibrary.get_tensorflow_handle(new_function)
-                    node.symbolic_handle = FunctionLibrary.get_symbolic_handle(new_function)
+                    node.tensorflow_handle = SearchSpace.get_tensorflow_handle(new_function)
+                    node.symbolic_handle = SearchSpace.get_symbolic_handle(new_function)
 
                     weight = random.uniform(--10, 10)
                     node.coefficient = weight

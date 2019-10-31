@@ -1,12 +1,11 @@
 import sympy as sp
 import numpy as np
-from collections import OrderedDict
 
 from evolutionary_algorithms.reproduction.selection.selection_functions_library \
     import SelectionFunctionsLibrary
 
 
-class FunctionLibrary:
+class SearchSpace:
     """
     This class contains the library of possible operators that we can
     retrieve as input for the nodes of the trees.
