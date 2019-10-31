@@ -26,6 +26,8 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
         self.weighted_function_mutation_rate = self.evolution_specs.get("weighted_function_mutation_rate")
         self.mutate_value_literal_nodes_rate = self.evolution_specs.get("mutate_value_literal_nodes_rate")
         self.mutate_leaf_node_rate = self.evolution_specs.get("mutate_leaf_node_rate")
+        self.shrink_mutation_rate = self.evolution_specs.get("shrink_mutation_rate")
+        self.hoist_mutation_rate = self.evolution_specs.get("hoist_mutation_rate")
         self.elitism = self.evolution_specs.get("elitism")
         self.num_of_generations = self.evolution_specs.get("num_of_generations")
         self.tree_min_height = self.evolution_specs.get("tree_min_height")

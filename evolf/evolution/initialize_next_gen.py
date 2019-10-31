@@ -27,9 +27,10 @@ class InitializeNextGen:
             for child in children:
                 child = Mutation.weighted_function_mutation(child, self.weighted_function_mutation_rate,
                                                             self.search_space_obj)
-                child = Mutation.mutate_leaf_node(child, self.mutate_leaf_node_rate)
+                child = Mutation.mutate_leaf_node(child, self.mutate_leaf_node_rate, self.search_space_obj)
                 child = Mutation.mutate_value_literal_nodes(child, self.mutate_value_literal_nodes_rate)
-                child.reset_tree()
+                child = Mutation.shrink_mutation(child, self.shrink_mutation_rate, self.search_space_obj)
+                child = Mutation.hoist_mutation(child, self.hoist_mutation_rate)
 
                 if not child.working:
                     continue

@@ -71,6 +71,8 @@ class GetDefaultConfig:
                 "weighted_function_mutation_rate": 0.05,
                 "mutate_value_literal_nodes_rate": 0.025,
                 "mutate_leaf_node_rate": 0.025,
+                "shrink_mutation_rate": 0.25,
+                "hoist_mutation_rate": 0.25,
                 "elitism": 0.1,
                 "num_of_generations": 50,
                 "tree_min_height": 2,
