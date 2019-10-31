@@ -1,5 +1,4 @@
 import argparse
-
 from evolf.domains.mnist.generate_mnist_data import GenerateMnistData
 from evolf.domains.mnist.network_constructor import NetworkConstructor
 from evolf.evolution.session_server import SessionServer

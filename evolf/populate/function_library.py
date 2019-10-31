@@ -1,6 +1,7 @@
 import sympy as sp
 import numpy as np
-
+import keras.backend as K
+import tensorflow as tf
 import random
 
 
@@ -10,81 +11,17 @@ class FunctionLibrary:
     retrieve as input for the nodes of the trees.
     """
 
-    @staticmethod
-    def get_tensorflow_expression():
-        import keras.backend as K
-        import tensorflow as tf
+    def __init__(self):
+        self.tensorflow_functions = {}
+        self.expression_functions = {}
 
-        tensorflow_functions = {
-            "U": {
-                # "cos": K.cos,
-                # "sin": K.sin,
-                "log": K.log,
-                "exp": K.exp,
-                "tan": tf.tan,
-                "square": K.square,
-                "sqrt": K.sqrt,
-                "cosh": tf.math.cosh,
-                "sinh": tf.math.sinh
-            },
-            "B": {
-                "+": lambda x, y: tf.add(x, y),
-                "-": lambda x, y: tf.subtract(x, y),
-                "*": lambda x, y: tf.multiply(x, y),
-                "/": lambda x, y: tf.divide(x, y)
-                # ".": tf.
-            },
-            "L": {
-                "y": "y_pred",
-                "t": "y_true",
-                "pos_scalar": 1,
-                "neg_scalar": -1
-            },
-            "R": {
-                "mean": tf.reduce_mean,
-                "sum": tf.reduce_sum,
-                # "max": tf.reduce_max,
-                # "min": tf.reduce_min
-            }
-        }
-        return tensorflow_functions
+    def get_tensorflow_expression(self):
 
-    @staticmethod
-    def get_symbolic_expression():
-        expression_functions = {
-            "U": {
-                "cos": sp.cos,
-                "sin": sp.sin,
-                "log": sp.log,
-                "exp": sp.exp,
-                "tan": sp.tan,
-                "square": np.square,
-                "sqrt": lambda x: np.power(x, 0.5),
-                "cosh": sp.cosh,
-                "sinh": sp.sinh
-            },
-            "B": {
-                "+": lambda x, y: x + y,
-                "-": lambda x, y: x - y,
-                "*": lambda x, y: x * y,
-                "/": lambda x, y: x / y,
-                # ".": tf.
-            },
-            "L": {
-                "y": sp.Symbol("y_pred"),
-                "t": sp.Symbol("y_true"),
-                "pos_scalar": 1,
-                "neg_scalar": -1
-            },
-            "R": {
-                "mean": np.mean,
-                "sum": np.sum,
-                "max": np.max,
-                "min": np.min
-            }
+        return self.tensorflow_functions
 
-        }
-        return expression_functions
+    def get_symbolic_expression(self):
+
+        return self.expression_functions
 
     @classmethod
     def sample(cls, operator_type):
