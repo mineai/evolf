@@ -2,7 +2,7 @@ from evolf.elements.tree.tree \
     import Tree
 import numpy as np
 
-from evolutionary_algorithms.reproduction.selection.selection_functions_library \
+from string_evolve.reproduction.selection.selection_functions_library \
     import SelectionFunctionsLibrary
 
 class Population:

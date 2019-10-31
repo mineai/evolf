@@ -1,6 +1,6 @@
 from evolf.elements.tree.linear_tree import LinearTree
 from evolf.elements.tree.tree_construction import TreeConstruction
-from evolf.utils.visualize import Visualize
+from evolf.servicecommon.utils.visualize import Visualize
 from evolf.lossconstructor.evaluate_tree import EvaluateTree
 from evolf.lossconstructor.validate import Validate
 
@@ -43,8 +43,6 @@ class Tree(LinearTree, TreeConstruction):
             self.validate_working()
         except:
             self.working = False
-            pass
-        # self.visualize_tree()
 
     """
     ################ Expression #################

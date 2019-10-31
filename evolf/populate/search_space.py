@@ -1,7 +1,7 @@
 import sympy as sp
 import numpy as np
 
-from evolutionary_algorithms.reproduction.selection.selection_functions_library \
+from string_evolve.reproduction.selection.selection_functions_library \
     import SelectionFunctionsLibrary
 
 
@@ -18,7 +18,7 @@ class SearchSpace:
             "log": {
                 "tensorflow_handle": K.log,
                 "symbolic_handle": sp.log,
-                "probability": 3,
+                "probability": 4,
                 "type": "U"
             },
             "exp": {
@@ -52,6 +52,18 @@ class SearchSpace:
                 "type": "U"
             },
             "sinh": {
+                "tensorflow_handle": tf.math.sinh,
+                "symbolic_handle": sp.sinh,
+                "probability": 1,
+                "type": "U"
+            },
+            "acosh": {
+                "tensorflow_handle": tf.math.cosh,
+                "symbolic_handle": sp.cosh,
+                "probability": 1,
+                "type": "U"
+            },
+            "asinh": {
                 "tensorflow_handle": tf.math.sinh,
                 "symbolic_handle": sp.sinh,
                 "probability": 1,

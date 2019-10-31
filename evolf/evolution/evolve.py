@@ -1,10 +1,8 @@
-from evolf.elements.tree.tree import Tree
 from evolf.evolution.evaluate_generation import EvaluateGeneration
 from evolf.evolution.evaluate_state_of_the_art import EvaluateStateOfTheArt
 from evolf.evolution.initialize_next_gen import InitializeNextGen
-from evolf.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
 from evolf.populate.population import Population
-from evolf.utils.evolution_persistor import EvolutionPersistor
+from evolf.servicecommon.utils.evolution_persistor import EvolutionPersistor
 
 
 class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
@@ -80,12 +78,6 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
 
         for generation in range(self.num_of_generations):
             print(f"Starting Evolution for Generation {generation}")
-
-            # print("Evaluator NN: ")
-            # dummy_tree = Tree(2, 2, )
-            # fitness_evaluator = NNFitnessEvaluator(dummy_tree, self.evaluator_specs, self.data_dict)
-            # print(fitness_evaluator.model.summary())
-            # del fitness_evaluator, dummy_tree
 
             if generation == 0:
                 eval_all = True

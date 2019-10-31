@@ -2,8 +2,8 @@ import argparse
 from evolf.evolution.evolve import Evolve
 from evolf.evolution.get_default_config import GetDefaultConfig
 from evolf.populate.search_space import SearchSpace
-from evolf.utils.overlayer import Overlayer
-from evolutionary_algorithms.servicecommon.parsers.parse_hocon import ParseHocon
+from evolf.servicecommon.utils.overlayer import Overlayer
+from string_evolve.servicecommon.parsers.parse_hocon import ParseHocon
 
 
 class SessionServer(Evolve):

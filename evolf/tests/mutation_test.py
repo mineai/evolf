@@ -1,7 +1,7 @@
 from evolf.populate.search_space import SearchSpace
 from evolf.populate.population import Population
 from evolf.reproduction.mutation import Mutation
-from evolf.utils.visualize \
+from evolf.servicecommon.utils.visualize \
     import Visualize
 
 

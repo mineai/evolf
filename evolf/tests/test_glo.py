@@ -3,14 +3,14 @@ import time
 import calendar
 
 from evolf.populate.population import Population
-from evolutionary_algorithms.servicecommon.persistor.local.json.json_persistor \
+from string_evolve.servicecommon.persistor.local.json.json_persistor \
     import JsonPersistor
-from evolutionary_algorithms.servicecommon.persistor.local.pickle.pickle_persistor \
+from string_evolve.servicecommon.persistor.local.pickle.pickle_persistor \
     import PicklePersistor
-from evolf.utils.visualize \
+from evolf.servicecommon.utils.visualize \
     import Visualize
 
-from evolf.utils.statistics import Statistics
+from evolf.servicecommon.utils.statistics import Statistics
 
 
 class TestGLO:

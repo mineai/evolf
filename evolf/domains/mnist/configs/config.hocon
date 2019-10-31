@@ -2,14 +2,18 @@
 
 "domain_config": {
 
+    # Specify the name of the Domain
     "domain": "MNIST",
 
+    # Set The Confiuration for the evaluator
     # Evaluator Specs
     "evaluator_specs": {
-        "epochs": 1,
+        "epochs": 1, # Number of epochs to train the function
         "verbose": True,
         "batch_size": 128,
-        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
+
+        # Specify the path where the weights and the model are located
+        "model_load_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
 
@@ -17,7 +21,7 @@
             "monitor": "val_acc",
             "mode": "max",
             "print_early_stopping": True,
-            "patience": 3,
+            "patience": 5,
             "min_delta": 0.1
         },
 
@@ -26,8 +30,7 @@
 
     "model_generation": {
         "generate_model": True,
-        "medium_model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/medium_model",
-        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
+        "model_save_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5"
     },
@@ -56,9 +59,6 @@
         }
     },
 
-    "search_space": {
-
-    }
 },
 
 # Evolution Specs
@@ -75,7 +75,10 @@
     "elitism": 0.1,
     "num_of_generations": 50,
     "tree_min_height": 2,
-    "tree_max_height": 3
+    "tree_max_height": 3,
+    "search_space": {
+
+    }
 },
 
 # Visualization Specs
@@ -92,6 +95,3 @@
     "output_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/results",
     "persist": True
 }
-
-# Hardware Specs
-

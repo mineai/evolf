@@ -55,8 +55,6 @@ class EvaluateGeneration:
                                                 self.visualize_tree_status, self.visualize_function_status)
 
             self.current_tree += 1
-            # pickle the tree
-            # put tree stats in a json file
 
             population.trainable_trees.append(tree)
             population.trainable_trees_fitness.append(tree.fitness)

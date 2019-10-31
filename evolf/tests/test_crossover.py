@@ -1,7 +1,7 @@
 from evolf.populate.population \
     import Population
 from evolf.reproduction.crossover import Crossover
-from evolf.utils.visualize import Visualize
+from evolf.servicecommon.utils.visualize import Visualize
 import copy
 
 pop = Population(5, 5, 3)
