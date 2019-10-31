@@ -1,4 +1,9 @@
+import copy
+import random
+from random import randint
+
 from evolf.populate.population import Population
+
 
 
 class Crossover:
@@ -6,11 +11,19 @@ class Crossover:
     Class Comments
     """
 
+    tracker = 0  # Value to track the traversal through to the crossover point
+
+    tracking = 0  # Current value of the crossover point
+
+    is_main = True  # Marks if tree is main or auxillary
+
+    main_node = None  # Stores main node
+
+    aux_node = None  # Stores auxiallary node
+
     @staticmethod
     def crossover(tree_1, tree_2):
-
         """
-
         This function will pick random spots in two trees that are passed in that will
         be labeled cutting points. In tree1, the cutting point represents the node
         where the new tree fragment will be placed. In tree2, the cutting point
@@ -22,7 +35,6 @@ class Crossover:
         :param tree_2: The second of two trees that will provide a piece of itself that
         will replace a node in tree1
         :return: tree_1 with the switched out node
-
         """
 
         import copy
@@ -62,5 +74,119 @@ class Crossover:
                 selected_node_1.parent.left = selected_node_2
             else:
                 selected_node_1.parent.right = selected_node_2
-
+                
         return [child1, child2]
+
+
+    @classmethod
+    def crossover_n_trees(cls, lists):
+        '''CROSSOVER ALGORITHM OVERVIEW:
+    This algorithm performs the crossover operation for genetic AI on n trees
+    using the following procedure:
+    1. Sorts the trees on basis of fitness
+    2. Stores the fitest tree as the main tree
+    3. Enumerates the number of auxilliary trees invloved (x)
+    4. Uses finds x number of crossover points on the main trees
+    5. Finds one point on each auxilliary tree
+    6. Edits uses the tree below the crossover point on
+    each auxilliary tree to replace the each crossover on the main tree
+    7. The above operation occurs one at a time and the tree gets reset each
+    time'''
+        # Methods for level order traversal through trees------------------------------
+
+        def get_given_level(root, level):
+
+            if root is None:
+
+                return
+
+            if level == 1:
+
+                cls.tracker += 1
+                if(cls.tracker == cls.tracking):
+
+                    print ("Chosen " + str(cls.tracking))
+                    if(cls.is_main):
+
+                        cls.main_node = root
+
+                    else:
+
+                        cls.aux_node = copy.deepcopy(root)
+
+            elif level > 1:
+
+                get_given_level(root.left, level-1)
+                get_given_level(root.right, level-1)
+
+        def height(node):
+
+            if node is None:
+
+                return 0
+
+            else:
+
+                lheight = height(node.left)
+                rheight = height(node.right)
+                if lheight > rheight:
+
+                    return lheight+1
+
+                else:
+
+                    return rheight+1
+
+        def get_level_order(root):
+
+            h = height(root)
+            print("New tree")
+            for i in range(1, h+1):
+
+                get_given_level(root, i)
+
+    # End--------------------------------------------------------------------
+
+        tree_level = 1
+        list_of_main_coeff = []
+        list_of_other_coeff = []
+        lists.sort(reverse=True)
+        main_tree = copy.deepcopy(lists[0])
+        num_of_aux_trees = len(lists)-1
+
+        for num in range(0, num_of_aux_trees):
+            random_num = randint(2, main_tree.number_of_nodes)
+            while random_num in list_of_main_coeff:
+                random_num = randint(2, main_tree.number_of_nodes)
+            list_of_main_coeff.append(random_num)
+
+        for num in range(0, num_of_aux_trees):
+            try:
+                list_of_other_coeff.append(randint((2*tree_level), lists[num+1].number_of_nodes))
+                tree_level += 1
+            except:
+                list_of_other_coeff.append(-1)
+
+        for val in range(0, len(lists)-1):
+
+            cls.tracking = list_of_main_coeff[val]
+            cls.tracker = 0
+            cls.is_main = True
+            get_level_order(main_tree.root)
+            cls.tracker = 0
+            cls.is_main = False
+            cls.tracking = list_of_other_coeff[val]
+            get_level_order(copy.deepcopy(lists[val+1].root))
+
+            if(cls.main_node.parent.left == cls.main_node):
+
+                cls.main_node.parent.left = cls.aux_node
+
+            elif(cls.main_node.parent.right == cls.main_node):
+
+                cls.main_node.parent.right = cls.aux_node
+
+            main_tree.reset_tree()
+
+        get_level_order(main_tree.root)
+        return main_tree
