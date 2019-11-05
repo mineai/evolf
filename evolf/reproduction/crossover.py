@@ -14,11 +14,11 @@ class Crossover:
 
     tracking = 0  # Current value of the crossover point
 
-    is_main = True  # Marks if tree is main or auxillary
+    is_main = True  # Marks if tree is main or auxiliary
 
     main_node = None  # Stores main node
 
-    aux_node = None  # Stores auxiallary node
+    aux_node = None  # Stores auxiliary node
 
     @staticmethod
     def crossover(tree_1, tree_2):
@@ -51,6 +51,9 @@ class Crossover:
         selected_node_1 = child1.get_node_by_id(cutting_point_1)
         selected_node_2 = copy.deepcopy(tree_2.get_node_by_id(cutting_point_2))
 
+        print(f"Selected Node #1: {selected_node_1.function_str}")
+        print(f"Selected Node #2: {selected_node_2.function_str}")
+
         # Replace selected_node_1 with selected_node_2 in its respective tree.
         if selected_node_1.parent.operator_type in ['U', 'R']:
             selected_node_1.parent.left = selected_node_2
@@ -82,70 +85,63 @@ class Crossover:
 
     @classmethod
     def crossover_n_trees(cls, lists):
-        '''CROSSOVER ALGORITHM OVERVIEW:
-    This algorithm performs the crossover operation for genetic AI on n trees
-    using the following procedure:
-    1. Sorts the trees on basis of fitness
-    2. Stores the fitest tree as the main tree
-    3. Enumerates the number of auxilliary trees invloved (x)
-    4. Uses finds x number of crossover points on the main trees
-    5. Finds one point on each auxilliary tree
-    6. Edits uses the tree below the crossover point on
-    each auxilliary tree to replace the each crossover on the main tree
-    7. The above operation occurs one at a time and the tree gets reset each
-    time'''
+
+        """
+
+        CROSSOVER ALGORITHM OVERVIEW:
+        This algorithm performs the crossover operation for genetic AI on n trees
+        using the following procedure:
+        1. Sorts the trees on basis of fitness
+        2. Stores the fitest tree as the main tree
+        3. Enumerates the number of auxilliary trees invloved (x)
+        4. Uses finds x number of crossover points on the main trees
+        5. Finds one point on each auxilliary tree
+        6. Edits uses the tree below the crossover point on
+        each auxilliary tree to replace the each crossover on the main tree
+        7. The above operation occurs one at a time and the tree gets reset each
+        time
+
+        :param lists:
+        :return:
+        """
+
         # Methods for level order traversal through trees------------------------------
 
         def get_given_level(root, level):
 
             if root is None:
-
                 return
 
             if level == 1:
-
                 cls.tracker += 1
-                if(cls.tracker == cls.tracking):
 
-                    print ("Chosen " + str(cls.tracking))
-                    if(cls.is_main):
-
+                if cls.tracker == cls.tracking:
+                    if cls.is_main:
                         cls.main_node = root
-
                     else:
-
                         cls.aux_node = copy.deepcopy(root)
 
             elif level > 1:
-
                 get_given_level(root.left, level-1)
                 get_given_level(root.right, level-1)
 
         def height(node):
 
             if node is None:
-
                 return 0
-
             else:
+                left_height = height(node.left)
+                right_height = height(node.right)
 
-                lheight = height(node.left)
-                rheight = height(node.right)
-                if lheight > rheight:
-
-                    return lheight+1
-
+                if left_height > right_height:
+                    return left_height+1
                 else:
-
-                    return rheight+1
+                    return right_height+1
 
         def get_level_order(root):
-
             h = height(root)
-            print("New tree")
-            for i in range(1, h+1):
-
-                get_given_level(root, i)
+            for idx in range(1, h+1):
+                get_given_level(root, idx)
 
     # End--------------------------------------------------------------------
 
@@ -157,9 +153,9 @@ class Crossover:
         num_of_aux_trees = len(lists)-1
 
         for num in range(0, num_of_aux_trees):
-            random_num = randint(2, main_tree.number_of_nodes)
+            random_num = randint(3, main_tree.number_of_nodes)
             while random_num in list_of_main_coeff:
-                random_num = randint(2, main_tree.number_of_nodes)
+                random_num = randint(3, main_tree.number_of_nodes)
             list_of_main_coeff.append(random_num)
 
         for num in range(0, num_of_aux_trees):
@@ -180,11 +176,11 @@ class Crossover:
             cls.tracking = list_of_other_coeff[val]
             get_level_order(copy.deepcopy(lists[val+1].root))
 
-            if(cls.main_node.parent.left == cls.main_node):
+            if cls.main_node.parent.left == cls.main_node:
 
                 cls.main_node.parent.left = cls.aux_node
 
-            elif(cls.main_node.parent.right == cls.main_node):
+            elif cls.main_node.parent.right == cls.main_node:
 
                 cls.main_node.parent.right = cls.aux_node
 
