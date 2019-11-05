@@ -1,8 +1,6 @@
 import random
 
 from evolf.elements.node import Node
-from evolf.populate.search_space import SearchSpace
-
 
 class NodeConstructor:
 
