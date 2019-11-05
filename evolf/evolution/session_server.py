@@ -46,7 +46,6 @@ class SessionServer(Evolve):
         self.search_space_obj = SearchSpace()
         self.search_space_obj = PopulateSearchSpace.populate_search_space(self.search_space_obj,
                                                                           self.search_space)
-        print(self.search_space_obj.search_space)
         super().__init__(self.conf, self.data_dict, self.search_space_obj)
 
     def run(self):

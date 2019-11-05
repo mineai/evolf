@@ -7,7 +7,7 @@
     # Set The Confiuration for the evaluator
     # Evaluator Specs
     "evaluator_specs": {
-        "epochs": 1, # Number of epochs to train the function
+        "epochs": 100, # Number of epochs to train the function
         "verbose": True,
         "batch_size": 128,
 
@@ -35,13 +35,13 @@
     },
 
     "data_config": {
-        "train_percentage": 0.1,
-        "validation_percentage": 0.4,
-        "test_percentage": 0.5
+        "train_percentage": 0.8,
+        "validation_percentage": 0.1,
+        "test_percentage": 0.1
     },
 
     "state_of_the_art_config": {
-        "evaluate": False,
+        "evaluate": True,
         "epochs": 10,
         "verbose": True,
         "batch_size": 128,
@@ -61,28 +61,8 @@
     "search_space": {
         "U": {
             "log": 4,
-            "exp": 1,
             "square": 1,
             "sqrt": 2,
-            "cosh": 1,
-            "sinh": 1,
-            "acosh": 1,
-            "asinh": 1
-        },
-        "B": {
-            "+": 1,
-            "-": 1,
-            "*": 1,
-            "/": 1
-        },
-        "L": {
-            "y": 3,
-            "t": 3,
-            "pos_scalar": 1,
-            "neg_scalar": 1
-        },
-        "R": {
-            "mean": 1
         }
     }
 
@@ -90,22 +70,19 @@
 
 # Evolution Specs
 "evolution_specs": {
-    "initial_population_size": 200,
+    "initial_population_size": 5,
     "population_size": 80,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
     "weighted_function_mutation_rate": 0.025,
     "mutate_value_literal_nodes_rate": 0.025,
     "mutate_leaf_node_rate": 0.025,
-    "shrink_mutation_rate": 0.025,
-    "hoist_mutation_rate": 0.025,
+    "shrink_mutation_rate": 0.5,
+    "hoist_mutation_rate": 0.5,
     "elitism": 0.1,
     "num_of_generations": 50,
-    "tree_min_height": 2,
-    "tree_max_height": 3,
-    "search_space": {
-
-    }
+    "tree_min_height": 3,
+    "tree_max_height": 4,
 },
 
 # Visualization Specs

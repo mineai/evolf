@@ -20,9 +20,9 @@ class InitializeNextGen:
 
     def initialize_next_gen(self, population):
         next_gen_trees = []
-        sorted_parents = TreeUtils.sort_trees_by_fitness_desc(population.trainable_trees)
+        sorted_parents = TreeUtils.sort_trees_by_fitness_desc(population.trees)
 
-        number_of_elites = math.ceil(len(population.trainable_trees) * self.elitism)
+        number_of_elites = math.ceil(len(population.trees) * self.elitism)
         elites = sorted_parents[:number_of_elites]
 
         population.generate_mating_pool()
