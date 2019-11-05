@@ -156,3 +156,46 @@ class Mutation:
 
         child.reset_tree()
         return child
+
+    @staticmethod
+    def literal_swap_mutation(tree, mutation_rate=0.025, search_space_obj=None):
+
+        """
+
+        This mutation will swap y_pred variables with y_true variables and vis versa.
+
+        :param tree:
+        :param mutation_rate: probability of the mutation occurring
+        :param search_space_obj: used to create the new literal that will replace the old one.
+        :return child:
+        """
+
+        child = copy.deepcopy(tree)
+
+        # determine whether or not the mutation will occur using the mutation_rate
+        if random.random() < mutation_rate:
+            for node in child.nodes:
+                new_node = None
+                if node.function_str in ['y_pred']:
+                    print('Found a y_pred!')
+                    # create a y_true node
+                    new_node = NodeConstructor.create_literal_node('t', search_space_obj=search_space_obj)
+                elif node.function_str in ['y_true']:
+                    print('Found a y_true!')
+
+                    # create a y_pred
+                    new_node = NodeConstructor.create_literal_node('y', search_space_obj=search_space_obj)
+
+                # check if a swap occurred
+                if new_node is not None:
+                    print('The swap will occur!')
+                    if node.parent.operator_type in ["U", "R"]:
+                        node.parent.left = new_node
+                    elif node.parent.operator_type in ["B"]:
+                        if node.parent.left == node:
+                            node.parent.left = new_node
+                        else:
+                            node.parent.right = new_node
+
+        child.reset_tree()
+        return child

@@ -73,6 +73,7 @@ class GetDefaultConfig:
                 "mutate_leaf_node_rate": 0.025,
                 "shrink_mutation_rate": 0.25,
                 "hoist_mutation_rate": 0.25,
+                "literal_swap_mutation_rate": 1.0,
                 "elitism": 0.1,
                 "num_of_generations": 50,
                 "tree_min_height": 2,

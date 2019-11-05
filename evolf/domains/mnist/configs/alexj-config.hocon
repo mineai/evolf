@@ -70,6 +70,7 @@
     "mutate_leaf_node_rate": 0.025,
     "shrink_mutation": 0.5,
     "hoist_mutation": 1.0,
+    "literal_swap_mutation_rate": 1.0,
     "elitism": 0.1,
     "num_of_generations": 10,
     "tree_min_height": 2,
