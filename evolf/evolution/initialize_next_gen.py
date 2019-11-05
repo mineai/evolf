@@ -15,6 +15,7 @@ class InitializeNextGen:
         self.mutate_leaf_node_rate = self.evolution_specs.get("mutate_leaf_node_rate")
         self.shrink_mutation_rate = self.evolution_specs.get("shrink_mutation_rate")
         self.hoist_mutation_rate = self.evolution_specs.get("hoist_mutation_rate")
+        self.literal_swap_mutation_rate = self.evolution_specs.get("literal_swap_mutation_rate")
         self.elitism = self.evolution_specs.get("elitism")
 
     def initialize_next_gen(self, population):
