@@ -42,8 +42,8 @@ class Crossover:
         tree_1, tree_2 = copy.deepcopy(tree_1), copy.deepcopy(tree_2)
 
         # Randomly generate ids to select nodes within each tree
-        cutting_point_1 = random.randint(2, tree_1.number_of_nodes)
-        cutting_point_2 = random.randint(2, tree_2.number_of_nodes)
+        cutting_point_1 = random.randint(3, tree_1.number_of_nodes)
+        cutting_point_2 = random.randint(3, tree_2.number_of_nodes)
 
         # Make Child 1
         child1 = copy.deepcopy(tree_1)
