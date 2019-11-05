@@ -1,4 +1,4 @@
-from evolf.populate.search_space import SearchSpace
+from evolf.search_space.search_space import SearchSpace
 from evolf.populate.population import Population
 
 fl = SearchSpace()
