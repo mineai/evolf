@@ -104,14 +104,15 @@ class Mutation:
 
         mutation_prob = random.random()
         if mutation_prob < mutation_rate:
-            print(f"Hoisting {tree.symbolic_expression}")
             # Select a random node as the root of the new subtree
-            selected_node_id = random.randint(3, len(child.nodes) - child.literal_count)
+            selected_node_id = random.randint(3, child.number_of_nodes)
             selected_node = child.get_node_by_id(selected_node_id)
 
-            # make sure that the selected node is going to be a non-terminal
-            # by checking if it's a terminal node. If it is, select another
-            # node.
+            # If it picks a terminal node, keep selecting nodes at random
+            # until it picks a non-terminal
+            while selected_node.operator_type in ['L']:
+                selected_node_id = random.randint(3, child.number_of_nodes)
+                selected_node = child.get_node_by_id(selected_node_id)
 
             child.root.left = selected_node
 
@@ -134,15 +135,18 @@ class Mutation:
         if child.height <= 3:
             return child
 
-        selected_node_id = random.randint(3, len(child.nodes) - child.literal_count)
-        selected_node = child.get_node_by_id(selected_node_id)
-
         mutation_prob = random.random()
         if mutation_prob < mutation_rate:
-            print(f"Shrinking {tree.symbolic_expression}")
-            # if the first node selected is a literal, keep
-            # picking random nodes until you find a non-terminal
-            # node.
+            # Select a node at random
+            selected_node_id = random.randint(3, child.number_of_nodes)
+            selected_node = child.get_node_by_id(selected_node_id)
+
+            # If the selected node is a terminal, keep selecting nodes at
+            # random until you select a non-terminal
+            while selected_node.operator_type in ['L']:
+                selected_node_id = random.randint(3, child.number_of_nodes)
+                selected_node = child.get_node_by_id(selected_node_id)
+
             # Create a terminal node to replace the randomly selected non terminal
             new_node = NodeConstructor.create_literal_node(search_space_obj=search_space_obj)
 
@@ -174,21 +178,19 @@ class Mutation:
 
         # determine whether or not the mutation will occur using the mutation_rate
         if random.random() < mutation_rate:
+            t_swapped = False
+            y_swapped = False
             for node in child.nodes:
                 new_node = None
-                if node.function_str in ['y_pred']:
-                    print('Found a y_pred!')
+                if node.function_str in ['y'] and not y_swapped:
                     # create a y_true node
                     new_node = NodeConstructor.create_literal_node('t', search_space_obj=search_space_obj)
-                elif node.function_str in ['y_true']:
-                    print('Found a y_true!')
-
+                elif node.function_str in ['t'] and not t_swapped:
                     # create a y_pred
                     new_node = NodeConstructor.create_literal_node('y', search_space_obj=search_space_obj)
 
                 # check if a swap occurred
                 if new_node is not None:
-                    print('The swap will occur!')
                     if node.parent.operator_type in ["U", "R"]:
                         node.parent.left = new_node
                     elif node.parent.operator_type in ["B"]:

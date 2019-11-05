@@ -5,7 +5,6 @@ from random import randint
 from evolf.populate.population import Population
 
 
-
 class Crossover:
     """
     Class Comments

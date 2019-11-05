@@ -16,7 +16,7 @@ class PopulateSearchSpace:
             functions = search_space[function_type]
             for function in functions:
                 search_space_obj.search_space[function] = {
-                    "tenserflow_handle": KerasSearchSpace.keras_search_space[function],
+                    "tensorflow_handle": KerasSearchSpace.keras_search_space[function],
                     "symbolic_handle": SymbolicSearchSpace.symbolic_search_space[function],
                     "probability": functions[function],
                     "type": function_type

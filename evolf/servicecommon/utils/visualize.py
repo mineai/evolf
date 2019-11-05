@@ -64,7 +64,7 @@ class Visualize:
                               ranksep=1)
 
             for node_idx, node in enumerate(nodes):
-                label = node.function_str
+                label = f"{node.function_str}, {node.node_id}"
                 xlabel = '%.3f'% node.coefficient
                 color = "green"
                 if node.function_str in ["pos_scalar", "neg_scalar"]:
