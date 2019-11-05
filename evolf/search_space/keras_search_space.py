@@ -1,8 +1,9 @@
-import keras.backend as K
-import tensorflow as tf
 
 
 class KerasSearchSpace:
+
+    import keras.backend as K
+    import tensorflow as tf
 
     # This gives the range of possible keras functions usable
     keras_search_space = {
@@ -26,7 +27,9 @@ class KerasSearchSpace:
         "mean": tf.reduce_mean,
         "sum": tf.reduce_sum,
         "max": tf.reduce_max,
-        "min": tf.reduce_min
+        "min": tf.reduce_min,
+        "acosh": tf.math.acosh,
+        "asinh": tf.math.asinh
     }
 
 

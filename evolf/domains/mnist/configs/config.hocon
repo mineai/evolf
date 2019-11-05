@@ -58,6 +58,34 @@
         }
     },
 
+    "search_space": {
+        "U": {
+            "log": 4,
+            "exp": 1,
+            "square": 1,
+            "sqrt": 2,
+            "cosh": 1,
+            "sinh": 1,
+            "acosh": 1,
+            "asinh": 1
+        },
+        "B": {
+            "+": 1,
+            "-": 1,
+            "*": 1,
+            "/": 1
+        },
+        "L": {
+            "y": 3,
+            "t": 3,
+            "pos_scalar": 1,
+            "neg_scalar": 1
+        },
+        "R": {
+            "mean": 1
+        }
+    }
+
 },
 
 # Evolution Specs

@@ -1,9 +1,10 @@
-import sympy as sp
-import numpy as np
 
 
 class SymbolicSearchSpace:
     full_search_space = {}
+
+    import sympy as sp
+    import numpy as np
 
     # This gives the range of possible symbolic functions usable
     symbolic_search_space = {
@@ -27,6 +28,8 @@ class SymbolicSearchSpace:
             "mean": np.mean,
             "sum": np.sum,
             "max": np.max,
-            "min": np.min
+            "min": np.min,
+            "acosh": sp.acosh,
+            "asinh": sp.asinh
     }
 
