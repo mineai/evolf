@@ -56,14 +56,7 @@
 
     "search_space": {
         "U": {
-            "log": 4,
-            "exp": 1,
-            "square": 1,
-            "sqrt": 2,
-            "cosh": 1,
-            "sinh": 1,
-            "acosh": 1,
-            "asinh": 1
+            "log": 4
         },
         "B": {
             "+": 1,

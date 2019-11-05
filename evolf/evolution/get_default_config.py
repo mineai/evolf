@@ -60,7 +60,7 @@ class GetDefaultConfig:
 
                 "search_space": {
                     "U": {
-                        "log": 4,
+                        "log": 4
                     },
                     "B": {
                         "+": 1,
