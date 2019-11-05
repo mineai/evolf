@@ -10,3 +10,4 @@ venv
 results
 *.h5
 *.json
+*/results

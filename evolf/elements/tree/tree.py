@@ -1,6 +1,6 @@
 from evolf.elements.tree.linear_tree import LinearTree
 from evolf.elements.tree.tree_construction import TreeConstruction
-from evolf.utils.visualize import Visualize
+from evolf.servicecommon.utils.visualize import Visualize
 from evolf.lossconstructor.evaluate_tree import EvaluateTree
 from evolf.lossconstructor.validate import Validate
 
@@ -12,7 +12,7 @@ class Tree(LinearTree, TreeConstruction):
     """
 
     # Constructor
-    def __init__(self, min_height=2, max_height=4):
+    def __init__(self, min_height=2, max_height=4, search_space_obj=None):
         """
         The constructor Tree objects.
 
@@ -22,7 +22,7 @@ class Tree(LinearTree, TreeConstruction):
         are set to max_height.
 
         """
-        TreeConstruction.__init__(self, min_height, max_height)
+        TreeConstruction.__init__(self, min_height, max_height, search_space_obj)
         LinearTree.__init__(self, self.root)
 
         self.symbolic_expression = None
@@ -31,7 +31,7 @@ class Tree(LinearTree, TreeConstruction):
         # that it has not yet been validated.
         self.working = None
 
-        self.fitness = None  # The fitness of the tree
+        self.fitness = 0  # The fitness of the tree
         self.avg_epoch_time = None  # If the NN is a fitness function, then the time for each Epoch.
 
         # Construct the Expression and the Linear Tree
@@ -42,8 +42,7 @@ class Tree(LinearTree, TreeConstruction):
             self.construct_symbolic_expression()
             self.validate_working()
         except:
-            print("Could not Validate Expression")
-        # self.visualize_tree()
+            self.working = False
 
     """
     ################ Expression #################
@@ -130,6 +129,18 @@ class Tree(LinearTree, TreeConstruction):
             path = f"{os.getcwd()}/results/glo_test_tree"
         Visualize.visualize(self, path=path)
 
+    def init_node_type_count(self):
+        self.unary_count = 0
+        self.binary_count = 0
+        self.literal_count = 0
+        for node in self.nodes:
+            if node.operator_type == "U":
+                self.unary_count += 1
+            elif node.operator_type == "L":
+                self.literal_count += 1
+            elif node.operator_type == "B":
+                self.binary_count += 1
+
     def reset_tree(self):
         self.nodes = []
         self.symbolic_expression = None
@@ -141,11 +152,14 @@ class Tree(LinearTree, TreeConstruction):
 
         self.initialize_height()
         self.assign_level_order_id()
+        self.linearize_tree()
         self.init_node_type_count()
         self.initialize_parents()
-        self.linearize_tree()
-        self.construct_symbolic_expression()
-        self.validate_working()
+        try:
+            self.construct_symbolic_expression()
+            self.validate_working()
+        except:
+            self.working = False
 
         self.number_of_nodes = len(self.nodes)
 
@@ -164,3 +178,13 @@ class Tree(LinearTree, TreeConstruction):
                 break
 
         return node_to_return
+
+    def __lt__(self, other):
+        """
+        This function serves as the replacement
+        less then operator definition of trees.
+        It compares the fitness and returns a boolean value.
+        :param other: The other tree to be compared to.
+        :return: Boolean value
+        """
+        return self.fitness < other.fitness

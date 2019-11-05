@@ -15,8 +15,8 @@ class LossFunctionConstructor:
         def loss(y_true, y_pred):
             stack = []
             cost = None
-
-            for node in tree.nodes:
+            level_order_traversing_inverted = tree.nodes[::-1]
+            for node in level_order_traversing_inverted:
                 function_type = node.operator_type
                 handle = node.tensorflow_handle
                 function = node.function_str
@@ -32,7 +32,7 @@ class LossFunctionConstructor:
                     elif function == "t":
                         function = y_true
                     stack.append(node.coefficient * function)
-                elif function_type == "B":
+                elif function_type in ["B", "BBL"]:
                     last_two_literals = [stack.pop(), stack.pop()]
                     cost = node.coefficient * handle(last_two_literals[0], last_two_literals[1])
                     stack.append(cost)
