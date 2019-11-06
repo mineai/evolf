@@ -20,9 +20,11 @@ class InitializeKerasModel(LoadKerasEvaluator):
             self.model.compile(loss=self.loss,
                                optimizer=keras.optimizers.Adadelta(),
                                metrics=['accuracy'])
-            self.tree.working = True
+            if self.tree is not None:
+                self.tree.working = True
             return True
         except:
             print("This tree failed to compile")
-            self.tree.working = False
+            if self.tree is not None:
+                self.tree.working = False
             return False
