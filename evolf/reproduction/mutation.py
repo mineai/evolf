@@ -19,19 +19,27 @@ class Mutation:
         :return child: The mutated tree object
         """
         child = copy.deepcopy(tree)
-        # child = tree
-        for node in child.nodes:
-            if node.operator_type not in ["R"]:
-                if random.random() < mutate_node_function_rate:
-                    # Mutate the Operator in this node
-                    operator_type = node.operator_type
-                    new_function = search_space_obj.sample(operator_type)
-                    node.function_str = new_function
-                    node.tensorflow_handle = search_space_obj.get_tensorflow_handle(new_function)
-                    node.symbolic_handle = search_space_obj.get_symbolic_handle(new_function)
 
-                    weight = random.uniform(--10, 10)
-                    node.coefficient = weight
+        # Select a random node as the root of the new subtree
+        selected_node_id = random.randint(1, child.number_of_nodes)
+        selected_node = child.get_node_by_id(selected_node_id)
+
+        # If it picks a terminal node, keep selecting nodes at random
+        # until it picks a non-terminal
+        while selected_node.operator_type in ['L']:
+            selected_node_id = random.randint(1, child.number_of_nodes)
+            selected_node = child.get_node_by_id(selected_node_id)
+
+        if random.random() < mutate_node_function_rate:
+            # Mutate the Operator in this node
+            operator_type = selected_node.operator_type
+            new_function = search_space_obj.sample(operator_type)
+            selected_node.function_str = new_function
+            selected_node.tensorflow_handle = search_space_obj.get_tensorflow_handle(new_function)
+            selected_node.symbolic_handle = search_space_obj.get_symbolic_handle(new_function)
+
+            weight = random.uniform(--10, 10)
+            selected_node.coefficient = weight
 
         child.reset_tree()
         return child

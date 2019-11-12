@@ -41,7 +41,7 @@
     },
 
     "state_of_the_art_config": {
-        "evaluate": True,
+        "evaluate": False,
         "epochs": 10,
         "verbose": True,
         "batch_size": 128,
@@ -60,7 +60,7 @@
 
     "search_space": {
         "U": {
-            "log": 4,
+            "log": 20,
             "square": 1,
             "sqrt": 2,
         }
@@ -74,7 +74,7 @@
     "population_size": 80,
     "mating_pool_multiplier": 100,
     "num_parents": 2,
-    "weighted_function_mutation_rate": 0.025,
+    "weighted_function_mutation_rate": 0.25,
     "mutate_value_literal_nodes_rate": 0.025,
     "mutate_leaf_node_rate": 0.025,
     "shrink_mutation_rate": 0.5,
