@@ -1,10 +1,13 @@
 import numpy as np
 from tqdm import trange
 from evolf.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
+from evolf.utils.checkpoints import Checkpoints
 
 
 class EvaluateGeneration:
     def evaluate_candidate(self, population, tree_idx, eval_all=False):
+
+        Checkpoints.checkpoint(population)
         tree = population.working_trees[tree_idx]
 
         print(f"\nBest Candidate Ever: {self.best_candidate_ever.generate_printable_expression()}, "
@@ -66,6 +69,7 @@ class EvaluateGeneration:
             print("This tree failed while training",
                   "\n\n ###########################################################################")
         self.global_cache.append(tree)
+        
 
     def is_tree_evaluated(self, tree):
         for evaluated_tree in self.global_cache:
