@@ -42,15 +42,15 @@ comparision_model.compile(loss='categorical_crossentropy',
 comparision_model.summary()
 
 # Train the Comparision Model
-# print(f"Training Comparision Model")
-# comparision_model.fit(train_x,
-#                         train_t,
-#                         batch_size=32,
-#                         epochs=75,
-#                         verbose=True)
-# # Evaluate the Comparision Model
-# scores = comparision_model.evaluate([x, t])
-# print(f"Comparision Model Validation Acc: f{scores[1]}")
+print(f"Training Comparision Model")
+comparision_model.fit(train_x,
+                        train_t,
+                        batch_size=32,
+                        epochs=75,
+                        verbose=True)
+# Evaluate the Comparision Model
+scores = comparision_model.evaluate([x, t])
+print(f"Comparision Model Validation Acc: f{scores[1]}")
 
 # Get Neural Networks
 network_constructor = NetworkConstructor(number_of_models, input_shape, num_classes)
