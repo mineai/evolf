@@ -90,12 +90,10 @@ class NetworkConstructor:
         max_pool_1 = MaxPooling2D(pool_size=(2, 2))(conv)
         conv2 = Conv2D(32, kernel_size=(3, 3),
                       activation='relu')(max_pool_1)
-        dropout_1 = Dropout(0.25)(conv2)
 
-        flatten = Flatten()(dropout_1)
+        flatten = Flatten()(conv2)
         dense = Dense(64, activation='relu')(flatten)
-        dropout_2 = Dropout(0.5)(dense)
-        output = Dense(num_classes, activation='softmax')(dropout_2)
+        output = Dense(num_classes, activation='softmax')(dense)
 
         model_cut = Model(inputs=[input_layer], outputs=[conv], name=f"{name}_cut")
         model_complete = Model(inputs=[input_layer], outputs=[output], name=f"{name}_full")
