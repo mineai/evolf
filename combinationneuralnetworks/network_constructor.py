@@ -19,6 +19,8 @@ class NetworkConstructor:
             self.models_cut.append(model_cut)
             self.models_complete.append(model_complete)
 
+        self.models_complete[0].summary()
+
         for model in self.models_complete:
             model.compile(loss='categorical_crossentropy',
                           optimizer=keras.optimizers.Adadelta(),
