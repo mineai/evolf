@@ -63,6 +63,7 @@ network_constructor.train_split_models(train_x_sets,
 network_constructor.freeze_combination_model_layers()
 
 # Train Combination Model
+print(f"Training Combination Model")
 network_constructor.compile_and_train_combination_model(validation_x,
                                                         validation_t,
                                                         [x, t], epochs=100)

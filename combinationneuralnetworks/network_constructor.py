@@ -59,6 +59,8 @@ class NetworkConstructor:
         full_training_data_x = [train_x] * self.number_of_models
         full_test_data_x = [test_set[0]] * self.number_of_models
 
+        self.comination_model.summary()
+
         self.comination_model.fit(full_training_data_x,
                         train_t,
                         batch_size=32,
