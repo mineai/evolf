@@ -38,8 +38,9 @@ class NetworkConstructor:
             model.fit(train_x_set, train_t_set,
                       batch_size=32,
                       epochs=epochs,
-                      verbose=True,
-                      validation_data=(validation_set[0], validation_set[1]))
+                      verbose=True)
+            scores = model.evaluate(validation_set[0], validation_set[1])
+            print("Validation Accuracy: ", scores[1])
 
     def freeze_combination_model_layers(self):
         for layer in self.comination_model.layers[:-1]:
@@ -62,7 +63,8 @@ class NetworkConstructor:
                         epochs=epochs,
                         verbose=True)
 
-        self.comination_model.evaluate(full_test_data_x, test_set[1])
+        scores = self.comination_model.evaluate(full_test_data_x, test_set[1])
+        print("Validation Accuracy: ", scores[1])
 
     @staticmethod
     def create_base_model(input_shape, num_classes, name):
