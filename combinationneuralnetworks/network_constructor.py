@@ -88,7 +88,7 @@ class NetworkConstructor:
         conv = Conv2D(128, kernel_size=(3, 3),
                       activation='relu')(conv)
         max_pool_1 = MaxPooling2D(pool_size=(2, 2))(conv)
-        conv2 = Conv2D(10, kernel_size=(3, 3),
+        conv2 = Conv2D(64, kernel_size=(3, 3),
                       activation='relu')(max_pool_1)
         dropout_1 = Dropout(0.25)(conv2)
 
