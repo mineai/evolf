@@ -176,8 +176,8 @@ def create_combination(models, num_classes):
 
 x, t = get_data()
 
-train_percentage = 0.5
-validation_percentage = 0.4
+train_percentage = 0.8
+validation_percentage = 0.1
 data_dict = process_data(x, t, train_percentage, validation_percentage)
 
 train_x = data_dict['x_train']
@@ -213,7 +213,7 @@ state_of_the_art = create_model(data_input_shape,
 state_of_the_art.compile(loss='categorical_crossentropy',
                                    optimizer=keras.optimizers.Adadelta(),
                                    metrics=['accuracy'])
-state_of_the_art.fit(train_x_sets[model_idx], train_t_sets[model_idx],
+state_of_the_art.fit(train_x, train_t,
                        batch_size=32,
                        epochs=75,
                        verbose=True,
