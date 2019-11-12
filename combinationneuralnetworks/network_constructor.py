@@ -88,12 +88,12 @@ class NetworkConstructor:
         conv = Conv2D(128, kernel_size=(3, 3),
                       activation='relu')(conv)
         max_pool_1 = MaxPooling2D(pool_size=(2, 2))(conv)
-        conv2 = Conv2D(64, kernel_size=(3, 3),
+        conv2 = Conv2D(32, kernel_size=(3, 3),
                       activation='relu')(max_pool_1)
         dropout_1 = Dropout(0.25)(conv2)
 
         flatten = Flatten()(dropout_1)
-        dense = Dense(5, activation='relu')(flatten)
+        dense = Dense(64, activation='relu')(flatten)
         dropout_2 = Dropout(0.5)(dense)
         output = Dense(num_classes, activation='softmax')(dropout_2)
 
