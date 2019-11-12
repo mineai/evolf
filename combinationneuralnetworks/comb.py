@@ -62,7 +62,8 @@ network_constructor.freeze_combination_model_layers()
 
 # Train Combination Model
 network_constructor.compile_and_train_combination_model(validation_x,
-                                                        validation_t)
+                                                        validation_t,
+                                                        [x, t])
 
 
 
