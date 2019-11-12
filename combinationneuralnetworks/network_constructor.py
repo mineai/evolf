@@ -93,7 +93,7 @@ class NetworkConstructor:
         dropout_1 = Dropout(0.25)(conv2)
 
         flatten = Flatten()(dropout_1)
-        dense = Dense(2, activation='relu')(flatten)
+        dense = Dense(100, activation='relu')(flatten)
         dropout_2 = Dropout(0.5)(dense)
         output = Dense(num_classes, activation='softmax')(dropout_2)
 
