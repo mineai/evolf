@@ -12,30 +12,26 @@ class Population:
         self.population_size = population_size
         self.num_parents = num_parents
         self.mating_pool_multiplier = mating_pool_multiplier
-        self.working_trees = []  # These are the trees filtered out after symbolic expressions have been created
-        self.trainable_trees = []  # These are the trees that were actually trainable on the evaluator
-        self.trainable_trees_fitness = []  # Thus contains the fitness of the trainable trees
         self.symbolic_expressions = []  # Cache to generate unique expressions
         self.mating_pool = None
         self.elites = None
         self.search_space_obj = search_space_obj
+        self.trees = []
 
         if initial_population is None:
             self.min_height = min_height
             self.max_height = max_height
-            self.trees = []
             self.generate_population()
-            self.get_working_trees()
         else:
-            self.trees = initial_population
             tree_heights = []
-            for tree in self.trees:
-                tree_heights.append(tree.height)
-                self.symbolic_expressions.append(tree.symbolic_expression)
+            for tree in initial_population:
+                if tree.symbolic_expression not in self.symbolic_expressions:
+                    tree_heights.append(tree.height)
+                    self.symbolic_expressions.append(tree.symbolic_expression)
+                    self.trees.append(tree)
             self.population_size = len(self.trees)
             self.min_height = min(tree_heights)
             self.max_height = max(tree_heights)
-            self.get_working_trees()
 
     def generate_population(self):
         """
@@ -56,45 +52,23 @@ class Population:
             if tree.symbolic_expression in self.symbolic_expressions:
                 continue
             self.symbolic_expressions.append(tree.symbolic_expression)
-
-            while not tree.working:
-                tree = Tree(self.min_height, self.max_height, self.search_space_obj)
-                if tree.symbolic_expression in self.symbolic_expressions:
-                    continue
-                self.symbolic_expressions.append(tree.symbolic_expression)
-            self.trees.append(tree)
-
-    def get_working_trees(self):
-        """
-        This function collects all the trees that are working and
-        stores them in self.working_trees.
-        :return nothing:
-        """
-        print("Extracting Working Tress ... \n\n")
-        self.working_trees = []
-        for tree_idx in range(len(self.trees)):
-            tree = self.trees[tree_idx]
-            if tree.symbolic_expression is None:
-                tree.construct_symbolic_expression()
-            if tree.working is None:
-                tree.validate_working()
-
             if tree.working:
-                self.working_trees.append(tree)
+                self.trees.append(tree)
+                print(f"Trees Initialized {len(self.trees)} / {self.population_size}: {tree.symbolic_expression}")
 
-    def initialize_trainable_tree_fitness(self):
-        self.trainable_trees_fitness = []
-        for tree in self.trainable_trees:
-            self.trainable_trees_fitness.append(tree.fitness)
 
     def get_best_fitness_candidate(self):
-        if not len(self.trainable_trees) and \
-                None not in self.trainable_trees_fitness:
-            return None
-        else:
-            best_candidate_index = np.argmax(self.trainable_trees_fitness)
-            best_candidate = self.trainable_trees[best_candidate_index]
-            return best_candidate
+        fitness = self.get_fitness_array()
+        best_candidate_index = np.argmax(fitness)
+        best_candidate = self.trees[best_candidate_index]
+
+        return best_candidate
+
+    def get_fitness_array(self):
+        fitness = []
+        for tree in self.trees:
+            fitness.append(tree.fitness)
+        return fitness
 
     def generate_mating_pool(self):
         """
@@ -113,13 +87,9 @@ class Population:
                  trees list.
 
         """
-        if not len(self.trainable_trees_fitness):
-            self.trainable_trees_fitness = []
-            for tree in self.trainable_trees:
-                self.trainable_trees_fitness.append(tree.fitness)
-
+        fitness = self.get_fitness_array()
         self.mating_pool = SelectionFunctionsLibrary.default_mating_pool(
-            self.trainable_trees, self.trainable_trees_fitness, self.mating_pool_multiplier)
+            self.trees, fitness, self.mating_pool_multiplier)
 
     def natural_selection(self):
         """
@@ -142,5 +112,6 @@ class Population:
         return parents
 
     def get_average_fitness(self):
-        average_fitness = np.mean(self.trainable_trees_fitness)
+        fitness = self.get_fitness_array()
+        average_fitness = np.mean(fitness)
         return average_fitness
