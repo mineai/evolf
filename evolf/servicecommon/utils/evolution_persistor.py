@@ -63,8 +63,7 @@ class EvolutionPersistor:
         from sympy.plotting import plot3d
         graph = plot3d(expression, show=False)
         graph.save(f"{path}/loss_function")
-        matplotlib.pyplot.close("all")
-
+        plt.close("all")
 
     def persist_best_candidate(self, best_candidate, generation_idx, persist_status, visualize_tree_status, visualize_function_status):
         best_candidate_path = f"{self.experiment_root_path}/Generation_{generation_idx}/Best_Candidate"
