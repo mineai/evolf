@@ -5,7 +5,7 @@ from evolf.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
 
 class EvaluateGeneration:
 
-    def evaluate_candidate(self, population, tree_idx):
+    def evaluate_candidate(self, population, tree_idx, persistor_obj):
         tree = population.trees[tree_idx]
 
         print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
