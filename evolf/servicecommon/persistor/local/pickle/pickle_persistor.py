@@ -1,5 +1,6 @@
 import pickle
 
+
 class PicklePersistor():
 
     def __init__(self, base_file_name=".", folder=""):
