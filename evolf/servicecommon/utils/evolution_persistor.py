@@ -1,4 +1,4 @@
-from string_evolve.servicecommon.persistor.local.json.json_persistor import JsonPersistor
+from evolf.servicecommon.persistor.local.json.json_persistor import JsonPersistor
 from evolf.servicecommon.utils.statistics import Statistics
 from evolf.servicecommon.utils.visualize import Visualize
 
