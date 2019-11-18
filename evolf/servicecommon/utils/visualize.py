@@ -42,11 +42,79 @@ class Visualize:
         return ''
 
     @staticmethod
+    def visualize_tree_from_nodes(nodes_list, experiment_id=None, path=None):
+        if path is None:
+            if experiment_id is None:
+                experiment_id = calendar.timegm(time.gmtime())
+            path = f"{os.getcwd()}/results/evolf_test_{experiment_id}/trees"
+
+        if os.path.exists(path):
+            shutil.rmtree(path)
+        os.makedirs(path)
+        for nodes_idx, nodes in enumerate(nodes_list):
+            graph = pydot.Dot(graph_type='digraph',
+                              label=f"Expression",
+                              fontsize=16,
+                              fontname='Roboto',
+                              rankdir="TB",
+                              ranksep=1)
+            for node_idx, node in enumerate(nodes):
+                label = f"{node.function_str}, {node.node_id}"
+                xlabel = '%.3f' % node.coefficient
+                color = "green"
+                if node.function_str in ["pos_scalar", "neg_scalar"]:
+                    label = '%.3f' % node.symbolic_handle
+                if node.operator_type == "U":
+                    color = "#F5A286"
+                elif node.operator_type == "B":
+                    color = "#A8CFE7"
+                elif node.operator_type == "L":
+                    color = "#F7D7A8"
+                elif node.operator_type == "R":
+                    color = "red"
+                # label = node.node_id
+                node_obj = pydot.Node(node.node_id,
+                                      label=f"{label}",
+                                      xlabel=f"{xlabel} * ",
+                                      xlp=5,
+                                      orientation=0,
+                                      height=1,
+                                      width=1,
+                                      fontsize=16,
+                                      shape='circle',
+                                      style='rounded, filled',
+                                      color=color,
+                                      fontcolor="black")
+                graph.add_node(node_obj)
+
+            for node in nodes:
+                children = [node.left, node.right]
+                for child in children:
+                    if child is None:
+                        continue
+                    src = node
+                    dst = child
+                    print(src)
+                    print(dst)
+                    edge = pydot.Edge(src.node_id, dst.node_id,
+                                      color="grey",
+                                      label=f"",
+                                      fontcolor="#979ba1",
+                                      fontsize=10)
+                    graph.add_edge(edge)
+
+            tree_path = f"{path}/{nodes_idx}"
+            print("This tree is located in: ", tree_path)
+            graph.write_png(f"{tree_path}.png")
+
+
+
+    @staticmethod
     def visualize(trees, experiment_id=None, path=None):
         if path is None:
             if experiment_id is None:
                 experiment_id = calendar.timegm(time.gmtime())
-            path = f"{os.getcwd()}/results/glo_test_{experiment_id}/trees"
+            path = f"{os.getcwd()}/results/evolf_test_{experiment_id}/trees"
 
         if os.path.exists(path):
             shutil.rmtree(path)

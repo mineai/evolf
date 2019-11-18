@@ -2,7 +2,7 @@ import os
 import time
 import calendar
 
-from evolf.populate.population import Population
+from evolf.population.population import Population
 from string_evolve.servicecommon.persistor.local.json.json_persistor \
     import JsonPersistor
 from string_evolve.servicecommon.persistor.local.pickle.pickle_persistor \

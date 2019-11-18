@@ -1,4 +1,4 @@
-from evolf.evolution.generate_data_dict import GenerateDataDict
+from evolf.framework.domain.generate_data_dict import GenerateDataDict
 
 
 class GetMnistData(GenerateDataDict):

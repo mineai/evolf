@@ -1,4 +1,4 @@
-from evolf.evolution.network_constructor import NetworkConstructor
+from evolf.framework.domain.network_constructor import NetworkConstructor
 
 
 class CipharNetworkConstructor(NetworkConstructor):

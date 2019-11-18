@@ -99,3 +99,31 @@
     "output_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/results",
     "persist": True
 }
+
+# Studio Config
+"studio_config": {
+    "database": {
+        "type": "s3",
+        "endpoint": ${STUDIO_DATABASE_ENDPOINT},
+        "bucket": "mineai-mnist-database",
+        "authentication": none
+    },
+    "storage":{
+        "type": "s3",
+        "endpoint": ${STUDIO_STORAGE_ENDPOINT},
+        "bucket": "mineai-mnist-storage"
+    },
+    "server":{
+        "authentication": none
+    }
+    "queue": "local"
+    "saveMetricsFrequency": "1m"
+    "saveWorkspaceFrequency": "1m"
+    "verbose": True
+    "resources_needed": {
+        cpus: 2
+        ram:  3g
+        hdd:  60g
+        gpus: 0
+    }
+}

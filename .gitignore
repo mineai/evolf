@@ -9,5 +9,5 @@ venv
 .idea
 results
 *.h5
-*.json
 */results
+temp/

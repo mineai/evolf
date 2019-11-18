@@ -1,6 +1,9 @@
 import pickle
 
-class PicklePersistor():
+from evolf.framework.interfaces.persistance.persistance import Persistance
+
+
+class PicklePersistor(Persistance):
 
     def __init__(self, base_file_name=".", folder=""):
         """
@@ -12,6 +15,7 @@ class PicklePersistor():
         :param folder: Location of the file to persist
         :returns nothing
         """
+        super().__init__()
         self.base_file_name = base_file_name
         self.folder = folder
 
@@ -45,7 +49,7 @@ class PicklePersistor():
         file = self.folder + self.base_file_name +'.pkl'
         try:
             pickle_obj = pickle.load(file)
-        except e:
+        except Exception as e:
             print(e)
 
         return pickle_obj

@@ -1,7 +1,7 @@
 import math
 
 from evolf.servicecommon.utils.tree_utils import TreeUtils
-from evolf.populate.population import Population
+from evolf.population.population import Population
 from evolf.reproduction.crossover import Crossover
 from evolf.reproduction.mutation import Mutation
 
