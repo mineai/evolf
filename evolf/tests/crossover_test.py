@@ -1,5 +1,5 @@
-from evolf.evolution.get_default_config import GetDefaultConfig
-from evolf.populate.population \
+from evolf.framework.domain.get_default_config import GetDefaultConfig
+from evolf.population.population \
     import Population
 from evolf.reproduction.crossover import Crossover
 from evolf.search_space.populate_search_space import PopulateSearchSpace

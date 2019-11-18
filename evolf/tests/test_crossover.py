@@ -1,4 +1,4 @@
-from evolf.populate.population \
+from evolf.population.population \
     import Population
 from evolf.reproduction.crossover import Crossover
 from evolf.servicecommon.utils.visualize import Visualize

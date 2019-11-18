@@ -1,28 +1,20 @@
-import argparse
 from evolf.evolution.evolve import Evolve
-from evolf.evolution.get_default_config import GetDefaultConfig
+from evolf.framework.domain.get_default_config import GetDefaultConfig
 from evolf.search_space.populate_search_space import PopulateSearchSpace
 from evolf.search_space.search_space import SearchSpace
 from evolf.servicecommon.utils.overlayer import Overlayer
-from string_evolve.servicecommon.parsers.parse_hocon import ParseHocon
 
 
 class SessionServer(Evolve):
 
-    def __init__(self, DomainNetworkConstructionClass, DataGeneratorClass):
-        parser = argparse.ArgumentParser(description="This server is used to evolve a loss function")
-        # The model name should not have .json
-        parser.add_argument("--config",
-                            help="The Hocon Config file location")
-        args = parser.parse_args()
-        # Read the Config File
-        self.conf = ParseHocon().parse(args.config)
+    def __init__(self, DomainNetworkConstructionClass, DataGeneratorClass, config=None):
 
         default_config = GetDefaultConfig.get_default_config()
-        self.conf = Overlayer.overlay_configs(default_config, self.conf)
+        self.conf = Overlayer.overlay_configs(default_config, config)
 
         self.domain_config = self.conf.get("domain_config")
         self.domain_name = self.domain_config.get("domain")
+        self.studio_config = self.conf.get("studio_config")
 
         self.search_space = self.domain_config.get("search_space")
 

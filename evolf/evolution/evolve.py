@@ -1,7 +1,7 @@
-from evolf.evolution.evaluate_generation import EvaluateGeneration
-from evolf.evolution.evaluate_state_of_the_art import EvaluateStateOfTheArt
+from evolf.evolution.evaluation.evaluate_generation import EvaluateGeneration
+from evolf.evolution.evaluation.evaluate_state_of_the_art import EvaluateStateOfTheArt
 from evolf.evolution.initialize_next_gen import InitializeNextGen
-from evolf.populate.population import Population
+from evolf.population.population import Population
 from evolf.servicecommon.utils.evolution_persistor import EvolutionPersistor
 
 
@@ -96,7 +96,6 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
                                                    y_label)
 
     def evolve(self):
-
         if self.evaluate_state_of_the_art_flag:
             print("\n\n ########################################### Evaluating State of the Art\n\n")
             self.evaluate_state_of_the_art()

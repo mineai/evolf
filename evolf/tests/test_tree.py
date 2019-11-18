@@ -1,5 +1,5 @@
 from evolf.search_space.search_space import SearchSpace
-from evolf.populate.population import Population
+from evolf.population.population import Population
 
 fl = SearchSpace()
 population = Population(3, 3, 10, search_space_obj=fl)

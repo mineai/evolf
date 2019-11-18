@@ -1,8 +1,10 @@
 import json
 import os
 
+from evolf.framework.interfaces.persistance.persistance import Persistance
 
-class JsonPersistor:
+
+class JsonPersistor(Persistance):
 
     def __init__(self, base_file_name="file", folder="."):
         """
@@ -14,6 +16,7 @@ class JsonPersistor:
         :param folder: Location of the file to persist
         :returns nothing
         """
+        super().__init__()
         self.base_file_name = base_file_name
         self.folder = folder
 
@@ -31,6 +34,8 @@ class JsonPersistor:
         if len(self.folder.strip()):
             if not self.folder[-1] == "/":
                 self.folder += "/"
+        if not os.path.exists(self.folder):
+            os.makedirs(self.folder)
         with open(self.folder + self.base_file_name + '.json', 'w') as fp:
             json.dump(dict, fp, indent=4)
 
@@ -47,14 +52,8 @@ class JsonPersistor:
             if not self.folder[-1] == "/":
                 self.folder += "/"
         file = self.folder + self.base_file_name + '.json'
-        print(file)
-        print(os.getcwd())
-        try:
-            dict = json.load(file)
-        except:
-            try:
-                dict = json.loads(file)
-            except:
-                print("Cannot read Dictionary")
+
+        with open(file) as json_file:
+            dict = json.load(json_file)
 
         return dict
