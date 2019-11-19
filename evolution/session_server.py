@@ -1,8 +1,8 @@
-from evolf.evolution.evolve import Evolve
-from evolf.framework.domain.get_default_config import GetDefaultConfig
-from evolf.search_space.populate_search_space import PopulateSearchSpace
-from evolf.search_space.search_space import SearchSpace
-from evolf.servicecommon.utils.overlayer import Overlayer
+from evolution.evolve import Evolve
+from framework.domain.get_default_config import GetDefaultConfig
+from search_space.populate_search_space import PopulateSearchSpace
+from search_space.search_space import SearchSpace
+from servicecommon.utils.overlayer import Overlayer
 
 
 class SessionServer(Evolve):

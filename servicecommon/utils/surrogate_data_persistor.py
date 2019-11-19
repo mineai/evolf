@@ -1,4 +1,4 @@
-from evolf.servicecommon.persistor.local.pickle.pickle_persistor import PicklePersistor
+from servicecommon.persistor.local.pickle.pickle_persistor import PicklePersistor
 
 
 class SurrogateDataPersistor:

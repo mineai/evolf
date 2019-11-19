@@ -1,6 +1,6 @@
-from evolf.lossconstructor.loss_funciton_constructor import \
+from lossconstructor.loss_funciton_constructor import \
     LossFunctionConstructor
-from evolf.fitnesseval.load_keras_evaluator import LoadKerasEvaluator
+from fitnesseval.load_keras_evaluator import LoadKerasEvaluator
 
 
 class InitializeKerasModel(LoadKerasEvaluator):

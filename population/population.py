@@ -1,10 +1,8 @@
-from evolf.framework.elements.tree.tree \
+from framework.elements.tree.tree \
     import Tree
 import numpy as np
 
-from string_evolve.reproduction.selection.selection_functions_library \
-    import SelectionFunctionsLibrary
-
+from servicecommon.utils.evolution_utils import EvolutionUtils
 
 class Population:
     def __init__(self, min_height=3, max_height=10, population_size=25,
@@ -93,7 +91,7 @@ class Population:
 
         """
         fitness = self.get_fitness_array()
-        self.mating_pool = SelectionFunctionsLibrary.default_mating_pool(
+        self.mating_pool = EvolutionUtils.default_mating_pool(
             self.trees, fitness, self.mating_pool_multiplier)
 
     def natural_selection(self):
@@ -112,7 +110,7 @@ class Population:
                  with the size of num_parents.
 
         """
-        parents = SelectionFunctionsLibrary().natural_selection(
+        parents = EvolutionUtils.natural_selection(
             self.mating_pool, self.num_parents)
         return parents
 

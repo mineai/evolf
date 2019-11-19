@@ -1,6 +1,6 @@
 import pickle
 
-from evolf.framework.interfaces.persistance.persistance import Persistance
+from framework.interfaces.persistance.persistance import Persistance
 
 
 class PicklePersistor(Persistance):

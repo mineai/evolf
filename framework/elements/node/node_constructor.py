@@ -1,6 +1,6 @@
 import random
 
-from evolf.framework.elements.node.node import Node
+from framework.elements.node.node import Node
 
 class NodeConstructor:
 

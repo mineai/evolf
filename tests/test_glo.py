@@ -2,15 +2,13 @@ import os
 import time
 import calendar
 
-from evolf.population.population import Population
-from string_evolve.servicecommon.persistor.local.json.json_persistor \
-    import JsonPersistor
-from string_evolve.servicecommon.persistor.local.pickle.pickle_persistor \
-    import PicklePersistor
-from evolf.servicecommon.utils.visualize \
+from population.population import Population
+from servicecommon.persistor.local.json.json_persistor import JsonPersistor
+from servicecommon.persistor.local.pickle.pickle_persistor import PicklePersistor
+from servicecommon.utils.visualize \
     import Visualize
 
-from evolf.servicecommon.utils.statistics import Statistics
+from servicecommon.utils.statistics import Statistics
 
 
 class TestGLO:

@@ -1,6 +1,6 @@
-from evolf.servicecommon.persistor.local.json.json_persistor import JsonPersistor
-from evolf.servicecommon.utils.statistics import Statistics
-from evolf.servicecommon.utils.visualize import Visualize
+from servicecommon.persistor.local.json.json_persistor import JsonPersistor
+from servicecommon.utils.statistics import Statistics
+from servicecommon.utils.visualize import Visualize
 
 import os
 import calendar

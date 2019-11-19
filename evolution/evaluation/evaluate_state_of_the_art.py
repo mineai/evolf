@@ -1,6 +1,6 @@
 import numpy as np
 
-from evolf.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
+from fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
 
 
 class EvaluateStateOfTheArt:

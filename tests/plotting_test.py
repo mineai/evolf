@@ -1,11 +1,10 @@
 from sympy import symbols
 from numpy import linspace
 from sympy import lambdify
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.ticker import LinearLocator, FormatStrFormatter
-import numpy as np
+
 t_pred = symbols('t_pred')
 y_pred = symbols("y_pred")
 

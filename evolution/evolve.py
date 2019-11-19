@@ -1,8 +1,8 @@
-from evolf.evolution.evaluation.evaluate_generation import EvaluateGeneration
-from evolf.evolution.evaluation.evaluate_state_of_the_art import EvaluateStateOfTheArt
-from evolf.evolution.initialize_next_gen import InitializeNextGen
-from evolf.population.population import Population
-from evolf.servicecommon.utils.evolution_persistor import EvolutionPersistor
+from evolution.evaluation.evaluate_generation import EvaluateGeneration
+from evolution.evaluation.evaluate_state_of_the_art import EvaluateStateOfTheArt
+from evolution.initialize_next_gen import InitializeNextGen
+from population.population import Population
+from servicecommon.utils.evolution_persistor import EvolutionPersistor
 
 
 class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):

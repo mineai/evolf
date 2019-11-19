@@ -1,9 +1,9 @@
 import math
 
-from evolf.servicecommon.utils.tree_utils import TreeUtils
-from evolf.population.population import Population
-from evolf.reproduction.crossover import Crossover
-from evolf.reproduction.mutation import Mutation
+from servicecommon.utils.tree_utils import TreeUtils
+from population.population import Population
+from reproduction.crossover import Crossover
+from reproduction.mutation import Mutation
 
 
 class InitializeNextGen:

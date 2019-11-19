@@ -3,8 +3,8 @@ import os
 
 import yaml
 
-from evolf.servicecommon.persistor.local.json.json_persistor import JsonPersistor
-from string_evolve.servicecommon.parsers.parse_hocon import ParseHocon
+from servicecommon.parsers.hocon_parser import ParseHocon
+from servicecommon.persistor.local.json.json_persistor import JsonPersistor
 
 
 class ArgumentParser:

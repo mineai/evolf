@@ -2,7 +2,7 @@ import time
 
 from keras.callbacks import EarlyStopping
 
-from evolf.fitnesseval.initialize_keras_model import InitializeKerasModel
+from fitnesseval.initialize_keras_model import InitializeKerasModel
 
 
 class NNFitnessEvaluator(InitializeKerasModel):

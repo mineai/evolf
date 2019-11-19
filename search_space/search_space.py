@@ -1,9 +1,7 @@
 import sympy as sp
 import numpy as np
 
-from string_evolve.reproduction.selection.selection_functions_library \
-    import SelectionFunctionsLibrary
-
+from servicecommon.utils.evolution_utils import EvolutionUtils
 
 class SearchSpace:
     """
@@ -35,7 +33,7 @@ class SearchSpace:
             for function in functions:
                 probabilities.append(operator_sample_space[function]["probability"])
 
-            operator_sample_space = SelectionFunctionsLibrary.default_mating_pool(functions,
+            operator_sample_space = EvolutionUtils.default_mating_pool(functions,
                                                                                   probabilities,
                                                                                   100)
             sample_space.extend(operator_sample_space)
@@ -47,7 +45,7 @@ class SearchSpace:
         if not isinstance(operator_types, list):
             operator_types = [operator_types]
         sample_space = self.generate_sample_space(operator_types)
-        sampled_function = SelectionFunctionsLibrary.natural_selection(sample_space,
+        sampled_function = EvolutionUtils.natural_selection(sample_space,
                                                                        1)[0]
         return sampled_function
 

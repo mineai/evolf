@@ -1,5 +1,5 @@
 
-from evolf.framework.domain.network_constructor import NetworkConstructor
+from framework.domain.network_constructor import NetworkConstructor
 
 
 class MnistNetworkConstructor(NetworkConstructor):

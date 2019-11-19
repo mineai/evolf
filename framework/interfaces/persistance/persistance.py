@@ -1,5 +1,5 @@
-from evolf.framework.interfaces.persistance.persistor import Persistor
-from evolf.framework.interfaces.persistance.restorer import Restorer
+from framework.interfaces.persistance.persistor import Persistor
+from framework.interfaces.persistance.restorer import Restorer
 
 
 class Persistance(Persistor, Restorer):

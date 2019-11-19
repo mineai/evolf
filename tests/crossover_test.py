@@ -1,10 +1,10 @@
-from evolf.framework.domain.get_default_config import GetDefaultConfig
-from evolf.population.population \
+from framework.domain.get_default_config import GetDefaultConfig
+from population.population \
     import Population
-from evolf.reproduction.crossover import Crossover
-from evolf.search_space.populate_search_space import PopulateSearchSpace
-from evolf.search_space.search_space import SearchSpace
-from evolf.servicecommon.utils.visualize import Visualize
+from reproduction.crossover import Crossover
+from search_space.populate_search_space import PopulateSearchSpace
+from search_space.search_space import SearchSpace
+from servicecommon.utils.visualize import Visualize
 
 
 search_space_obj = SearchSpace()

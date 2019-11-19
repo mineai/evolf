@@ -1,8 +1,7 @@
 import copy
-import random
 from random import randint
 
-from evolf.population.population import Population
+from population.population import Population
 
 
 class Crossover:

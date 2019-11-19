@@ -1,5 +1,5 @@
-from evolf.search_space.keras_search_space import KerasSearchSpace
-from evolf.search_space.symbolic_search_space import SymbolicSearchSpace
+from search_space.keras_search_space import KerasSearchSpace
+from search_space.symbolic_search_space import SymbolicSearchSpace
 
 
 class PopulateSearchSpace:

@@ -1,6 +1,6 @@
-from evolf.framework.elements.node.node import Node
-from evolf.framework.elements.node.node_constructor import NodeConstructor
-from evolf.framework.interfaces.serialize.serialize import Serialize
+from framework.elements.node.node import Node
+from framework.elements.node.node_constructor import NodeConstructor
+from framework.interfaces.serialize.serialize import Serialize
 
 
 class NodeSerializer(Serialize):

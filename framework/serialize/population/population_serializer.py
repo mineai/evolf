@@ -1,4 +1,4 @@
-from evolf.framework.interfaces.serialize.serialize import Serialize
+from framework.interfaces.serialize.serialize import Serialize
 
 
 class PopulationSerializer(Serialize):

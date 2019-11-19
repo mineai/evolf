@@ -1,6 +1,6 @@
 import numpy as np
 from tqdm import trange
-from evolf.fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
+from fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
 
 
 class EvaluateGeneration:

@@ -1,4 +1,4 @@
-from evolf.framework.domain.generate_data_dict import GenerateDataDict
+from framework.domain.generate_data_dict import GenerateDataDict
 
 
 class GetCipharDataDict(GenerateDataDict):

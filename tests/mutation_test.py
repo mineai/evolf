@@ -1,9 +1,9 @@
-from evolf.framework.domain.get_default_config import GetDefaultConfig
-from evolf.search_space.populate_search_space import PopulateSearchSpace
-from evolf.search_space.search_space import SearchSpace
-from evolf.population.population import Population
-from evolf.reproduction.mutation import Mutation
-from evolf.servicecommon.utils.visualize \
+from framework.domain.get_default_config import GetDefaultConfig
+from search_space.populate_search_space import PopulateSearchSpace
+from search_space.search_space import SearchSpace
+from population.population import Population
+from reproduction.mutation import Mutation
+from servicecommon.utils.visualize \
     import Visualize
 
 class MutationTest:

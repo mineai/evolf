@@ -1,7 +1,7 @@
 import json
 import os
 
-from evolf.framework.interfaces.persistance.persistance import Persistance
+from framework.interfaces.persistance.persistance import Persistance
 
 
 class JsonPersistor(Persistance):

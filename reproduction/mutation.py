@@ -1,8 +1,8 @@
 import random
 import copy
 
-from evolf.framework.elements.node.node_constructor import NodeConstructor
-from evolf.framework.elements.tree.tree import Tree
+from framework.elements.node.node_constructor import NodeConstructor
+from framework.elements.tree.tree import Tree
 
 
 class Mutation:

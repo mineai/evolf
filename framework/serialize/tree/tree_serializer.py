@@ -1,6 +1,6 @@
-from evolf.framework.elements.tree.tree import Tree
-from evolf.framework.serialize.node.node_serializer import NodeSerializer
-from evolf.framework.interfaces.serialize.serialize import Serialize
+from framework.elements.tree.tree import Tree
+from framework.serialize.node.node_serializer import NodeSerializer
+from framework.interfaces.serialize.serialize import Serialize
 
 
 class TreeSerializer(Serialize):
