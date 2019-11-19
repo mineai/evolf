@@ -28,9 +28,7 @@ class JsonPersistor(Persistance):
         :returns nothing
         """
         if not self.base_file_name:
-            file_name = "default_dict"
-        else:
-            file_name = self.base_file_name
+            self.base_file_name = "default_dict"
         if len(self.folder.strip()):
             if not self.folder[-1] == "/":
                 self.folder += "/"

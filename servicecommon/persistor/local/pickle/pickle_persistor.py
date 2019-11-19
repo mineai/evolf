@@ -27,9 +27,7 @@ class PicklePersistor(Persistance):
         :returns nothing
         """
         if not self.base_file_name:
-            file_name = "default_pickle"
-        else:
-            file_name = self.base_file_name
+            self.base_file_name = "default_pickle"
         if not self.folder[-1] == "/":
             self.folder += "/"
         with open(self.folder + self.base_file_name + '.pkl', 'wb') as fp:
