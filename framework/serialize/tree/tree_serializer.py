@@ -39,7 +39,6 @@ class TreeSerializer(Serialize):
                     node_serializer = NodeSerializer(param_val)
                     serialized_nodes = node_serializer.serialize()
                     tree[tree_param] = serialized_nodes
-                    import pdb; pdb.set_trace()
                 else:
                     try:
                         json.dumps(param_val)

@@ -58,6 +58,6 @@ def generate_initial_population():
     return serialized_population_bytes
 
 if __name__ == '__main__':
-    population_service_app.run(host="127.0.0.1",
+    population_service_app.run(host="0.0.0.0",
                                port=5000,
                                debug=True)

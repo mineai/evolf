@@ -6,11 +6,7 @@ apt-get install -y python3
 apt-get install -y python-pip
 apt-get install -y python3-pip
 
-pip3 install -r requirements.txt
-
-echo ""
-echo "To start string evolution server, Run: "
-echo "python3 evolutionary_algorithms/domains/strevolve/flask_app/server.py"
+pip3 install -r setup/requirements.txt
 
 export DOMAIN_DATA_ENDPOINT=http://s3.us-west-2.amazonaws.com
 export STUDIO_DATABASE_ENDPOINT=http://s3.us-east-1.amazonaws.com/

@@ -41,6 +41,7 @@ url = "http://127.0.0.1:5000/request_inital_population"
 population_config = {
     "min_height": 3,
     "max_height": 5,
+    "population_size": 100
 }
 
 population_config_bytes = pickle.dumps(population_config)

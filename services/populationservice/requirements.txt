@@ -1,0 +1,7 @@
+keras
+numpy
+tqdm
+flask
+sympy
+tensorflow
+pydot
