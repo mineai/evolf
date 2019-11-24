@@ -1,7 +1,7 @@
 import math
 
 from servicecommon.utils.tree_utils import TreeUtils
-from population.population import Population
+from framework.population.population import Population
 from reproduction.crossover import Crossover
 from reproduction.mutation import Mutation
 

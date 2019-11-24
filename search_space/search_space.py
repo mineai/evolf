@@ -1,7 +1,7 @@
 import sympy as sp
 import numpy as np
 
-from servicecommon.utils.evolution_utils import EvolutionUtils
+from servicecommon.utils.evolution_util import EvolutionUtils
 
 class SearchSpace:
     """

@@ -27,12 +27,12 @@ class Tree(LinearTree, TreeConstruction):
             nodes = tree_args.get("nodes")
             tree_fitness = tree_args.get("fitness", 0)
             tree_avg_epoch_time = tree_args.get("avg_epoch_time", None)
+            id = tree_args.get("id", None)
 
         TreeConstruction.__init__(self, min_height, max_height, search_space_obj, nodes)
         LinearTree.__init__(self, self.root, nodes)
 
         self.symbolic_expression = None
-
         # A flag set after validation to mark if this tree is working or not. None represents
         # that it has not yet been validated.
         self.working = None
@@ -40,6 +40,7 @@ class Tree(LinearTree, TreeConstruction):
         if tree_args is None:
             self.fitness = 0  # The fitness of the tree
             self.avg_epoch_time = None  # If the NN is a fitness function, then the time for each Epoch.
+            self.id = None
             # Construct the Expression and the Linear Tree
             self.initialize_parents()
             self.assign_level_order_id()
@@ -52,6 +53,7 @@ class Tree(LinearTree, TreeConstruction):
         else:
             self.fitness = tree_fitness  # The fitness of the tree
             self.avg_epoch_time = tree_avg_epoch_time  # If the NN is a fitness function, then the time for each Epoch.
+            self.id = id
             self.reset_tree()
 
     """

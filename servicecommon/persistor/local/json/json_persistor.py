@@ -1,12 +1,12 @@
 import json
 import os
 
-from framework.interfaces.persistance.persistance import Persistance
+from framework.interfaces.persistence.persistence import Persistence
 
 
-class JsonPersistor(Persistance):
+class JsonPersistor(Persistence):
 
-    def __init__(self, base_file_name="file", folder="."):
+    def __init__(self, dict, base_file_name="file", folder="."):
         """
         This constructor initializes the name of the file to
         persist at what path.
@@ -19,8 +19,9 @@ class JsonPersistor(Persistance):
         super().__init__()
         self.base_file_name = base_file_name
         self.folder = folder
+        self.dict = dict
 
-    def persist(self, dict):
+    def persist(self):
         """
         This function takes in a dictionary and
         persists at the path with the base_file_name
@@ -35,7 +36,7 @@ class JsonPersistor(Persistance):
         if not os.path.exists(self.folder):
             os.makedirs(self.folder)
         with open(self.folder + self.base_file_name + '.json', 'w') as fp:
-            json.dump(dict, fp, indent=4)
+            json.dump(self.dict, fp, indent=4)
 
     def restore(self):
         """

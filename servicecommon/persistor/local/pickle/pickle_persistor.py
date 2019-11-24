@@ -1,11 +1,11 @@
 import pickle
 
-from framework.interfaces.persistance.persistance import Persistance
+from framework.interfaces.persistence.persistence import Persistence
 
 
-class PicklePersistor(Persistance):
+class PicklePersistor(Persistence):
 
-    def __init__(self, base_file_name=".", folder=""):
+    def __init__(self, file, base_file_name=".", folder=""):
         """
         This constructor initializes the name of the file to
         persist at what path.
@@ -18,8 +18,9 @@ class PicklePersistor(Persistance):
         super().__init__()
         self.base_file_name = base_file_name
         self.folder = folder
+        self.file = file
 
-    def persist(self, file):
+    def persist(self):
         """
         This function takes in a dictionary and
         persists at the path with the base_file_name
@@ -31,7 +32,7 @@ class PicklePersistor(Persistance):
         if not self.folder[-1] == "/":
             self.folder += "/"
         with open(self.folder + self.base_file_name + '.pkl', 'wb') as fp:
-            pickle.dump(file, fp)
+            pickle.dump(self.file, fp)
 
     def restore(self):
         """

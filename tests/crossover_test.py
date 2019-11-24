@@ -1,5 +1,5 @@
 from framework.domain.get_default_config import GetDefaultConfig
-from population.population \
+from framework.population.population \
     import Population
 from reproduction.crossover import Crossover
 from search_space.populate_search_space import PopulateSearchSpace

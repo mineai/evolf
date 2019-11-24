@@ -1,8 +1,7 @@
-from framework.elements.tree.tree \
-    import Tree
+from framework.elements.tree.tree import Tree
 import numpy as np
 
-from servicecommon.utils.evolution_utils import EvolutionUtils
+from servicecommon.utils.evolution_util import EvolutionUtils
 
 class Population:
     def __init__(self, min_height=3, max_height=10, population_size=25,
@@ -49,14 +48,21 @@ class Population:
         returns: Nothing
 
         """
-        print("\n\nGenerating Tress ...")
+        if len(self.trees):
+            ids = [tree.id for tree in self.trees]
+            tree_id = max(ids)
+        else:
+            tree_id = 1
+        print(f"\n\nGenerating {num_trees} Tress ...")
         num_trees = self.population_size if num_trees is None else num_trees
-        while len(self.trees) < num_trees:
+        while len(self.trees) < self.population_size:
             tree = Tree(self.min_height, self.max_height, self.search_space_obj)
             if tree.symbolic_expression in self.symbolic_expressions:
                 continue
             self.symbolic_expressions.append(tree.symbolic_expression)
             if tree.working:
+                tree.id = tree_id
+                tree_id += 1
                 self.trees.append(tree)
                 print(f"Trees Initialized {len(self.trees)} / {self.population_size}: {tree.symbolic_expression}")
 

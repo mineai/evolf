@@ -1,4 +1,5 @@
 from evolution.evolve import Evolve
+from framework.domain.argument_parser import ArgumentParser
 from framework.domain.get_default_config import GetDefaultConfig
 from search_space.populate_search_space import PopulateSearchSpace
 from search_space.search_space import SearchSpace
@@ -7,8 +8,9 @@ from servicecommon.utils.overlayer import Overlayer
 
 class SessionServer(Evolve):
 
-    def __init__(self, DomainNetworkConstructionClass, DataGeneratorClass, config=None):
+    def __init__(self, DomainNetworkConstructionClass, DataGeneratorClass):
 
+        config = ArgumentParser.add_parser()
         default_config = GetDefaultConfig.get_default_config()
         self.conf = Overlayer.overlay_configs(default_config, config)
 

@@ -1,7 +1,7 @@
 from evolution.evaluation.evaluate_generation import EvaluateGeneration
 from evolution.evaluation.evaluate_state_of_the_art import EvaluateStateOfTheArt
 from evolution.initialize_next_gen import InitializeNextGen
-from population.population import Population
+from framework.population.population import Population
 from servicecommon.utils.evolution_persistor import EvolutionPersistor
 
 

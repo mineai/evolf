@@ -1,4 +1,4 @@
-from population.population \
+from framework.population.population \
     import Population
 from reproduction.crossover import Crossover
 from servicecommon.utils.visualize import Visualize

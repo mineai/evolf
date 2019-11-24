@@ -1,8 +1,6 @@
 import copy
 from random import randint
 
-from population.population import Population
-
 
 class Crossover:
     """

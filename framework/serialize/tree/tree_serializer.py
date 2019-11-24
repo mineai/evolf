@@ -39,6 +39,7 @@ class TreeSerializer(Serialize):
                     node_serializer = NodeSerializer(param_val)
                     serialized_nodes = node_serializer.serialize()
                     tree[tree_param] = serialized_nodes
+                    import pdb; pdb.set_trace()
                 else:
                     try:
                         json.dumps(param_val)
@@ -89,7 +90,7 @@ class TreeSerializer(Serialize):
             fitness = serialized_tree.get("fitness", 0)
             avg_epoch_time = serialized_tree.get("avg_epoch_time", None)
             nodes = serialized_tree.get("nodes")
-
+            id = serialized_tree.get("id")
             node_deserializer = NodeSerializer(node_objs=nodes,
                                                search_space_obj=self.search_space_obj)
             deserialized_nodes = node_deserializer.deserialize()
@@ -97,7 +98,8 @@ class TreeSerializer(Serialize):
             tree_args = {
                 "fitness": fitness,
                 "avg_epoch_time": avg_epoch_time,
-                "nodes": deserialized_nodes
+                "nodes": deserialized_nodes,
+                "id": id
             }
 
             tree = Tree(None, None,

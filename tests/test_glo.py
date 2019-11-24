@@ -2,7 +2,7 @@ import os
 import time
 import calendar
 
-from population.population import Population
+from framework.population.population import Population
 from servicecommon.persistor.local.json.json_persistor import JsonPersistor
 from servicecommon.persistor.local.pickle.pickle_persistor import PicklePersistor
 from servicecommon.utils.visualize \

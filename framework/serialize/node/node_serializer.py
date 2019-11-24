@@ -42,7 +42,6 @@ class NodeSerializer(Serialize):
             del node_dictionary["tensorflow_handle"]
 
             nodes[node_obj.node_id] = node_dictionary
-
         return nodes
 
     def get_node_by_id(self, id, nodes):
@@ -87,6 +86,13 @@ class NodeSerializer(Serialize):
         :return nodes: A list containing all the node objects deserialized.
         """
         assert isinstance(self.node_objs, dict), "Expected A Dictionary of Nodes"
+
+        # Make sure the ids are ints
+        node_obj = {}
+        for node_id in self.node_objs.keys():
+            node_obj[int(node_id)] = self.node_objs[node_id]
+        self.node_objs = node_obj
+
         nodes = []
         for node_id in self.node_objs.keys():
             node_info = self.node_objs.get(node_id)

@@ -1,5 +1,5 @@
 from search_space.search_space import SearchSpace
-from population.population import Population
+from framework.population.population import Population
 
 fl = SearchSpace()
 population = Population(3, 3, 10, search_space_obj=fl)
