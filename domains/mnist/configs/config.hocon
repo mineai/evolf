@@ -119,13 +119,13 @@
 "studio_config": {
     "database": {
         "type": "s3",
-        "endpoint": ${STUDIO_DATABASE_ENDPOINT},
+        #"endpoint": ${STUDIO_DATABASE_ENDPOINT},
         "bucket": "mineai-mnist-database",
         "authentication": none
     },
     "storage":{
         "type": "s3",
-        "endpoint": ${STUDIO_STORAGE_ENDPOINT},
+        #"endpoint": ${STUDIO_STORAGE_ENDPOINT},
         "bucket": "mineai-mnist-storage"
     },
     "server":{

@@ -1,13 +1,13 @@
 PyYAML
 pydot
-keras
-numpy
-matplotlib
+# keras
+# numpy
+# matplotlib
 tqdm
 pyhocon
 flask
 sympy
-tensorflow
-tensorflow-gpu
+# tensorflow
+# tensorflow-gpu
 studioml
 boto3
