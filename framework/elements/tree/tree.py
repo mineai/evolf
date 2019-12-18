@@ -1,8 +1,8 @@
 from framework.elements.tree.linear_tree import LinearTree
 from framework.elements.tree.tree_construction import TreeConstruction
 from servicecommon.utils.visualize import Visualize
-from lossconstructor.evaluate_tree import EvaluateTree
-from lossconstructor.validate import Validate
+from framework.elements.tree.symbolic_expression_buiilder import SymbolicExpressionBuilder
+from framework.elements.tree.validate import Validate
 
 
 class Tree(LinearTree, TreeConstruction):
@@ -67,7 +67,7 @@ class Tree(LinearTree, TreeConstruction):
         It is responsible for building a symbolic expression from the tree.
         :return nothing:
         """
-        self.symbolic_expression = EvaluateTree.build_symbolic_expression(self)
+        self.symbolic_expression = SymbolicExpressionBuilder.build_symbolic_expression(self)
 
     def validate_working(self):
         """

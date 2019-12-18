@@ -13,8 +13,7 @@ class TreeSerializer(Serialize):
         :param search_space_obj: Object of Search Space class
         """
         self.tree_objs = tree_objs if isinstance(tree_objs, list) \
-                                      or isinstance(tree_objs, dict) \
-            else [tree_objs]
+                            else [tree_objs]
         self.search_space_obj = search_space_obj
 
     def serialize(self):
@@ -106,4 +105,5 @@ class TreeSerializer(Serialize):
                         tree_args)
             deserialized_trees.append(tree)
 
+        deserialized_trees = deserialized_trees if len(deserialized_trees) > 1 else deserialized_trees[0]
         return deserialized_trees

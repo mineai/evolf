@@ -2,8 +2,8 @@ from flask import Flask, request
 import pickle
 
 
-from search_space.search_space import SearchSpace
-from search_space.populate_search_space import PopulateSearchSpace
+from searchspace.search_space import SearchSpace
+from searchspace.populate_search_space import PopulateSearchSpace
 from framework.serialize.population.population_serializer import PopulationSerializer
 
 from framework.population.population import Population
@@ -17,7 +17,7 @@ Set Up Routes
 
 
 # 1) Set Up Search Space Object
-@population_service_app.route("/init", methods=["POST"])
+@population_service_app.route("/initialize", methods=["POST"])
 def set_up_search_space():
     global search_space_obj
     pickled_data = request.data

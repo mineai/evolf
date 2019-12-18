@@ -1,4 +1,8 @@
 class GetDefaultConfig:
+    """
+    This class holds a base default config for
+    the SessionServer in EVOLF
+    """
 
     @staticmethod
     def get_default_config():
@@ -7,80 +11,79 @@ class GetDefaultConfig:
             "domain_config": {
 
                 "domain": "Unnamed Domain",
-
-                "evaluator_specs": {
-                    "epochs": 3,
-                    "verbose": True,
-                    "batch_size": 128,
-                    "model_path": f"{os.getcwd()}/evolf/domains/mnist/model",
-                    "model_file_name": "mnist_model.json",
-                    "weight_file_name": "mnist_model_weights.h5",
-
-                    "early_stopping_config": {
-                        "monitor": "val_acc",
-                        "mode": "max",
-                        "print_early_stopping": True,
-                        "patience": 1,
-                        "min_delta": 1
-                    },
-
-                    "switch_threshold": 0.9796
-                },
-
-                "model_generation": {
+                "model_config": {
                     "generate_model": True,
                     "model_path": f"{os.getcwd()}/evolf/domains/mnist/model",
                     "model_file_name": "mnist_model.json",
                     "weight_file_name": "mnist_model_weights.h5"
                 },
-
                 "data_config": {
                     "train_percentage": 0.9,
                     "validation_percentage": 0.05,
                     "test_percentage": 0.05
                 },
+            },
 
-                "state_of_the_art_config": {
-                    "evaluate": False,
-                    "epochs": 10,
-                    "verbose": True,
-                    "batch_size": 128,
-                    "model_path": f"{os.getcwd()}/evolf/domains/mnist/model",
-                    "model_file_name": "mnist_model.json",
-                    "weight_file_name": "mnist_model_weights.h5",
-                    "loss": "categorical_crossentropy",
-                    "early_stopping_config": {
-                        "monitor": "val_acc",
-                        "mode": "max",
-                        "print_early_stopping": True,
-                        "patience": 10,
-                        "min_delta": 1
-                    }
+            "evaluator_config": {
+                "epochs": 3,
+                "verbose": True,
+                "batch_size": 128,
+                "model_path": f"{os.getcwd()}/evolf/domains/mnist/model",
+                "model_file_name": "mnist_model.json",
+                "weight_file_name": "mnist_model_weights.h5",
+
+                "early_stopping_config": {
+                    "monitor": "val_acc",
+                    "mode": "max",
+                    "print_early_stopping": True,
+                    "patience": 1,
+                    "min_delta": 1
                 },
 
-                "search_space": {
-                    "U": {
-                        "log": 4
-                    },
-                    "B": {
-                        "+": 1,
-                        "-": 1,
-                        "*": 1,
-                        "/": 1
-                    },
-                    "L": {
-                        "y": 3,
-                        "t": 3,
-                        "pos_scalar": 1,
-                        "neg_scalar": 1
-                    },
-                    "R": {
-                        "mean": 1
-                    }
+                "switch_threshold": 0.9796
+            },
+
+            "state_of_the_art_config": {
+                "evaluate": False,
+                "epochs": 10,
+                "verbose": True,
+                "batch_size": 128,
+                "model_path": f"{os.getcwd()}/evolf/domains/mnist/model",
+                "model_file_name": "mnist_model.json",
+                "weight_file_name": "mnist_model_weights.h5",
+                "loss": "categorical_crossentropy",
+                "early_stopping_config": {
+                    "monitor": "val_acc",
+                    "mode": "max",
+                    "print_early_stopping": True,
+                    "patience": 10,
+                    "min_delta": 1
+                }
+            },
+            "searchspace": {
+                "U": {
+                    "log": 4,
+                    "square": 3,
+                    "sqrt": 3
+                },
+                "B": {
+                    "+": 1,
+                    "-": 1,
+                    "*": 1,
+                    "/": 1
+                },
+                "L": {
+                    "y": 3,
+                    "t": 3,
+                    "pos_scalar": 1,
+                    "neg_scalar": 1
+                },
+                "R": {
+                    "mean": 1
                 }
             },
 
-            "evolution_specs": {
+            "evolution_config": {
                 "initial_population_size": 100,
                 "population_size": 20,
                 "mating_pool_multiplier": 100,
@@ -97,7 +100,7 @@ class GetDefaultConfig:
                 "tree_max_height": 3
             },
 
-            "visualization_specs": {
+            "visualization_config": {
                 "visualize_tree": True,
                 "visualize_function": True,
                 "visualize_avg_fitness": True,
@@ -105,11 +108,10 @@ class GetDefaultConfig:
 
             },
 
-            "persistence_specs": {
+            "persistence_config": {
                 "output_path": f"{os.getcwd()}/evolf/domains/mnist/results",
                 "persist": True
-            }
-
+            },
 
         }
 

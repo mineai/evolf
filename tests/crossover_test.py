@@ -8,7 +8,7 @@ from servicecommon.utils.visualize import Visualize
 
 
 search_space_obj = SearchSpace()
-search_space = GetDefaultConfig.get_default_config().get("domain_config").get("search_space")
+search_space = GetDefaultConfig.get_default_config().get("domain_config").get("searchspace")
 PopulateSearchSpace.populate_search_space(search_space_obj, search_space)
 pop1 = Population(5, 5, 5, search_space_obj=search_space_obj)
 tree1 = pop1.working_trees[0]

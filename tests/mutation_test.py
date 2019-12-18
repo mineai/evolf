@@ -12,7 +12,7 @@ class MutationTest:
         import copy
         search_space_obj = SearchSpace()
 
-        search_space = GetDefaultConfig.get_default_config().get("domain_config").get("search_space")
+        search_space = GetDefaultConfig.get_default_config().get("domain_config").get("searchspace")
 
         PopulateSearchSpace.populate_search_space(search_space_obj, search_space)
         population = Population(5, 5, 1, search_space_obj=search_space_obj)
