@@ -1,9 +1,7 @@
 import argparse
 
-from framework.domain.get_default_config import GetDefaultConfig
 from framework.interfaces.parser.argument_parser import ArgumentParser
 from servicecommon.parsers.hocon_parser import ParseHocon
-from servicecommon.utils.overlayer import Overlayer
 
 
 class DomainArgParser(ArgumentParser):
@@ -25,10 +23,8 @@ class DomainArgParser(ArgumentParser):
         :return config: A dictionary parsed from the supplied Hocon
         """""
         parser = argparse.ArgumentParser(description="This server is used to evolve a loss function")
-        # The model name should not have .json
         parser.add_argument("--config",
                             help="The Hocon Config file location")
-        # The model name should not have .json
         parser.add_argument("--experiment_id",
                             help="Experiment Id for this run", default=None)
         args = parser.parse_args()

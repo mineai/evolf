@@ -62,7 +62,7 @@ class GetDefaultConfig:
             },
             "searchspace": {
                 "U": {
-                    "log": 4,
+                    "log": 10,
                     "square": 3,
                     "sqrt": 3
                 },

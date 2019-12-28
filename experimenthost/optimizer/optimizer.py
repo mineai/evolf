@@ -36,7 +36,6 @@ class Optimizer:
         """
         best_solutions = self.optimizer.construct_dominant_pareto_front()
 
-
         total_solutions = len(best_solutions)
 
         while total_solutions < num_best_candidates:

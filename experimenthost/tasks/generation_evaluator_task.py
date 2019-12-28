@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from tqdm import trange
 
 from experimenthost.optimizer.optimizer import Optimizer
 
@@ -37,10 +38,20 @@ class GenerationEvaluatorTask:
         self.optimization_method = evaluator_config.get("optimization_method", "pareto")
 
     def evaluate_generation(self):
+        """
+        This function evaluates the self.candidates and returns
+        the candidates that were evaluated successfully and the
+        failed candidates.
+        :returns evaluated_candidates: List of Candidates that were
+        evaluated successfully
+        :returns failed_candidates: List of Candidates that returned with
+        an error.
+        """
         evaluated_candidates = []
         failed_candidates = []
 
-        for candidate in self.candidates:
+        for candidate_idx in trange(len(self.candidates)):
+            candidate = self.candidates[candidate_idx]
             metrics = self.candidate_evaluator_task.evaluate_candidate(candidate,
                                                                        full_training=False)
 
@@ -71,10 +82,14 @@ class GenerationEvaluatorTask:
         return optimal_solutions
 
 
+
+
+
+
 search_space_obj = SearchSpace()
 search_space = GetDefaultConfig.get_default_config().get("searchspace")
 search_space_obj = PopulateSearchSpace.populate_search_space(search_space_obj, search_space)
-population = Population(2, 4, 80, search_space_obj=search_space_obj)
+population = Population(2, 4, 3, search_space_obj=search_space_obj)
 
 evaluator_config = {
     # The following two paths are
@@ -87,10 +102,10 @@ evaluator_config = {
     # This is the training config that
     # will be used by the client's evaluator
     "training_config": {
-        "epochs": 2,
+        "epochs": 1,
         "early_stopping": True,
         "verbose": True,
-        "batch_size": 2000
+        "batch_size": 1000
     },
 
     # This is the config that will be used by client's
@@ -111,6 +126,7 @@ evaluator_config = {
     "num_best_candidates": 2,
     "optimization_method": "pareto front"
 }
+
 generation_num = 1
 candidates = population.trees
 
@@ -118,14 +134,3 @@ gaet = GenerationEvaluatorTask(generation_num,
                                candidates,
                                evaluator_config)
 optimal_solutions = gaet.get_optimals()
-
-# print(f"Best Candidate: {optimal_solutions[0].symbolic_expression}")
-print(optimal_solutions)
-for idx, optimal_solution_front in enumerate(optimal_solutions):
-    print(f"\nFront {idx}: ")
-    if isinstance(optimal_solution_front, list):
-        for solution in optimal_solution_front.keys():
-            print(solution.symbolic_expression)
-    else:
-        optimal = list(optimal_solution_front.keys())[0]
-        print(optimal.symbolic_expression)

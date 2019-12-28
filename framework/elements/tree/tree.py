@@ -25,7 +25,6 @@ class Tree(LinearTree, TreeConstruction):
         nodes = None
         if tree_args is not None:
             nodes = tree_args.get("nodes")
-            tree_fitness = tree_args.get("fitness", 0)
             tree_avg_epoch_time = tree_args.get("avg_epoch_time", None)
             id = tree_args.get("id", None)
 
@@ -51,7 +50,6 @@ class Tree(LinearTree, TreeConstruction):
             except:
                 self.working = False
         else:
-            self.fitness = tree_fitness  # The fitness of the tree
             self.avg_epoch_time = tree_avg_epoch_time  # If the NN is a fitness function, then the time for each Epoch.
             self.id = id
             self.reset_tree()

@@ -118,7 +118,7 @@ class SessionServer():
         return population_obj
 
     def run(self):
-        print(f"""################################# 
+        print(f""" ################################# 
                 Evolf is currently Running on {self.domain_name} \n
                 Experiment ID: {self.experiment_id} 
                 ################################# """)

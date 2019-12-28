@@ -38,9 +38,22 @@ class ParetoFrontOptimizer:
 
         return candidates
 
+    def flatten_list(self, arr):
+        """
+        This function takes in a list with
+        nested level of 2 and flattens it.
+        :return flattened_list:
+        """
+        flattened_list = []
+        for element in arr:
+            flattened_list.append(element[0])
+
+        return flattened_list
+
     def construct_dominant_pareto_front(self):
 
         points = self.extract_candidate_data()
+
         candidate_indices = []
 
         if isinstance(points, list):
@@ -48,6 +61,7 @@ class ParetoFrontOptimizer:
 
         # Sort on first dimension
         if points.ndim == 1:
+            points = self.flatten_list(points)
             candidate_indices.append(np.argmax(points))
         else:
             points = points[points[:, 0].argsort()]
