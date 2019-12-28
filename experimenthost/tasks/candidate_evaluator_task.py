@@ -72,7 +72,7 @@ class CandidateEvaluatorTask():
                                                        config)
         except Exception as e:
             metrics = {
-                "error": e
+                "error": "Evaluation Failed"
             }
 
         if "error" not in metrics.keys():

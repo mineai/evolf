@@ -27,6 +27,7 @@ class Tree(LinearTree, TreeConstruction):
             nodes = tree_args.get("nodes")
             tree_avg_epoch_time = tree_args.get("avg_epoch_time", None)
             id = tree_args.get("id", None)
+            metrics = tree_args.get("metrics", None)
 
         TreeConstruction.__init__(self, min_height, max_height, search_space_obj, nodes)
         LinearTree.__init__(self, self.root, nodes)
@@ -44,6 +45,7 @@ class Tree(LinearTree, TreeConstruction):
             self.initialize_parents()
             self.assign_level_order_id()
             self.linearize_tree()
+            self.metrics = {}
             try:
                 self.construct_symbolic_expression()
                 self.validate_working()
@@ -52,6 +54,7 @@ class Tree(LinearTree, TreeConstruction):
         else:
             self.avg_epoch_time = tree_avg_epoch_time  # If the NN is a fitness function, then the time for each Epoch.
             self.id = id
+            self.metrics = metrics
             self.reset_tree()
 
     """

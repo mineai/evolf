@@ -20,8 +20,8 @@ class ParetoFrontOptimizer:
         candidate_data = []
         for candidate in self.evaluated_candidates:
             candidate_info = []
-            candidate_metrics = list(candidate.values())[0]
-            for metric in candidate_metrics:
+            candidate_metrics = candidate.metrics
+            for metric in candidate_metrics.keys():
                 candidate_info.append(candidate_metrics.get(metric))
 
             candidate_data.append(candidate_info)

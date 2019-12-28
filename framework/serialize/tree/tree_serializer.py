@@ -87,6 +87,7 @@ class TreeSerializer(Serialize):
             avg_epoch_time = serialized_tree.get("avg_epoch_time", None)
             nodes = serialized_tree.get("nodes")
             id = serialized_tree.get("id")
+            metrics = serialized_tree.get("metrics")
             node_deserializer = NodeSerializer(node_objs=nodes,
                                                search_space_obj=self.search_space_obj)
             deserialized_nodes = node_deserializer.deserialize()
@@ -94,12 +95,14 @@ class TreeSerializer(Serialize):
             tree_args = {
                 "avg_epoch_time": avg_epoch_time,
                 "nodes": deserialized_nodes,
-                "id": id
+                "id": id,
+                "metrics": metrics
             }
 
             tree = Tree(None, None,
                         self.search_space_obj,
                         tree_args)
+
             deserialized_trees.append(tree)
 
         deserialized_trees = deserialized_trees if len(deserialized_trees) > 1 else deserialized_trees[0]

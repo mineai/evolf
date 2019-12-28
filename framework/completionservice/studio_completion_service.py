@@ -1,8 +1,11 @@
 import os
-import sys
+import psutil
 import shutil
 import yaml
 import tqdm
+import time
+
+from experimenthost.optimizer.optimizer import Optimizer
 
 os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
 
@@ -14,7 +17,7 @@ from searchspace.search_space import SearchSpace
 from servicecommon.persistor.local.json.json_persistor import JsonPersistor
 
 
-class StudioSubmissionService:
+class StudioCompletionService:
 
     def __init__(self, candidates, generation_number,
                  experiment_id, search_space, timeout=300,
@@ -43,6 +46,13 @@ class StudioSubmissionService:
 
         # Keep track of processes in studios queue
         self.studio_process_queue = []
+
+        # Keep track of successful vs failed candidates and best 'n' solutions for stats
+        self.successful_candidates, self.failed_candidates = [], []
+        self.best_solutions = []
+
+        # Keep track of total Evaluation time
+        self.generation_eval_time = None
 
     def generate_temp_exp_folder(self):
         current_path = os.getcwd()
@@ -83,6 +93,12 @@ class StudioSubmissionService:
         return unevaluated_generation_path, evaluated_generation_path, studio_config_path, \
                evaluator_config_path, search_space_path
 
+    def kill(self, proc_pid):
+        process = psutil.Process(proc_pid)
+        for proc in process.children(recursive=True):
+            proc.kill()
+        process.kill()
+
     def submit_jobs_with_data(self):
 
         print("\nSubmitting Jobs to Studio ML\n")
@@ -109,40 +125,109 @@ class StudioSubmissionService:
 
             # To Use the JSON Persistor the candidate_evaluator_task should seperate the folder from the file
             import subprocess
-            command = f"studio run --config={self.studio_config_path} --force-git experimenthost/tasks/candidate_evaluator_task.py " \
+            command = f"exec studio run --config={self.studio_config_path} --force-git experimenthost/tasks/candidate_evaluator_task.py " \
                       f"--candidate_location={candidate_location} --evaluator_config={evaluator_config} " \
                       f"--search_space_location={search_space} --generation_number={self.generation_number} --experiment_id={self.experiment_id}"
-            command = command.split(" ")
-            process = subprocess.Popen(command, shell=False,
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            # command = command.split(" ")
+            process = subprocess.Popen(command, shell=True,
+                                       stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             self.studio_process_queue.append(process)
             self.msgs_sent += 1
 
     def wait_for_evaluations(self):
 
-        print("\nWaiting for results to return from Studio ML\n")
+        print("\nWaiting for results to return from Studio ML")
 
-        from time import sleep
         time_elapsed = 0
 
         # Wait for results
-        with tqdm.tqdm(total=self.msgs_sent) as pbar:
-            while self.msgs_recvd < self.msgs_sent:
-                self.msgs_recvd = len(os.listdir(self.evaluated_generation_path))
+        msgs_recvd_last = self.msgs_recvd
+        with tqdm.tqdm(total=self.msgs_sent, desc="Number of Candidates Rcvd") as recvd_bar:
+            with tqdm.tqdm(total=self.timeout, desc="Timeout") as timeout_bar:
 
-                pbar.update(self.msgs_recvd)
+                while self.msgs_recvd < self.msgs_sent:
+                    self.msgs_recvd = len(os.listdir(self.evaluated_generation_path))
 
-                sleep(5)
-                time_elapsed += 5
+                    if self.msgs_recvd > msgs_recvd_last:
+                        recvd_bar.update(self.msgs_recvd)
+                        msgs_recvd_last = self.msgs_recvd
 
-                if time_elapsed >= self.timeout:
-                    print("Timeout Occured")
-                    
-                    for process in self.studio_process_queue:
-                        print(f"Killing Process ID: {process.pid}")
-                        process.kill()
+                    time.sleep(10)
+                    time_elapsed += 10
+                    timeout_bar.update(10)
 
-                    break
+                    # Clear Queue
+                    if time_elapsed >= self.timeout:
+                        print("Timeout Occurred")
+
+                        for process in self.studio_process_queue:
+                            self.kill(process.pid)
+
+                        break
+
+        # Read all the evaluated candidates
+        successful_candidates, failed_candidates = [], []
+        candidates = os.listdir(self.evaluated_generation_path)
+        for candidate in candidates:
+            candidate_without_extension = os.path.splitext(candidate)[0]
+            candidate_restorer = JsonPersistor(dict=None,
+                                               base_file_name=candidate_without_extension,
+                                               folder=self.evaluated_generation_path)
+            restored_candidate = candidate_restorer.restore()
+
+            candidate_deserializer = TreeSerializer(restored_candidate, search_space_obj)
+            deserialized_evaluated_candidate = candidate_deserializer.deserialize()
+
+            if "error" in deserialized_evaluated_candidate.metrics:
+                failed_candidates.append(deserialized_evaluated_candidate)
+            else:
+                successful_candidates.append(deserialized_evaluated_candidate)
+
+        return successful_candidates, failed_candidates
+
+    def run(self):
+        start_time = time.time()
+
+        self.submit_jobs_with_data()
+        self.successful_candidates, self.failed_candidates = self.wait_for_evaluations()
+
+        end_time = time.time()
+        self.generation_eval_time = end_time - start_time
+
+        self.best_solutions = self.get_best_results()
+        self.report_stats()
+
+    def report_stats(self):
+        print(f"\n\n ########### Generation Evaluation Stats ################")
+        print(f"Stat reports for generation: {self.generation_number}")
+        print(f"Generation Eval Time: {self.generation_eval_time} seconds")
+        print(f"Num Candidates to be submitted: {len(self.candidates)}")
+
+        print(f"\n Number of candidates submitted: {self.msgs_sent}")
+        print(f"Number of candidates recvd: {self.msgs_recvd}")
+        print(f"Submission Success rate: {self.msgs_recvd / self.msgs_sent * 100}%")
+
+        print(f"Num Candidates Successfully Evaluated: {len(self.successful_candidates)}")
+        print(f"Num Candidates failed: {len(self.failed_candidates)}")
+        print(f"Evaluation Success Rate: {len(self.successful_candidates) / len(candidates) * 100}%")
+
+        print(f"\n ############## Evaluated Candidate Metrics for this generation ##############")
+        for candidate in self.successful_candidates:
+            print(f"{candidate.symbolic_expression}: {candidate.metrics}")
+
+        print(f"\n ############## Best Candidate Metrics for this generation ##############")
+        for candidate in self.best_solutions:
+            print(f"{candidate.symbolic_expression}: {candidate.metrics}")
+
+    def get_best_results(self):
+
+        fitness_objectives = self.evaluator_config.get("fitness_objectives")
+        num_best_candidates = self.evaluator_config.get("num_best_candidates")
+
+        optimizer = Optimizer(fitness_objectives, self.successful_candidates)
+        best_solutions = optimizer.optimize_pareto(num_best_candidates)
+
+        return best_solutions
 
 
 search_space_obj = SearchSpace()
@@ -202,22 +287,28 @@ studio_config = {
     "server": {
         "authentication": None,
     },
-    "queue": "local",
+    "cloud": {
+        "queue": {
+            "rmq": "amqp://guest:guest@localhost:5672/%2f?connection_attempts=30&retry_delay=1&socket_timeout=15"
+        }
+    },
     "saveMetricsFrequency": "1m",
     "saveWorkspaceFrequency": "1m",
-    "verbose": True,
+    # DATA: Studio and parts are a lot more chatty on the
+    # experiment host side. Decrease verbosity for sanity.
+    "verbose": "error",
     "resources_needed": {
-        "cpus": 2,
-        "ram": "1g",
+        "cpus": 4,
+        "ram": "4g",
         "hdd": "60g",
         "gpus": 0,
+        "gpuMem": "5g"
     }
 }
 
 generation_num = 1
 candidates = population.trees
 
-sss = StudioSubmissionService(candidates, generation_num,
-                              "R124134", search_space, 25, evaluator_config, studio_config)
-sss.submit_jobs_with_data()
-sss.wait_for_evaluations()
+sss = StudioCompletionService(candidates, generation_num,
+                              "R124134", search_space, 5000, evaluator_config, studio_config)
+sss.run()
