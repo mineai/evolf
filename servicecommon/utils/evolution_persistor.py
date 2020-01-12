@@ -48,8 +48,8 @@ class EvolutionPersistor:
             try:
                 tree_stats = Statistics.statistics(tree)
 
-                json_persistor = JsonPersistor("stats", tree_path)
-                json_persistor.persist(tree_stats)
+                json_persistor = JsonPersistor(tree_stats, "stats", tree_path)
+                json_persistor.persist()
             except:
                 print("Failed to Persist Tree Stats Into a JSON File")
 
@@ -81,8 +81,8 @@ class EvolutionPersistor:
             try:
                 tree_stats = Statistics.statistics(best_candidate)
 
-                json_persistor = JsonPersistor("stats", best_candidate_path)
-                json_persistor.persist(tree_stats)
+                json_persistor = JsonPersistor(tree_stats, "stats", best_candidate_path)
+                json_persistor.persist()
             except:
                 print("Failed to Persist Tree Stats Into a JSON File")
 
@@ -137,5 +137,3 @@ class EvolutionPersistor:
 
         plt.savefig(file_name)
         plt.close()
-
-

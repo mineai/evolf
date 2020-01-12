@@ -7,12 +7,12 @@
     # Set The Confiuration for the evaluator
     # Evaluator Specs
     "evaluator_specs": {
-        "epochs": 100, # Number of epochs to train the function
+        "epochs": 1, # Number of epochs to train the function
         "verbose": True,
         "batch_size": 128,
 
         # Specify the path where the weights and the model are located
-        "model_load_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
+        "model_load_path": "/home/nikhil/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
 
@@ -29,15 +29,15 @@
 
     "model_generation": {
         "generate_model": True,
-        "model_save_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
+        "model_save_path": "/home/nikhil/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5"
     },
 
     "data_config": {
-        "train_percentage": 0.8,
+        "train_percentage": 0.1,
         "validation_percentage": 0.1,
-        "test_percentage": 0.1
+        "test_percentage": 0.8
     },
 
     "state_of_the_art_config": {
@@ -45,7 +45,7 @@
         "epochs": 10,
         "verbose": True,
         "batch_size": 128,
-        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
+        "model_path": "/home/nikhil/Desktop/mineai/evolf/domains/mnist/small_model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
         "loss": "categorical_crossentropy",
@@ -111,7 +111,7 @@
 
 # Persistance Specs
 "persistence_specs": {
-    "output_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/results",
+    "output_path": "/home/nikhil/Desktop/mineai/evolf/domains/mnist/results",
     "persist": True
 }
 
