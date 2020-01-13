@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  flask:
+    build: .
+    ports: 
+      - "9001:5000"
+    env_file:
+    - credentials.env
+    restart: always
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+    expose:
+      - "9000"
+    env_file:
+      - credentials.env
+    command: server /data
+    restart: always
