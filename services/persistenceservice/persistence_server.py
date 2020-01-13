@@ -5,13 +5,15 @@ from botocore.client import Config
 import pickle
 import json
 import os
+import calendar
+import time
 
 # get the values of the following environment variables to provide credentials
 MINIO_ACCESS_KEY = os.getenv('MINIO_ACCESS_KEY')
 MINIO_SECRET_KEY = os.getenv('MINIO_SECRET_KEY')
 
 # Port 9000 inside the MinIO container
-ENDPOINT_URL = 'http://172.18.0.2:9000'
+ENDPOINT_URL = 'http://172.19.0.2:9000'
 
 def get_boto3_object():
     '''
@@ -39,6 +41,58 @@ persistence_server = Flask(__name__)
 @persistence_server.route('/')
 def index():
     return '''<h1>MineAI Persistence Service</h1>'''
+
+@persistence_server.route('/create-test-bucket', methods=['POST'])
+def create_test_bucket():
+    '''
+
+    This creates the bucket that will contain all the directories
+    and files of the experiment.
+
+    expected incoming data format:
+    {'directory_name': 'default'} or
+    {'directory_name': 'test-run-1-13-2020'}
+
+    returns: 
+    The name of the bucket that's been created.
+
+    ex: 'test-run-1-13-2020'
+
+    or 
+
+    Returns 'Failed', to indicate that no bucket has been created.
+
+    '''
+    
+    pickled_request_data = request.data
+
+    # deserialize the request data
+    main_directory_config = pickle.loads(pickled_request_data)
+
+    # get the users specified directory name
+    directory_name = main_directory_config['directory_name']
+
+    if directory_name == 'default':
+        experiment_id = calendar.timegm(time.gmtime())
+        directory_name = f'evolf-test-{experiment_id}'
+
+    s3 = get_boto3_object()
+    
+    try:
+        # make sure that the directory name is acceptable
+        s3.create_bucket(Bucket=directory_name)
+    except:
+        try:
+            # if it already exists, add a 1 at the end
+            directory_name += '1'
+            s3.create_bucket(Bucket=directory_name)
+        except:
+            return "Failed"
+    
+    return directory_name
+
+
+
 
 if __name__ == '__main__':
     # runs the flask app.
