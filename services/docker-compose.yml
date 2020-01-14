@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  persistenceservice:
+    build: ./persistenceservice/
+    ports: 
+      - "9001:5000"
+    environment:
+      MINIO_ACCESS_KEY: mineaiMinioAccess
+      MINIO_SECRET_KEY: mineaiMinioSecret
+    restart: always
+
+  persistenceminio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+    expose:
+      - "9000"
+    environment:
+      MINIO_ACCESS_KEY: mineaiMinioAccess
+      MINIO_SECRET_KEY: mineaiMinioSecret
+    command: server /data
+    restart: always
+
+  populationservice:
+    build: ./populationservice/
+    ports:
+      - "9002:5000"
+    restart: always
