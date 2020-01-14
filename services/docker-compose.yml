@@ -1,28 +1,38 @@
 version: "3.7"
 services:
+  
+  # This is the container that will do all of the persistence
   persistenceservice:
+    # Location of the persistence Dockerfile
     build: ./persistenceservice/
-    ports: 
+    # Map port 5000 in the container to port 9001 on the host machine
+    ports:  
       - "9001:5000"
-    environment:
-      MINIO_ACCESS_KEY: mineaiMinioAccess
-      MINIO_SECRET_KEY: mineaiMinioSecret
+    # Pass in credentials using the environment variables in credentials.env
+    env_file:
+    - ./persistenceservice/credentials.env
     restart: always
 
+  # Container that runs the MinIO server
   persistenceminio:
+    # Choose the latest minio/minio image
     image: minio/minio:latest
+    # Map port 90000 in the container to port 9000 on the host machine
     ports:
       - "9000:9000"
+    # Expose port 9000 from inside the container to all other containers
     expose:
       - "9000"
-    environment:
-      MINIO_ACCESS_KEY: mineaiMinioAccess
-      MINIO_SECRET_KEY: mineaiMinioSecret
+    # Pass in credentials using the environment variables in credentials.env
+    env_file:
+    - ./persistenceservice/credentials.env
     command: server /data
     restart: always
 
   populationservice:
+    # location of the population service Dockerfile
     build: ./populationservice/
+    # Map port 5000 in the container to port 9002 on the host machine
     ports:
       - "9002:5000"
     restart: always
