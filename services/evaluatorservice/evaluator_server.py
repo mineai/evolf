@@ -23,6 +23,74 @@ class EvaluatorServer:
         data_dict = data_generator_object.process_data(predictors, labels)
         return data_dict
 
+    @staticmethod
+    def tar_persist(original_dict, file_name=None):
+        '''
+            INCOMPLETE FUNCTION
+
+            Packs a dictionary into a .tar file
+        '''
+        import tarfile
+        import json
+        import os
+
+        # create a temporary json file to hold the dictionary data
+        with open('temp.json', 'w') as json_file:
+            json.dump(original_dict, json_file)
+        
+        # move the data from original_dict to a .tar file
+        if file_name is None:
+            with tarfile.open('data_dict.tar', 'w') as tar_handle:
+                tar_handle.add("data_dict.json")
+            
+            os.remove('data_dict.json')
+        else:
+            with tarfile.open(f'{file_name}.tar', 'w') as tar_handle:
+                tar_handle.add(f"{file_name}.json")
+
+            os.remove(f'{file_name}.json')
+    
+    @staticmethod
+    def tar_restore(file_name):
+        '''
+        INCOMPLETE FUNCTION
+
+        Locates a .tar file and recovers the dictionary that was stored
+        on it.
+
+        arguments: file_name - name of the .tar file
+
+        returns: the dictionary that was in the .tar file or None if there is 
+        and error of some sort. 
+
+        '''
+        import tarfile
+        import json
+        import os
+
+        tar_file_exists = False
+        json_file_exists = False
+        if os.path.exists(f'{file_name}.tar'):
+            # print(f"Found {file_name}.tar")
+            tar_file_exists = True
+            tar = tarfile.open(f"{file_name}.tar")
+            tar.extractall()
+            if os.path.exists(f'{file_name}.json'):
+                # print("Extraction Successful!")
+                json_file_exists = True
+            else:
+                print(f"Could not find {file_name}.json")
+        else:
+            print(f"Could not find {file_name}.tar")
+        
+        if json_file_exists:
+            with open(f'{file_name}.json') as json_file:
+                restored_data = json.load(json_file)
+            
+            return restored_data
+        else:
+            return None
+
     def serialize_data_dict(self, data_dict):
         """
         This function serializes the data_dictionary.
