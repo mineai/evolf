@@ -32,4 +32,3 @@ class SymbolicSearchSpace:
             "acosh": sp.acosh,
             "asinh": sp.asinh
     }
-

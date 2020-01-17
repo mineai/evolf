@@ -131,14 +131,14 @@ class Tree(LinearTree, TreeConstruction):
             print("Expression Not Built Yet!")
             return ""
         else:
-            expression = f"{self.root.function_str} ( {self.symbolic_expression} )"
+            expression = str(self.root.function_str) + "(" + str(self.symbolic_expression) + ")"
             # print(expression)
             return expression
 
     def visualize_tree(self, path=None):
         import os
         if path is None:
-            path = f"{os.getcwd()}/results/glo_test_tree"
+            path = str(os.getcwd())+"/results/glo_test_tree"
         Visualize.visualize(self, path=path)
 
     def init_node_type_count(self):

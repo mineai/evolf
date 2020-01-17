@@ -1,74 +1,72 @@
-
+from framework.elements.node.node_constructor import NodeConstructor
+from search_space.search_space import SearchSpace
+from search_space.populate_search_space import PopulateSearchSpace
 
 
 class StringToTree:
 
-    parenMarker = 0  # Helps indicates if a substring is surrounded by open and closed parentheses
+    paren_marker = 0  # Helps indicates if a substring is surrounded by open and closed parentheses
 
-    parenIndex = -1  # Marks positions of parenthesis in the function string
+    paren_index = -1  # Marks positions of parenthesis in the function string
 
-    cropIndex = [0, 0]  # Indicates the positions of two corresponding open and closed parentheses
+    crop_index = [0, 0]  # Indicates the positions of two corresponding open and closed parentheses
 
-    firstTreeList = []  # Inital representation of function tree
+    first_tree_list = []  # Inital representation of function tree
 
-    subLists = []  # Stores sublist for recursion
+    sub_lists = []  # Stores sublist for recursion
 
     operands = {"prod": "*", "sum": "+", "diff": "-", "quot": "/", "mod": "%"}  # Acts as a operator bank 
 
-    finalTreeList = []  # Final (Level Traversed) representation of function tree 
+    final_tree_list = []  # Final (Level Traversed) representation of function tree 
 
-    kidslist = []  # Stores kids of each level traversed node
+    kids_list = []  # Stores kids of each level traversed node
 
-    '''String to tree:
+    '''
+    String to tree:
         This class uses three functions to convert from a function to a usable
-        tree for evolf based on the function paramenters.
-
-        StringToTree1: This turns a function to a list that contains nodes 
+    tree for evolf based on the function paramenters.To make use of the class 
+    use the function string_to_tree which combines all three of the functions in 
+    question.Description of questions seen below.
+    '''
+    @classmethod
+    def function_to_level_list(cls, string, level=0):
+        '''
+        function_to_level_list: 
+            This turns a function to a list that contains nodes 
         represented as "[node function, level, children]" where the level 
         is a marker of how deep a node is in the function
+        '''
 
-        StringToTree2: This turns the output from the above function into a 
-        similar function with null nodes included
-
-        StringToTree3: This turns the output from the above function above 
-        into a level trvaversed list of function names.
-
-        To make use of the class use the function StringToTree which combines
-        all three of the functions above.
-              '''
-    @classmethod
-    def stringToTree1(cls, string, level=0):
-
-        cls.subLists = []
+        cls.sub_lists = []
         string = string.replace(" ", "")
         if ')' and ',' not in string:
 
-            cls.firstTreeList.append([string, level, ""])
+            cls.first_tree_list.append([string, level, ""])
             return string
 
         else:
 
             for i in string:
 
-                cls.parenIndex += 1
+                cls.paren_index += 1
                 if i == '(':
 
-                    cls.parenMarker += 1
+                    cls.paren_marker += 1
 
                 elif i == ')':
 
-                    cls.parenMarker -= 1
+                    cls.paren_marker -= 1
 
-                if i == '(' and cls.parenMarker == 1:
+                if i == '(' and cls.paren_marker == 1:
 
-                    cls.cropIndex[0] = cls.parenIndex+1
+                    cls.crop_index[0] = cls.paren_index+1
 
-                elif i == ')' and cls.parenMarker == 0:
+                elif i == ')' and cls.paren_marker == 0:
 
-                    cls.cropIndex[1] = cls.parenIndex
-                    cls.subLists.append(string[cls.cropIndex[0]:cls.cropIndex[1]])
+                    cls.crop_index[1] = cls.paren_index
+                    cls.sub_lists.append(string[cls.crop_index[0]:cls.crop_index[1]])
 
-            for items in cls.subLists:
+            for items in cls.sub_lists:
 
                 string = string.replace(items, "")
 
@@ -81,12 +79,12 @@ class StringToTree:
 
                 string = [string]
 
-            cls.parenMarker = 0
-            cls.parenIndex = -1
-            cls.cropIndex = [0, 0]
+            cls.paren_marker = 0
+            cls.paren_index = -1
+            cls.crop_index = [0, 0]
 
             kids = []
-            stuff = cls.subLists
+            stuff = cls.sub_lists
             stuff2 = string
 
             if(len(stuff2) != len(stuff)):
@@ -101,31 +99,36 @@ class StringToTree:
 
             for item in range(0, len(stuff)):
 
-                kids = cls.stringToTree1(stuff[item], level + 1)
-                cls.firstTreeList.append([stuff2[item], level, kids])
+                kids = cls.function_to_level_list(stuff[item], level + 1)
+                cls.first_tree_list.append([stuff2[item], level, kids])
 
-            for j in range(0, len(cls.firstTreeList)):
+            for j in range(0, len(cls.first_tree_list)):
 
                 try:
 
-                    cls.firstTreeList[j][2] = list(cls.firstTreeList[j][2])
+                    cls.first_tree_list[j][2] = list(cls.first_tree_list[j][2])
 
                 except:
 
                     pass
 
-            for j in cls.firstTreeList:
+            for j in cls.first_tree_list:
 
                 if(j[0] == ""):
 
-                    cls.firstTreeList.remove(j)
+                    cls.first_tree_list.remove(j)
 
             return string
 
     @classmethod
-    def stringToTree2(cls):
+    def level_list_to_null_list(cls):
+        '''
+        level_list_to_null_list: 
+            This turns the output from the above function into a similar function 
+            with null nodes included
+        '''
 
-        for item in cls.firstTreeList:
+        for item in cls.first_tree_list:
 
             if len(item[2]) == 1:
 
@@ -137,59 +140,82 @@ class StringToTree:
                 item[2].append("")
 
     @classmethod
-    def stringToTree3(cls, level=0):
-        if len(cls.firstTreeList) == 0:
+    def null_list_to_tree_list(cls, level=0):
+        '''
+        null_list_to_tree_list: 
+        This turns the output from the above function above into a level 
+        trvaversed list of function names.
+        '''
+        if len(cls.first_tree_list) == 0:
 
             return
 
         elif level == 0:
 
-            for items in cls.firstTreeList:
+            for items in cls.first_tree_list:
 
                 if items[1] == level:
 
-                    cls.firstTreeList.remove(items)
+                    cls.first_tree_list.remove(items)
 
                     for i in items[2]:
 
-                        cls.kidslist.append(i)
+                        cls.kids_list.append(i)
 
-                    cls.finalTreeList.append(items[0])
-            cls.stringToTree3(level+1)
+                    cls.final_tree_list.append(items[0])
+            cls.null_list_to_tree_list(level+1)
         else:
 
-            flaglist = []
+            flag_list = []
 
-            for i in cls.kidslist:
+            for i in cls.kids_list:
 
-                for items in cls.firstTreeList:
+                for items in cls.first_tree_list:
 
                     if (items[0] == i and items[1] == level):
 
-                        cls.firstTreeList.remove(items)
-                        cls.finalTreeList.append(items[0])
+                        cls.first_tree_list.remove(items)
+                        cls.final_tree_list.append(items[0])
                         for j in items[2]:
 
-                            flaglist.append(j)
+                            flag_list.append(j)
                 if i == "":
 
-                    cls.finalTreeList.append(None)
+                    cls.final_tree_list.append(None)
 
-            cls.kidslist = flaglist
-            cls.stringToTree3(level+1)
+            cls.kids_list = flag_list
+            cls.null_list_to_tree_list(level+1)
 
     @classmethod
-    def stringToTree(cls, string):
-        StringToTree.stringToTree1(string)
-        StringToTree.stringToTree2()
-        StringToTree.stringToTree3()
-        for i in range(0, len(cls.finalTreeList)):
+    def string_to_tree(cls, string, searchspace):
+        cls.function_to_level_list(string)
+        cls.level_list_to_null_list()
+        cls.null_list_to_tree_list()
+        for i in range(0, len(cls.final_tree_list)):
 
-            if cls.finalTreeList[i] in cls.operands:
+            if cls.final_tree_list[i] in cls.operands:
 
-                cls.finalTreeList[i] = cls.operands[cls.finalTreeList[i]]
+                cls.final_tree_list[i] = cls.operands[cls.final_tree_list[i]]
 
-        return cls.finalTreeList
+        search = SearchSpace()
+        search_space = searchspace
+        PopulateSearchSpace.populate_search_space(search, search_space)
+        cls.final_tree_list[0] = NodeConstructor.create_root_node(cls.final_tree_list[0], search)
+        for i in range(1, len(cls.final_tree_list)):
+            if cls.final_tree_list[i]:
+                try:
+                    cls.final_tree_list[i] = NodeConstructor.create_binary_node(cls.final_tree_list[i], search)
+                except:
+                    pass
 
+                try:
+                    cls.final_tree_list[i] = NodeConstructor.create_unary_node(cls.final_tree_list[i], search)
+                except:
+                    pass
 
-print(StringToTree.stringToTree("sum(sin(prod(x,cos(y))),exp(y))"))
+                try:
+                    cls.final_tree_list[i] = NodeConstructor.create_literal_node(cls.final_tree_list[i], search)
+                except:
+                    pass
+        return (cls.final_tree_list)
+

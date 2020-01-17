@@ -33,7 +33,7 @@ class NodeConstructor:
         literal_node = Node(operator_type=operator_type, function_str=operator,
                            symbolic_handle=symbolic_handle, tensorflow_handle=tensorflow_handle)
         return literal_node
-    
+
     @staticmethod
     def create_binary_node(operator=None, search_space_obj=None):
         # Create A binary node
