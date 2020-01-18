@@ -7,12 +7,12 @@
     # Set The Confiuration for the evaluator
     # Evaluator Specs
     "evaluator_specs": {
-        "epochs": 100, # Number of epochs to train the function
+        "epochs": 2, # Number of epochs to train the function
         "verbose": True,
         "batch_size": 128,
 
         # Specify the path where the weights and the model are located
-        "model_load_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
+        "model_load_path": "/Users/mo/Desktop/mineai/evolf-master/domains/mnist/model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
 
@@ -23,29 +23,41 @@
             "patience": 5,
             "min_delta": 0.1
         },
+        "data_config": {
+            "train_percentage": 0.2,
+            "validation_percentage": 0.1,
+            "test_percentage": 0.7
+        },
+        "reevaluation_best_candidate_specs": {
+            "reevaluate": True,
+            "epochs": 10,
+            "early_stopping_config": {
+                "monitor": "val_acc",
+                "mode": "max",
+                "print_early_stopping": True,
+                "patience": 100,
+                "min_delta": 0.1
+            }
+        }
 
         "switch_threshold": 0.9796
     },
 
     "model_generation": {
         "generate_model": True,
-        "model_save_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
+        "model_save_path": "/Users/mo/Desktop/mineai/evolf-master/domains/mnist/model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5"
     },
 
-    "data_config": {
-        "train_percentage": 0.8,
-        "validation_percentage": 0.1,
-        "test_percentage": 0.1
-    },
+
 
     "state_of_the_art_config": {
         "evaluate": False,
-        "epochs": 10,
+        "epochs": 2,
         "verbose": True,
         "batch_size": 128,
-        "model_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/small_model",
+        "model_path": "/Users/mo/Desktop/mineai/evolf-master/domains/mnist/model",
         "model_file_name": "mnist_model.json",
         "weight_file_name": "mnist_model_weights.h5",
         "loss": "categorical_crossentropy",
@@ -55,12 +67,13 @@
             "print_early_stopping": True,
             "patience": 10,
             "min_delta": 1
-        }
+        },
+        "average_over_num_runs": 10
     },
 
     "search_space": {
         "U": {
-            "log": 4,
+            "log": 20,
             "sqrt": 1,
             "square": 1
         },
@@ -85,9 +98,9 @@
 
 # Evolution Specs
 "evolution_specs": {
-    "initial_population_size": 5,
+    "initial_population_size": 100,
     "population_size": 80,
-    "mating_pool_multiplier": 100,
+    "mating_pool_multiplier": 10,
     "num_parents": 2,
     "weighted_function_mutation_rate": 0.25,
     "mutate_value_literal_nodes_rate": 0.025,
@@ -96,7 +109,7 @@
     "hoist_mutation_rate": 0.5,
     "elitism": 0.1,
     "num_of_generations": 50,
-    "tree_min_height": 3,
+    "tree_min_height": 2,
     "tree_max_height": 4,
 },
 
@@ -111,7 +124,7 @@
 
 # Persistance Specs
 "persistence_specs": {
-    "output_path": "/Users/mohok/Desktop/mineai/evolf/domains/mnist/results",
+    "output_path": "/Users/mo/Desktop/mineai/evolf-master/domains/mnist/results",
     "persist": True
 }
 

@@ -5,13 +5,15 @@ from fitnesseval.nn_fitness_evaluator import NNFitnessEvaluator
 
 class EvaluateGeneration:
 
-    def evaluate_candidate(self, population, tree_idx):
-        tree = population.trees[tree_idx]
+    def evaluate_candidate(self, evaluator_config, population, tree_idx, tree=None, reevaluation=False):
+
+        if tree is None:
+            tree = population.trees[tree_idx]
 
         print(f" \n\n \t\t Loss Function: {tree.generate_printable_expression()} \n")
 
-        evaluated_tree = self.is_tree_evaluated(population.trees[tree_idx])
-        if evaluated_tree:
+        evaluated_tree = self.is_tree_evaluated(tree)
+        if evaluated_tree and not reevaluation:
             print("This Tree has already been evaluated.")
             print("Status: ", evaluated_tree.working)
             print("Fitness: ", evaluated_tree.fitness)
@@ -19,7 +21,7 @@ class EvaluateGeneration:
             print(" \n\n ###########################################################################")
             return
 
-        fitness_evaluator = NNFitnessEvaluator(tree, self.evaluator_specs, self.data_dict)
+        fitness_evaluator = NNFitnessEvaluator(tree, evaluator_config, self.data_dict)
 
         if tree.working:
             fitness_evaluator.train()
@@ -60,7 +62,7 @@ class EvaluateGeneration:
 
         for tree_idx in trange(len(population.trees)):
             tree = population.trees[tree_idx]
-            self.evaluate_candidate(population, tree_idx)
+            self.evaluate_candidate(self.evaluator_specs, population, tree_idx)
             if best_candidate_this_gen < tree:
                 best_candidate_this_gen = tree
 
@@ -69,9 +71,24 @@ class EvaluateGeneration:
             print(f"\nBest Candidate Ever: {self.best_candidate_ever.generate_printable_expression()}, "
                   f"with fitness {self.best_candidate_ever.fitness}")
 
+            if self.best_candidate_full_training is not None:
+                print(f"\n Best Candidate Ever with full training:  {self.best_candidate_full_training.generate_printable_expression()}, "
+                      f"with fitness {self.best_candidate_full_training.fitness}")
+
             print(f"State of the art Performance {self.state_of_the_art_testing_accuracy}")
 
             if self.best_candidate_ever < tree:
                 self.best_candidate_ever = tree
+
+        print("\n#################### Reevaluation Best Candidate ##################")
+        self.evaluate_candidate(self.reevaluation_specs, population, None, best_candidate_this_gen, True)
+        best_candidate_full_training = self.global_cache[-1]
+
+        if self.best_candidate_full_training is None:
+            self.best_candidate_full_training = best_candidate_full_training
+
+        if self.best_candidate_full_training < best_candidate_full_training:
+            self.best_candidate_full_training = best_candidate_full_training
+
 
         return population

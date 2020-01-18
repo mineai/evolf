@@ -1,4 +1,5 @@
 import os
+os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
 import sys
 
 sys.path.append(os.getcwd())

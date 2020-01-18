@@ -21,8 +21,11 @@ class LoadKerasEvaluator:
         json_file.close()
 
         model = model_from_json(loaded_model_json)
-
-        model.load_weights(weight_path)
+        
+        try:
+            model.load_weights(weight_path)
+        except:
+            print("Failed to Load Weights")
 
         return model
 

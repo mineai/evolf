@@ -3,6 +3,7 @@ from evolution.evaluation.evaluate_state_of_the_art import EvaluateStateOfTheArt
 from evolution.initialize_next_gen import InitializeNextGen
 from framework.population.population import Population
 from servicecommon.utils.evolution_persistor import EvolutionPersistor
+from servicecommon.utils.overlayer import Overlayer
 
 
 class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
@@ -13,7 +14,11 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
         self.evolution_specs = self.config.get("evolution_specs")
         self.visualization_specs = self.config.get("visualization_specs")
         self.domain_config = self.config.get("domain_config")
+
         self.evaluator_specs = self.domain_config.get("evaluator_specs")
+        self.reevaluation_specs = self.evaluator_specs.get("reevaluation_best_candidate_specs")
+        self.reevaluation_specs = Overlayer.overlay_configs(self.evaluator_specs, self.reevaluation_specs)
+
         self.persistence_specs = self.config.get("persistence_specs")
         self.state_of_the_art_config = self.domain_config.get("state_of_the_art_config")
 
@@ -32,6 +37,7 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
         self.visualize_best_fitness = self.visualization_specs.get("visualize_best_fitness")
         self.state_of_the_art_loss = self.state_of_the_art_config.get("loss")
         self.evaluate_state_of_the_art_flag = self.state_of_the_art_config.get("evaluate")
+        self.average_over_num_runs = self.state_of_the_art_config.get("average_over_num_runs")
 
         self.data_dict = data_dict
 
@@ -44,6 +50,7 @@ class Evolve(EvaluateStateOfTheArt, EvaluateGeneration, InitializeNextGen):
 
         self.global_cache = []
         self.best_candidate_ever = None
+        self.best_candidate_full_training = None
 
         self.avg_fitness_list = []
         self.best_fitness_list = []

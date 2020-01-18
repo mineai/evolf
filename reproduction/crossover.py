@@ -48,9 +48,6 @@ class Crossover:
         selected_node_1 = child1.get_node_by_id(cutting_point_1)
         selected_node_2 = copy.deepcopy(tree_2.get_node_by_id(cutting_point_2))
 
-        print(f"Selected Node #1: {selected_node_1.function_str}")
-        print(f"Selected Node #2: {selected_node_2.function_str}")
-
         # Replace selected_node_1 with selected_node_2 in its respective tree.
         if selected_node_1.parent.operator_type in ['U', 'R']:
             selected_node_1.parent.left = selected_node_2

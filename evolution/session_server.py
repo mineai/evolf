@@ -17,11 +17,12 @@ class SessionServer(Evolve):
         self.domain_config = self.conf.get("domain_config")
         self.domain_name = self.domain_config.get("domain")
         self.studio_config = self.conf.get("studio_config")
+        self.evaluator_config = self.domain_config.get("evaluator_specs")
 
         self.search_space = self.domain_config.get("search_space")
 
         print(f"################################# Evolf is currently Running on {self.domain_name}")
-        self.data_config = self.domain_config.get("data_config")
+        self.data_config = self.evaluator_config.get("data_config")
 
         self.model_generation_config = self.domain_config.get("model_generation")
 
