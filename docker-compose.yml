@@ -4,13 +4,16 @@ services:
   # This is the container that will do all of the persistence
   persistenceservice:
     # Location of the persistence Dockerfile
-    build: ./persistenceservice/
+    build: ./services/persistenceservice/
     # Map port 5000 in the container to port 9001 on the host machine
     ports:  
       - "9001:5000"
+    # Add persistenceminio to the minio_net network
+    networks:
+      - persistence_net
     # Pass in credentials using the environment variables in credentials.env
     env_file:
-    - ./persistenceservice/credentials.env
+    - ./services/persistenceservice/credentials.env
     restart: always
 
   # Container that runs the MinIO server
@@ -23,16 +26,39 @@ services:
     # Expose port 9000 from inside the container to all other containers
     expose:
       - "9000"
+    # Add persistenceminio to the minio_net network
+    networks:
+
+      persistence_net:
+        # set the ip address inside the persistenceminio container to the following static ip
+        ipv4_address: 172.172.172.1
+
     # Pass in credentials using the environment variables in credentials.env
     env_file:
-    - ./persistenceservice/credentials.env
+    - ./services/persistenceservice/credentials.env
     command: server /data
     restart: always
 
   populationservice:
     # location of the population service Dockerfile
-    build: ./populationservice/
+    build: ./services/populationservice/
     # Map port 5000 in the container to port 9002 on the host machine
+    networks:
+      - population_net
     ports:
       - "9002:5000"
     restart: always
+
+networks:
+  persistence_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.172.172.0/10
+
+  population_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 173.173.173.0/10
+  

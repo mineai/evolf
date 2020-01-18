@@ -13,7 +13,9 @@ MINIO_ACCESS_KEY = os.getenv('MINIO_ACCESS_KEY')
 MINIO_SECRET_KEY = os.getenv('MINIO_SECRET_KEY')
 
 # Port 9000 inside the MinIO container
-ENDPOINT_URL = 'http://172.19.0.2:9000'
+# postgres://db:5432 or {container_image}://{container_name}:{container_port}
+ENDPOINT_URL = 'http://172.172.172.1:9000'
+# ENDPOINT_URL = "minio/minio://persistenceminio:9000"
 
 def get_boto3_object():
     '''
@@ -91,7 +93,73 @@ def create_test_bucket():
     
     return directory_name
 
+    @persistence_server.route('/test-file-upload', methods=['POST'])
+    def test_file_upload():
+        '''
+        
+        uploads a file to a specific bucket using keys
 
+        Expected incoming data format:
+        {
+            "file_info": {
+                "bucket_name": "test-run-1-13-2020",
+                "generation_number": 0,
+                "tree_number": 25
+            },
+            "persistence_config": {
+                "tree_stats": True,
+                "tree_visualize": False,
+                "tree_graph": True,
+                "avg_fitness_graph": False,
+                "best_fitness_graph": True
+            }
+        }
+
+        '''
+
+        pickled_request_data = request.data
+
+        # deserialize the request data
+        file_upload_config = pickle.loads(pickled_request_data)
+
+        # unpack the config
+        file_info = file_upload_config['file_info']
+        persistence_config = file_upload_config['persistence_config']
+
+        # unpack persistence config
+        tree_stats_selected = persistence_config['tree_stats']
+        tree_visualize_selected = persistence_config['tree_visualize']
+        tree_graph_selected = persistence_config['tree_graph']
+        avg_fitness_graph_selected = persistence_config['avg_fitness_graph']
+        best_fitness_graph_selected = persistence_config['best_fitness_graph']
+
+        files_uploaded = []
+        s3 = get_boto3_object()
+
+        # upload the selected files and add them to the running list of files that have been uploaded
+        if tree_stats_selected:
+            s3.Bucket(file_info["bucket_name"]).upload_file(f'requirements.txt', f'tree-stats.txt', ExtraArgs=file_info)
+            files_uploaded.append("tree-stats.txt")
+        if tree_visualize_selected:
+            s3.Bucket(file_info["bucket_name"]).upload_file(f'requirements.txt', f'tree-visualization.txt', ExtraArgs=file_info)
+            files_uploaded.append("tree-visualization.txt")
+        if tree_graph_selected:
+            s3.Bucket(file_info["bucket_name"]).upload_file(f'requirements.txt', f'tree-graph.txt', ExtraArgs=file_info)
+            files_uploaded.append("tree-graph.txt")
+        if avg_fitness_graph_selected:
+            s3.Bucket(file_info["bucket_name"]).upload_file(f'requirements.txt', f'avg-fitness-graph.txt', ExtraArgs=file_info)
+            files_uploaded.append("avg-fitness-graph.txt")
+        if best_fitness_graph_selected:
+            s3.Bucket(file_info["bucket_name"]).upload_file(f'requirements.txt', f'best-fitness-graph.txt', ExtraArgs=file_info)
+            files_uploaded.append("best-fitness-graph.txt")
+
+        # add the list of selected and uploaded files to a dictionary so it can be returned
+        job_info = {}
+        job_info["uploaded_files"] = files_uploaded
+        job_info["bucket_name"] = file_info["bucket_name"]
+
+        return job_info
+            
 
 
 if __name__ == '__main__':

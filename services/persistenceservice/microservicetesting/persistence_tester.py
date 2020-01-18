@@ -12,6 +12,7 @@ class PersistenceTester:
         self.minio_access_key = ''
         self.minio_secret_key = ''
         self.boto3_obj = None
+        self.bucket_name = ""
 
     def instantiate_boto3_obj(self):
         '''
@@ -69,6 +70,9 @@ class PersistenceTester:
 
         response_text = persistence_app_response.text
 
+        # set the default bucket name that was created for the user to the class variable bucket_name
+        self.bucket_name = response_text
+
         if status_code == 200:
             print("Passed!\n")
             print(f"Response: {response_text}\n\n")
@@ -93,6 +97,50 @@ class PersistenceTester:
             print(f"Failed with a {status_code} status code.\n")
             print(f"Response: {response_text}\n\n")
 
+    def file_upload_test(self):
+        print("Upload File Test:\n")
+
+        post_request_data = {
+            "file_info": {
+                "bucket_name": self.bucket_name,
+                "generation_number": 0,
+                "tree_number": 25
+            },
+            "persistence_config": {
+                "tree_stats": True,
+                "tree_visualize": False,
+                "tree_graph": True,
+                "avg_fitness_graph": False,
+                "best_fitness_graph": True
+            }
+        }
+
+        self.url = "http://127.0.0.1:9001/test-file-upload"
+
+        # retrieve the credentials from the json file
+        self.set_credentials()
+
+        # instantiate the boto3 object
+        self.instantiate_boto3_obj()
+
+        print(f"File Upload Job Config: {post_request_data}\n")
+
+        pickled_data = pickle.dumps(post_request_data)
+
+        persistence_app_response = requests.post(self.url, data=pickled_data)
+
+        status_code = persistence_app_response.status_code
+
+        response_text = persistence_app_response.text
+
+        if status_code == 200:
+            print("Passed!\n")
+            print(f"Response: {response_text}\n\n")
+        else:
+            print(f"Failed with a {status_code} status code.\n")
+            print(f"Response: {response_text}\n\n")
+
 
 test_obj = PersistenceTester()
 test_obj.create_test_bucket_test()
+test_obj.file_upload_test()
