@@ -1,5 +1,3 @@
-
-
 class Persistor:
 
     def persist(self):
