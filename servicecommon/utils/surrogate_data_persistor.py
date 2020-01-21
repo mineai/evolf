@@ -6,7 +6,7 @@ class SurrogateDataPersistor:
     class variables:
         - linearized_tree: A list containing the nodes from a tree in level order.
 
-        - search_space_dictionary: A dictionary that contains a key named "search_space"
+        - search_space_dictionary: A dictionary that contains a key named "searchspace"
 
         - search_space_operators: A list of all operators from the search space dictionary
         excluding root (R) operator types.
@@ -109,7 +109,7 @@ class SurrogateDataPersistor:
         """
 
         all_operators = []
-        ss_dictionary = self.search_space_dictionary.get("search_space")
+        ss_dictionary = self.search_space_dictionary.get("searchspace")
         operator_types = ss_dictionary.keys()
 
         for key in operator_types:

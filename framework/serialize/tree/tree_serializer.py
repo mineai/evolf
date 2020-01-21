@@ -13,7 +13,6 @@ class TreeSerializer(Serialize):
         :param search_space_obj: Object of Search Space class
         """
         self.tree_objs = tree_objs if isinstance(tree_objs, list) \
-                                      or isinstance(tree_objs, dict) \
             else [tree_objs]
         self.search_space_obj = search_space_obj
 
@@ -58,7 +57,6 @@ class TreeSerializer(Serialize):
         of trees in the
         format:
         [   {
-            "fitness": x,
             "avg_epoch_time": y,
             "nodes": {
                 node_id : {
@@ -86,24 +84,26 @@ class TreeSerializer(Serialize):
                                                                                          "Serialized Trees "
         deserialized_trees = []
         for serialized_tree in self.tree_objs:
-            fitness = serialized_tree.get("fitness", 0)
             avg_epoch_time = serialized_tree.get("avg_epoch_time", None)
             nodes = serialized_tree.get("nodes")
             id = serialized_tree.get("id")
+            metrics = serialized_tree.get("metrics")
             node_deserializer = NodeSerializer(node_objs=nodes,
                                                search_space_obj=self.search_space_obj)
             deserialized_nodes = node_deserializer.deserialize()
 
             tree_args = {
-                "fitness": fitness,
                 "avg_epoch_time": avg_epoch_time,
                 "nodes": deserialized_nodes,
-                "id": id
+                "id": id,
+                "metrics": metrics
             }
 
             tree = Tree(None, None,
                         self.search_space_obj,
                         tree_args)
+
             deserialized_trees.append(tree)
 
+        deserialized_trees = deserialized_trees if len(deserialized_trees) > 1 else deserialized_trees[0]
         return deserialized_trees

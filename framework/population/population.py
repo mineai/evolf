@@ -53,8 +53,8 @@ class Population:
             tree_id = max(ids)
         else:
             tree_id = 1
-        print(f"\n\nGenerating {num_trees} Tress ...")
         num_trees = self.population_size if num_trees is None else num_trees
+        print(f"\n\nGenerating {num_trees} Tress ...")
         while len(self.trees) < self.population_size:
             tree = Tree(self.min_height, self.max_height, self.search_space_obj)
             if tree.symbolic_expression in self.symbolic_expressions:

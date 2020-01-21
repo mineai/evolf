@@ -5,10 +5,8 @@ cp -r search_space services/populationservice/
 
 cd services/populationservice/
 
-
 docker build -t population_server .
 
 rm -r framework
 rm -r servicecommon
-rm -r search_space
-rm -r lossconstructor
+rm -r searchspace

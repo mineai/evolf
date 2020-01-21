@@ -1,8 +1,8 @@
 from framework.elements.tree.linear_tree import LinearTree
 from framework.elements.tree.tree_construction import TreeConstruction
 from servicecommon.utils.visualize import Visualize
-from lossconstructor.evaluate_tree import EvaluateTree
-from lossconstructor.validate import Validate
+from framework.elements.tree.symbolic_expression_buiilder import SymbolicExpressionBuilder
+from framework.elements.tree.validate import Validate
 
 
 class Tree(LinearTree, TreeConstruction):
@@ -25,9 +25,9 @@ class Tree(LinearTree, TreeConstruction):
         nodes = None
         if tree_args is not None:
             nodes = tree_args.get("nodes")
-            tree_fitness = tree_args.get("fitness", 0)
             tree_avg_epoch_time = tree_args.get("avg_epoch_time", None)
             id = tree_args.get("id", None)
+            metrics = tree_args.get("metrics", None)
 
         TreeConstruction.__init__(self, min_height, max_height, search_space_obj, nodes)
         LinearTree.__init__(self, self.root, nodes)
@@ -45,15 +45,16 @@ class Tree(LinearTree, TreeConstruction):
             self.initialize_parents()
             self.assign_level_order_id()
             self.linearize_tree()
+            self.metrics = {}
             try:
                 self.construct_symbolic_expression()
                 self.validate_working()
             except:
                 self.working = False
         else:
-            self.fitness = tree_fitness  # The fitness of the tree
             self.avg_epoch_time = tree_avg_epoch_time  # If the NN is a fitness function, then the time for each Epoch.
             self.id = id
+            self.metrics = metrics
             self.reset_tree()
 
     """
@@ -67,7 +68,7 @@ class Tree(LinearTree, TreeConstruction):
         It is responsible for building a symbolic expression from the tree.
         :return nothing:
         """
-        self.symbolic_expression = EvaluateTree.build_symbolic_expression(self)
+        self.symbolic_expression = SymbolicExpressionBuilder.build_symbolic_expression(self)
 
     def validate_working(self):
         """
