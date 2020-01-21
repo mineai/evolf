@@ -62,9 +62,9 @@ class PersistenceTester:
 
         print(f"Default Directory Name: {default_data}\n")
 
-        pickled_data = pickle.dumps(default_data)
+        # pickled_data = pickle.dumps(default_data)
 
-        persistence_app_response = requests.post(self.url, data=pickled_data)
+        persistence_app_response = requests.post(self.url, json=default_data)
 
         status_code = persistence_app_response.status_code
 
@@ -82,9 +82,9 @@ class PersistenceTester:
 
         print(f"Custom Directory Name: {custom_data}\n")
 
-        pickled_data = pickle.dumps(custom_data)
+        # pickled_data = pickle.dumps(custom_data)
 
-        persistence_app_response = requests.post(self.url, data=pickled_data)
+        persistence_app_response = requests.post(self.url, json=custom_data)
 
         status_code = persistence_app_response.status_code
 
@@ -103,8 +103,8 @@ class PersistenceTester:
         post_request_data = {
             "file_info": {
                 "bucket_name": self.bucket_name,
-                "generation_number": 0,
-                "tree_number": 25
+                "generation_number": "0",
+                "tree_number": "25"
             },
             "persistence_config": {
                 "tree_stats": True,
@@ -115,7 +115,7 @@ class PersistenceTester:
             }
         }
 
-        self.url = "http://127.0.0.1:9001/test-file-upload"
+        self.url = "http://localhost:9001/test-file-upload"
 
         # retrieve the credentials from the json file
         self.set_credentials()
@@ -125,9 +125,29 @@ class PersistenceTester:
 
         print(f"File Upload Job Config: {post_request_data}\n")
 
-        pickled_data = pickle.dumps(post_request_data)
+        # pickled_data = pickle.dumps(post_request_data)
 
-        persistence_app_response = requests.post(self.url, data=pickled_data)
+        persistence_app_response = requests.post(self.url, json=post_request_data)
+
+        status_code = persistence_app_response.status_code
+
+        response_text = persistence_app_response.text
+
+        if status_code == 200:
+            print("Passed!\n")
+            print(f"Response: {response_text}\n\n")
+        else:
+            print(f"Failed with a {status_code} status code.\n")
+            print(f"Response: {response_text}\n\n")
+    
+    def persist_population_test(self):
+        self.url = "http://localhost:9001/persist/population"
+
+        print("Persist Population Test:\n")
+
+        test = {"name": "Alex Jirovsky"}
+
+        persistence_app_response = requests.post(self.url, json=test)
 
         status_code = persistence_app_response.status_code
 
@@ -144,3 +164,4 @@ class PersistenceTester:
 test_obj = PersistenceTester()
 test_obj.create_test_bucket_test()
 test_obj.file_upload_test()
+test_obj.persist_population_test()
