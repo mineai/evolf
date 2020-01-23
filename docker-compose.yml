@@ -46,7 +46,7 @@ services:
     networks:
       - population_net
     ports:
-      - "9002:5000"
+      - "5000:5000"
     restart: always
 
 networks:

@@ -1,14 +1,14 @@
+from searchspace.search_space import SearchSpace
+from searchspace.populate_search_space import PopulateSearchSpace
+from framework.serialize.population.population_serializer import PopulationSerializer
+from servicecommon.parsers.argumentparsers.domain_arg_parser import DomainArgParser
+from servicecommon.filer.experiment_filer import ExperimentFiler
+from evolution.config_handler import ConfigHandler
 import pickle
 import requests
 import os
-os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
+# os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
 
-from evolution.config_handler import ConfigHandler
-from servicecommon.filer.experiment_filer import ExperimentFiler
-from servicecommon.parsers.argumentparsers.domain_arg_parser import DomainArgParser
-from framework.serialize.population.population_serializer import PopulationSerializer
-from searchspace.populate_search_space import PopulateSearchSpace
-from searchspace.search_space import SearchSpace
 
 SERVICE_ENDPOINTS = {
 
@@ -21,6 +21,7 @@ SERVICE_ENDPOINTS = {
     }
 
 }
+
 
 class SessionServer():
     """""
@@ -46,11 +47,11 @@ class SessionServer():
 
         # Absorb the Args
         self.backend, self.domain_config, self.domain_name, self.data_generator_class_path, \
-        self.model_generator_class_path, \
-        self.data_config, self.evaluator_config, self.search_space, \
-        self.state_of_the_art_config, self.evolution_config, \
-        self.visualization_config, self.persistence_config, \
-        self.studio_config = self.domain_arg_parser.absorb_args()
+            self.model_generator_class_path, \
+            self.data_config, self.evaluator_config, self.search_space, \
+            self.state_of_the_art_config, self.evolution_config, \
+            self.visualization_config, self.persistence_config, \
+            self.studio_config = self.domain_arg_parser.absorb_args()
 
         # Get the search space
         self.search_space_obj = SearchSpace()
@@ -59,7 +60,6 @@ class SessionServer():
 
         self.experiment_filer = ExperimentFiler(self.experiment_id)
         self.experiment_id = self.experiment_filer.get_experiment_id()
-
 
     def generate_model(self, DomainNetworkConstructionClass):
         """""
@@ -104,10 +104,23 @@ class SessionServer():
         # Initialze population Endpoint
         init_population_endpoint = SERVICE_ENDPOINTS.get("population_service"). \
             get("initial_population")
-        evolution_config = pickle.dumps(self.evolution_config)
-        response = requests.post(url=init_population_endpoint, data=evolution_config)
-        population_bytes = response._content
-        serialized_population = pickle.loads(population_bytes)
+
+        # evolution_config = pickle.dumps(self.evolution_config)
+        # response = requests.post(
+        #     url=init_population_endpoint, data=evolution_config)
+
+        # create a dictionary to hold relevant job info
+        job_info = {}
+
+        # add the evolution and visualization configs to job_info
+        job_info['evolution_config'] = self.evolution_config
+        job_info['visualization_config'] = self.visualization_config
+
+        response = requests.post(
+            url=init_population_endpoint, json=job_info)
+        # population_bytes = response._content
+        # serialized_population = pickle.loads(population_bytes)
+        serialized_population = response.body
 
         return serialized_population
 
@@ -130,14 +143,15 @@ class SessionServer():
         serialized_initial_population = self.request_initial_population()
 
         # Deserialize Initial Population
-        initial_population = self.process_serialized_population(serialized_initial_population)
+        initial_population = self.process_serialized_population(
+            serialized_initial_population)
 
         [print(tree.symbolic_expression) for tree in initial_population.trees]
 
         # Construct Evaluator Config
-        self.evaluator_config = self.config_handler.generate_evaluator_config(self.domain_config,
-                                                                              self.evaluator_config)
-        self.setup_evaluation_service()
+        # self.evaluator_config = self.config_handler.generate_evaluator_config(self.domain_config,
+        #                                                                       self.evaluator_config)
+        # self.setup_evaluation_service()
 
 
 if __name__ == "__main__":

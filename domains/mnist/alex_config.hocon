@@ -1,0 +1,159 @@
+
+# Define the Domain Config
+"domain_config": {
+
+    "backend": "plaidml",
+
+    # Specify the number of loss functions to
+    # be generated.
+    "num_losses": 1,
+
+    # Specify the name of the Domain
+
+    "domain": "MNIST",
+
+    # Config for the Evaluator
+
+    evaluator_config: {
+        # The following two paths are
+        # written as packages relative to
+        # the evolf folder.
+
+        "evaluator_path": "domains/mnist/mnist_evaluator",
+        "evaluator_classname": "MnistEvaluator",
+
+        # This is the training config that
+        # will be used by the client's evaluator
+        "training_config": {
+            "epochs": 5,
+            "early_stopping": True,
+            "verbose": True,
+            "batch_size": 128
+        },
+
+        # This is the config that will be used by client's
+        # evaluator during full training.
+        # Only configs that change from the training
+        # need to be specified here.
+        "full_training_config": {
+            "epochs": 100,
+            "early_stopping": False
+        },
+
+        #   Objectives to optimize that the
+        #   clients evaluator will return.
+        "fitness_objectives": {
+            "test_acc": "maximize",
+            "loss": "minimize"
+            },
+        "num_best_candidates": 5,
+        "optimization_method": "pareto front"
+    }
+},
+
+
+
+# Search Space contains the dictionary of the
+# functions that should be involved while searching for
+# the best loss
+"search_space": {
+    "U": {
+        "log": 4,
+        "sqrt": 1,
+        "square": 1
+    },
+    "B": {
+        "+": 1,
+        "-": 1,
+        "*": 1,
+        "/": 1
+    },
+    "L": {
+        "y": 3,
+        "t": 3,
+        "pos_scalar": 1,
+        "neg_scalar": 1
+    },
+    "R": {
+        "mean": 1
+    }
+},
+
+"state_of_the_art_config": {
+    "evaluate": False,
+    "epochs": 10,
+    "verbose": True,
+    "batch_size": 128,
+    "model_path": "/home/ajirovsky/Documents/GitHubRepos/evolf/domains/mnist/small_model",
+    "model_file_name": "mnist_model.json",
+    "weight_file_name": "mnist_model_weights.h5",
+    "loss": "categorical_crossentropy",
+    "early_stopping_config": {
+        "monitor": "val_acc",
+        "mode": "max",
+        "print_early_stopping": True,
+        "patience": 10,
+        "min_delta": 1
+    }
+},
+
+
+# Evolution Specs
+"evolution_config": {
+    "initial_population_size": 80,
+    "population_size": 80,
+    "mating_pool_multiplier": 100,
+    "num_parents": 2,
+    "weighted_function_mutation_rate": 0.25,
+    "mutate_value_literal_nodes_rate": 0.025,
+    "mutate_leaf_node_rate": 0.025,
+    "shrink_mutation_rate": 0.5,
+    "hoist_mutation_rate": 0.5,
+    "elitism": 0.1,
+    "num_of_generations": 50,
+    "tree_min_height": 3,
+    "tree_max_height": 4,
+},
+
+# Visualization Specs
+"visualization_config": {
+    "visualize_tree": True,
+    "visualize_function": True,
+    "visualize_avg_fitness": True,
+    "visualize_best_fitness": True
+
+},
+
+# Persistance Specs
+"persistence_config": {
+    "output_path": "/home/ajirovsky/Documents/GitHubRepos/evolf/domains/mnist/results",
+    "persist": True
+}
+
+# Studio Config
+"studio_config": {
+    "database": {
+        "type": "s3",
+        #"endpoint": ${STUDIO_DATABASE_ENDPOINT},
+        "bucket": "mineai-mnist-database",
+        "authentication": none
+    },
+    "storage":{
+        "type": "s3",
+        #"endpoint": ${STUDIO_STORAGE_ENDPOINT},
+        "bucket": "mineai-mnist-storage"
+    },
+    "server":{
+        "authentication": none
+    }
+    "queue": "local"
+    "saveMetricsFrequency": "1m"
+    "saveWorkspaceFrequency": "1m"
+    "verbose": True
+    "resources_needed": {
+        cpus: 2
+        ram:  3g
+        hdd:  60g
+        gpus: 0
+    }
+}

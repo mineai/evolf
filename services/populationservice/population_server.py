@@ -11,6 +11,16 @@ from framework.population.population import Population
 population_service_app = Flask(__name__)
 search_space_obj = SearchSpace()
 
+SERVICE_ENDPOINTS = {
+
+    "persistence_service": {
+        "initialize_search_space": "http://127.0.0.1:9001/initialize",  # POST
+        "create_experiment_bucket": "http://127.0.0.1:9001/create-experiment-bucket",  # POST
+        "persist_population": "http://127.0.0.1:9001/persist/population"
+    }
+
+}
+
 """
 Set Up Routes
 """
@@ -24,15 +34,24 @@ def set_up_search_space():
     search_space = pickle.loads(pickled_data)
     search_space_obj = PopulateSearchSpace.populate_search_space(search_space_obj,
                                                                  search_space)
-    return 200
+    return "True"
+
 
 @population_service_app.route('/request_inital_population', methods=["POST"])
 def generate_initial_population():
 
+    # # Get the Request Data
+    # pickled_data = request.data
+    # # Decode the byte-instream
+    # population_config = pickle.loads(pickled_data)
+
     # Get the Request Data
-    pickled_data = request.data
-    # Decode the byte-instream
-    population_config = pickle.loads(pickled_data)
+    job_info = request.json
+
+    # Unpack the job_info dictionary
+    population_config = job_info.get("evolution_config")
+    visualization_config = job_info.get("visualization_config")
+
     # Get the Configurations
     min_height = population_config.get("min_height", 3)
     max_height = population_config.get("max_height", 5)
@@ -53,9 +72,19 @@ def generate_initial_population():
     serialized_population = population_serializer.serialize()
 
     # Pickle The population
-    serialized_population_bytes = pickle.dumps(serialized_population)
+    # serialized_population_bytes = pickle.dumps(serialized_population)
 
-    return serialized_population_bytes
+    # Assemble a job info dictionary to send to the Persistence Microservice
+    persistence_job_info = {}
+    persistence_job_info['serialized_population'] = serialized_population
+    persistence_job_info['visualization_config'] = visualization_config
+
+    global SERVICE_ENDPOINTS
+
+    # Send the Persistence Microservice the Serialized Population
+
+    return serialized_population
+
 
 if __name__ == '__main__':
     population_service_app.run(host="0.0.0.0",

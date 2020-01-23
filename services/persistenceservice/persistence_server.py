@@ -8,8 +8,8 @@ import os
 import calendar
 import time
 
-from search_space.search_space import SearchSpace
-from search_space.populate_search_space import PopulateSearchSpace
+from searchspace.search_space import SearchSpace
+from searchspace.populate_search_space import PopulateSearchSpace
 from framework.serialize.population.population_serializer import PopulationSerializer
 from servicecommon.persistor.local.json.json_persistor import JsonPersistor
 from servicecommon.utils.statistics import Statistics
@@ -26,6 +26,7 @@ MINIO_SECRET_KEY = os.getenv('MINIO_SECRET_KEY')
 ENDPOINT_URL = 'http://172.172.172.1:9000'
 # ENDPOINT_URL = "minio/minio://persistenceminio:9000"
 
+
 def get_boto3_object():
     '''
     retrieves the boto3 object by sending it the proper credentials
@@ -37,15 +38,15 @@ def get_boto3_object():
 
     '''
 
-
     s3_obj = boto3.resource('s3',
-                        endpoint_url=ENDPOINT_URL,
-                        aws_access_key_id=MINIO_ACCESS_KEY,
-                        aws_secret_access_key=MINIO_SECRET_KEY,
-                        config=Config(signature_version='s3v4'),
-                        region_name='us-east-1')
-    
+                            endpoint_url=ENDPOINT_URL,
+                            aws_access_key_id=MINIO_ACCESS_KEY,
+                            aws_secret_access_key=MINIO_SECRET_KEY,
+                            config=Config(signature_version='s3v4'),
+                            region_name='us-east-1')
+
     return s3_obj
+
 
 def get_boto3_client_object():
     '''
@@ -58,24 +59,26 @@ def get_boto3_client_object():
 
     '''
 
-
     s3_obj = boto3.client('s3',
-                        endpoint_url=ENDPOINT_URL,
-                        aws_access_key_id=MINIO_ACCESS_KEY,
-                        aws_secret_access_key=MINIO_SECRET_KEY,
-                        config=Config(signature_version='s3v4'),
-                        region_name='us-east-1')
-    
+                          endpoint_url=ENDPOINT_URL,
+                          aws_access_key_id=MINIO_ACCESS_KEY,
+                          aws_secret_access_key=MINIO_SECRET_KEY,
+                          config=Config(signature_version='s3v4'),
+                          region_name='us-east-1')
+
     return s3_obj
+
 
 persistence_server = Flask(__name__)
 search_space_obj = SearchSpace()
+
 
 @persistence_server.route('/')
 def index():
     return '''<h1>MineAI Persistence Service</h1>'''
 
-@persistence_server.route('/init', methods=['POST'])
+
+@persistence_server.route('/initialize', methods=['POST'])
 def set_up_search_space():
     global search_space_obj
     pickled_data = request.data
@@ -84,8 +87,9 @@ def set_up_search_space():
                                                                  search_space)
     return '''True'''
 
-@persistence_server.route('/create-test-bucket', methods=['POST'])
-def create_test_bucket():
+
+@persistence_server.route('/create-experiment-bucket', methods=['POST'])
+def create_experiment_bucket():
     '''
 
     This creates the bucket that will contain all the directories
@@ -105,7 +109,7 @@ def create_test_bucket():
     Returns 'Failed', to indicate that no bucket has been created.
 
     '''
-    
+
     main_directory_config = request.json
 
     # get the users specified directory name
@@ -116,7 +120,7 @@ def create_test_bucket():
         directory_name = f'evolf-test-{experiment_id}'
 
     s3 = get_boto3_object()
-    
+
     try:
         # make sure that the directory name is acceptable
         s3.create_bucket(Bucket=directory_name)
@@ -127,14 +131,14 @@ def create_test_bucket():
             s3.create_bucket(Bucket=directory_name)
         except:
             return "Failed"
-    
+
     return directory_name
 
-    
+
 @persistence_server.route('/test-file-upload', methods=['POST'])
 def test_file_upload():
     '''
-    
+
     uploads a file to a specific bucket using keys
 
     Expected incoming data format:
@@ -227,16 +231,16 @@ def test_file_upload():
 
     return job_info
 
+
 @persistence_server.route('/persist/population', methods=['POST'])
 def persist_population():
     data = request.json
     return data
-            
 
 
 if __name__ == '__main__':
     # runs the flask app.
 
-    # turns on debug mode and sets the host IP address of the 
+    # turns on debug mode and sets the host IP address of the
     # app to 0.0.0.0
     persistence_server.run(debug=True, host='0.0.0.0')
