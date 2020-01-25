@@ -11,7 +11,9 @@ import time
 from searchspace.search_space import SearchSpace
 from searchspace.populate_search_space import PopulateSearchSpace
 from framework.serialize.population.population_serializer import PopulationSerializer
+# get_average_fitness(), get_best_fitness_candidate()
 from servicecommon.persistor.local.json.json_persistor import JsonPersistor
+from servicecommon.persistor.local.tar.tar_persistor import TarPersistor
 from servicecommon.utils.statistics import Statistics
 from servicecommon.utils.visualize import Visualize
 from servicecommon.utils.evolution_persistor import EvolutionPersistor
@@ -232,9 +234,32 @@ def test_file_upload():
     return job_info
 
 
-@persistence_server.route('/persist/population', methods=['POST'])
+@persistence_server.route('/persist/population-gen<int:generation_number>', methods=['POST'])
 def persist_population():
+    '''
+
+    This function takes a serialized Population with relevant information such as:
+     - bucket name: specify where the population file will be uploaded.
+     - persistence config: specify what will be persisted.
+
+    '''
+
+    # Retrieve the request data
     data = request.json
+
+    # Unpack the request data
+    bucket_name = data['bucket_name']
+    persistence_config = data['persistence_config']
+    serialized_population = data['serialized_population']
+    global search_space_obj
+
+    # Deserialize the Population
+    population_serializer_obj = PopulationSerializer(serialized_population,
+                                                 search_space_obj)
+    population = population_serializer_obj.deserialize()
+
+    
+
     return data
 
 
